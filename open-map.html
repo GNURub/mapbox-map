@@ -1,0 +1,150 @@
+<link rel="import" href="../polymer/polymer.html">
+<!--
+The `open-map` element renders a Open Map Street.
+
+##### Example
+    <style>
+      open-map {
+        display: block;
+        height: 100vh;
+      }
+    </style>
+    <open-map latitude="38.867847" longitude="1.310977"></open-map>
+
+@element open-map
+@blurb The open-map element renders a Open Street Map.
+@status alpha
+@url github.io
+-->
+<polymer-element name="open-map" attributes="latitude longitude zoom minZoom maxZoom">
+  <script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+  <template>
+
+    <style>
+      :host{
+        position:relative;
+      }
+      #openMap{ 
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+    </style>
+    <div id="openMap">
+    </div>
+    <content select="open-map-marker"></content>
+  </template>
+  <script>
+    Polymer('open-map', {
+      map:null,
+      /**
+       * The `zoom` attribute does not yet have a purpose.
+
+       * 
+
+       * @attribute zoom
+
+       * @type number
+
+       * @default 10
+
+       */
+
+      zoom: 10,
+      /**
+       * The `latitude` attribute does not yet have a purpose.
+
+       * 
+
+       * @attribute latitude
+
+       * @type number
+
+      */
+      latitude: ﻿38.867847507701114,
+      /**
+       * The `longitude` attribute does not yet have a purpose.
+
+       * 
+
+       * @attribute longitude
+
+       * @type number
+
+      */
+      longitude: 1.3109779357910156,
+
+      /**
+       * The `maxZoom` attribute does not yet have a purpose.
+
+       * 
+
+       * @attribute maxZoom
+
+       * @type number
+
+      */
+      maxZoom: null,
+      /**
+       * The `minZoom` attribute does not yet have a purpose.
+
+       * 
+
+       * @attribute minZoom
+
+       * @type number
+
+      */
+      minZoom: null,
+
+      observe:{
+        latitude: 'updateCenter',
+        longitude: 'updateCenter'
+      },
+
+      created:function(){
+        this.markers = [];
+      },
+
+      setCenter:function(){
+        this.center = [];
+        this.center[0] = this.latitude;
+        this.center[1] = this.longitude;
+      },
+
+      ready:function(){
+        this.setCenter();
+        console.log(this.center);
+        this.map = L.map(this.$.openMap);
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+          attribution: ''
+        }).addTo(this.map);
+        this.updateCenter();
+        /**
+         * The `open-map-ready` event is fired when the Leaft API has fully loaded.
+         * 
+         * @event open-map-ready
+
+         */
+        this.fire('open-map-ready');
+      },
+      /**
+       * The `task` method does no work at this time.
+
+       * 
+       * @method task
+
+       * @return {Object} Returns undefined.
+       * @param {String} dummy Serves no purpose today.
+
+       */
+      updateCenter:function(){
+        this.setCenter();
+        this.map.setView(this.center, this.zoom);
+      }
+    });
+  </script>
+</polymer-element>

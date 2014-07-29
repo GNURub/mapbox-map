@@ -131,16 +131,6 @@ The `open-map` element renders a Open Map Street.
          */
         this.fire('open-map-ready');
       },
-      /**
-       * The `task` method does no work at this time.
-
-       * 
-       * @method task
-
-       * @return {Object} Returns undefined.
-       * @param {String} dummy Serves no purpose today.
-
-       */
       updateCenter:function(){
         this.setCenter();
         this.map.setView(this.center, this.zoom);

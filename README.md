@@ -1,4 +1,4 @@
-open-map
+open-map (ALFA)
 ================
 
 See the [component page](http://polymerlabs.github.io/open-map) for more information.

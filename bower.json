@@ -1,6 +1,6 @@
 {
   "name": "open-map",
-  "private": true,
+  "private": false,
   "dependencies": {
     "polymer": "Polymer/polymer#master"
   }

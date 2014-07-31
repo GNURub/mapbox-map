@@ -1,6 +1,6 @@
 {
   "name": "open-map",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": false,
   "main": "open-map.html",
   "description": "A polymer component to show a Open Street Map with Mapbox",
@@ -28,6 +28,6 @@
     "gulpfile.js"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#master"
+    "polymer": "Polymer/polymer#~0.3.3"
   }
 }

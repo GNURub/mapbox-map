@@ -1,0 +1,28 @@
+{
+  "name": "open-map",
+  "version": "0.0.0",
+  "description": "open-map (ALFA)\r ================",
+  "main": "gulpfile.js",
+  "devDependencies": {
+    "gulp": "^3.8.6",
+    "gulp-concat": "^2.3.4",
+    "gulp-concat-css": "^0.1.4",
+    "gulp-cssmin": "^0.1.6",
+    "gulp-imagemin": "^0.6.2",
+    "gulp-load-plugins": "^0.5.3"
+  },
+  "dependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ruben96/open-map.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ruben96/open-map/issues"
+  },
+  "homepage": "https://github.com/ruben96/open-map"
+}

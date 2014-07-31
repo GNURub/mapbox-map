@@ -28,6 +28,6 @@
     "gulpfile.js"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#master"
+    "polymer": "Polymer/polymer#~0.3.3"
   }
 }

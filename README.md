@@ -1,4 +1,75 @@
-open-map (ALFA)
-================
+<open-map> element </open-map>
+==============================
 
-See the [component page](https://ruben96.github.io/open-map) for more information.
+
+Make Open Street Maps using declarative Polymer web components. To get started read the [<open-map-doc></open-map-doc>] or checkout the [<open-map-demo></open-map-demo>].
+
+
+
+Version
+----
+
+0.0.4
+
+Tech
+-----------
+
+<open-map></open-map> use:
+
+* [Polymer] - awesome framework.
+
+Use guide
+--------------
+
+##### Install open-map component using [bower].
+
+```sh
+$ bower install open-map
+
+```
+
+##### Configure Polymer and the new component.
+
+```html
+<head>
+    <script src="../platform/platform.js"></script>
+    <link rel="import" href="../open-map/open-map.html">
+    <style>
+      html, body {
+        margin: 0;
+        height: 100%;
+      }
+      leaflet-map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body unresolved>
+    <open-map longitude="77.2" latitude="28.4" mapID="examples.map-i875kd35"></open-map>
+    <script>
+        var map = document.querySelector('open-map');
+        map.addEventListener('open-map-ready', funtion(){
+            alert("it's ready!!");
+        });
+    </script>
+  </body>
+```
+
+Personalize the map
+-------------------
+
+You can personalize the map using the [MapBoxEditor], introduce your map id in the attribute `mapID`.
+
+License
+----
+
+MIT
+
+
+**Free Software, Hell Yeah!**
+
+[<open-map-demo></open-map-demo>]:https://ruben96.github.io/open-map/components/open-map/demo.html
+[<open-map-doc></open-map-doc>]:https://ruben96.github.io/open-map
+[Polymer]:http://www.polymer-project.org/
+[MapBoxEditor]:https://www.mapbox.com/editor
+[bower]:http://bower.io/

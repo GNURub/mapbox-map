@@ -1,9 +1,7 @@
-<open-map> element </open-map>
-==============================
+&lt;open-map&gt; element &lt;/open-map&gt;
+==========================================
 
-
-Make Open Street Maps using declarative Polymer web components. To get started read the [<open-map-doc></open-map-doc>] or checkout the [<open-map-demo></open-map-demo>].
-
+Make Open Street Maps using declarative Polymer web components. To get started read the [&lt;open-map-doc&gt;&lt;/open-map-doc&gt;] or checkout the [&lt;open-map-demo&gt;&lt;/open-map-demo&gt;].
 
 
 Version
@@ -14,13 +12,11 @@ Version
 Tech
 -----------
 
-<open-map></open-map> use:
-
+&lt;open-map&gt;&lt;/open-map&gt; use:
 * [Polymer] - awesome framework.
 
 Use guide
 --------------
-
 ##### Install open-map component using [bower].
 
 ```sh
@@ -57,19 +53,15 @@ $ bower install open-map
 
 Personalize the map
 -------------------
-
 You can personalize the map using the [MapBoxEditor], introduce your map id in the attribute `mapID`.
 
 License
 ----
-
 MIT
 
 
-**Free Software, Hell Yeah!**
-
-[<open-map-demo></open-map-demo>]:https://ruben96.github.io/open-map/components/open-map/demo.html
-[<open-map-doc></open-map-doc>]:https://ruben96.github.io/open-map
+[&lt;open-map-demo&gt;&lt;/open-map-demo&gt;]:https://ruben96.github.io/open-map/components/open-map/demo.html
+[&lt;open-map-doc&gt;&lt;/open-map-doc&gt;]:https://ruben96.github.io/open-map
 [Polymer]:http://www.polymer-project.org/
 [MapBoxEditor]:https://www.mapbox.com/editor
 [bower]:http://bower.io/

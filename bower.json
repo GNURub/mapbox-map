@@ -1,6 +1,32 @@
 {
   "name": "open-map",
+  "version": "0.0.4",
   "private": false,
+  "main": "open-map.html",
+  "description": "A polymer component to show a Open Street Map with Mapbox",
+  "authors": [
+    "Rubén Cid <rubencidlara@gmail.com>"
+  ],
+  "keywords": [
+    "polymer",
+    "web-component",
+    "web-components",
+    "maps",
+    "map",
+    "mapbox",
+    "openstreetmap"
+  ],
+  "license": "MIT",
+  "homepage": "https://ruben96.github.io/open-map/",
+  "ignore": [
+     "**/.*",
+    "node_modules",
+    "bower_components",
+    "*.*~",
+    "src",
+    "../",
+    "gulpfile.js"
+  ],
   "dependencies": {
     "polymer": "Polymer/polymer#master"
   }

@@ -12,7 +12,7 @@ Version
 Tech
 -----------
 
-&lt;open-map&gt;&lt;/open-map&gt; use:
+`<open-map></open-map>` use:
 * [Polymer] - awesome framework.
 
 Use guide

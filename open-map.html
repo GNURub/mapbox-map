@@ -1,8 +1,9 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="open-marker.html">
 <!--
 The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbox.com/).
 
-##### Example
+##### Example: Simple Map
     <style>
       open-map {
         display: block;
@@ -13,7 +14,8 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
               longitude="1.310977"
               geolocationUI
               zoom="15"
-              mapID="examples.map-i875kd35"></open-map>
+              mapID="examples.map-i875kd35">
+    </open-map>
 
 @element open-map
 @blurb Element for rendering a Open Street Map with MapBox.
@@ -40,10 +42,17 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
       }
     </style>
     <div id="openMap"></div>
-    <content id="markers" select="open-map-marker"></content>
+    <content id="markers" select="open-marker"></content>
   </template>
   <script>
-    Polymer('open-map', {
+    Polymer( 'open-map', {
+      /**
+      * A Mapbox map object
+      *
+      * @property map
+      * @type L.mapbox.map
+      * @default null
+      */
       map: null,
 
       /**
@@ -192,6 +201,7 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
 
       attached: function() {
         this.resize();
+        this.updateMarkers();
       },
 
       created:function(){
@@ -237,7 +247,6 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
           locate = L.control.locate().addTo( this.map );
         else if( locate )
           locate.removeFrom( this.map );
-        
       },
 
       toggleFullscreen:function () {
@@ -269,6 +278,25 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
 
       resize:function () {
         this.map.on( 'resize', this.updateCenter.bind( this ) );
+      },
+
+      updateMarkers: function() {
+        this.markers = Array.prototype.slice.call(
+            this.$.markers.getDistributedNodes());
+        this.onMutation(this, this.updateMarkers);
+
+        if (this.markers.length && this.map) {
+          for (var i = 0, m; m = this.markers[i]; ++i) {
+            m.map = this.map;
+          }
+        }
+      },
+
+      clear:function() {
+        for( var i = 0, m; m = this.markers[i]; i++ ) {
+           this.map.removeLayer( m.markers );
+           m.map = null;
+        }
       }
     });
   </script>

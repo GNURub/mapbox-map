@@ -21,7 +21,7 @@ Use guide
 ##### Install open-map component using [bower].
 
 ```sh
-$ bower install open-map
+$ bower install open-map#master
 
 ```
 

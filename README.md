@@ -41,11 +41,17 @@ $ bower install open-map
     </style>
   </head>
   <body unresolved>
-    <open-map longitude="77.2" latitude="28.4" mapID="examples.map-i875kd35"></open-map>
+    <open-map longitude="77.2" latitude="28.4" mapID="examples.map-i875kd35">
+      <open-marker icon="{'icon': 'twitter', 'markerColor':'red'}"></open-marker>
+    </open-map>
     <script>
         var map = document.querySelector('open-map');
+        var me = document.querySelectorAll('open-marker')[0];
         map.addEventListener('open-map-ready', funtion(){
-            alert("it's ready!!");
+            navigator.geolocation.getCurrentPosition(function(pos){
+              me.latitude = pos.coords.latitude;
+              me.longitude = pos.coords.longitude;
+            });
         });
     </script>
   </body>

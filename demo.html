@@ -3,7 +3,7 @@
 <head>
 
   <title>open-map Demo</title>
-
+  <meta charset="UTF-8" />
   <script src='../platform/platform.js'></script>
   <link rel="import" href="open-map.html">
   <style type="text/css">
@@ -21,11 +21,12 @@
 </head>
 <body unresolved>
 
-	<open-map geolocationUI
+	<open-map id="map"
             zoom="15"
-            latitude="38.903847"
-            longitude="1.425977">
-    <open-marker latitude="38.903847" title="yo" longitude="1.425977"></open-marker>
+            latitude="38.908847"
+            longitude="1.433900">
+    <open-marker id="yo" title="yo" latitude="38.908847"
+            longitude="1.433900" icon="{'icon':'font'}" draggable="true"></open-marker>
   </open-map>
 </body>
 </html>

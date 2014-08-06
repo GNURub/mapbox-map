@@ -199,6 +199,8 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
         longitude: 'updateCenter'
       },
 
+      accessToken:'pk.eyJ1IjoiZ251cnViIiwiYSI6InRZRVNjWDQifQ.Db2dDEClQ3ybQe_egT87lg',
+
       attached: function() {
         this.resize();
         this.updateMarkers();
@@ -215,9 +217,10 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
       },
 
       ready:function(){
+        L.mapbox.accessToken = this.accessToken;
         var mapOptions = {
-          minZoom:this.minZoom,
-          maxZoom:this.maxZoom,
+          minZoom: this.minZoom,
+          maxZoom: this.maxZoom,
           zoomControl: !this.disableZoomUI,
           scrollWheelZoom: this.zoomable,
           touchZoom: this.zoomable,
@@ -238,7 +241,7 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
 
       updateCenter:function(){
         this.setCenter();
-        this.map.setView( this.center, this.zoom );
+        this.map.setView( this.center, Number(this.zoom) );
       },
 
       toggleGeolocator:function () {
@@ -265,7 +268,7 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
       },
 
       zoomChanged:function(){
-        this.map.setZoom( this.zoom );
+        this.map.setZoom( Number( this.zoom ) );
       },
 
       geolocationUIChanged:function(){

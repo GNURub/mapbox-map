@@ -9,7 +9,8 @@
     "gulp-concat-css": "^0.1.4",
     "gulp-cssmin": "^0.1.6",
     "gulp-imagemin": "^0.6.2",
-    "gulp-load-plugins": "^0.5.3"
+    "gulp-load-plugins": "^0.5.3",
+    "gulp-uglify": "^0.3.1"
   },
   "dependencies": {},
   "scripts": {

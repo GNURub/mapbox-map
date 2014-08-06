@@ -57,6 +57,8 @@ $ bower install open-map
   </body>
 ```
 
+http://storage8.static.itmages.com/i/14/0806/h_1407325196_3280150_2cf97ebe34.png
+
 Personalize the map
 -------------------
 You can personalize the map using the [MapBoxEditor], introduce your map id in the attribute `mapID`.

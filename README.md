@@ -14,7 +14,7 @@ Tech
 
 `<open-map></open-map>` use:
 * [Polymer] - awesome framework.
-* [FortAwesome] - Icons for markers, you can set it into `icon` attribute.Have to use it without prefix `fa-`.
+* [FortAwesome] - Icons for markers, you can set it into `icon` attribute. Have to use it without prefix `fa-`.
  
 Use guide
 --------------

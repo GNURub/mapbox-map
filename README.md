@@ -57,7 +57,7 @@ $ bower install open-map
   </body>
 ```
 
-http://storage8.static.itmages.com/i/14/0806/h_1407325196_3280150_2cf97ebe34.png
+![Preview][1]
 
 Personalize the map
 -------------------
@@ -73,3 +73,4 @@ MIT
 [Polymer]:http://www.polymer-project.org/
 [MapBoxEditor]:https://www.mapbox.com/editor
 [bower]:http://bower.io/
+[1]: http://storage8.static.itmages.com/i/14/0806/h_1407325196_3280150_2cf97ebe34.png

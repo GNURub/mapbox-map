@@ -7,14 +7,15 @@ Make Open Street Maps using declarative Polymer web components. To get started r
 Version
 ----
 
-0.0.4
+0.0.8
 
 Tech
 -----------
 
 `<open-map></open-map>` use:
 * [Polymer] - awesome framework.
-
+* [FortAwesome] - Icons for markers, you can set it into `icon` attribute.Have to use it without prefix `fa-`.
+ 
 Use guide
 --------------
 ##### Install open-map component using [bower].
@@ -71,6 +72,7 @@ MIT
 [&lt;open-map-demo&gt;&lt;/open-map-demo&gt;]:https://ruben96.github.io/open-map/components/open-map/demo.html
 [&lt;open-map-doc&gt;&lt;/open-map-doc&gt;]:https://ruben96.github.io/open-map
 [Polymer]:http://www.polymer-project.org/
+[FortAwesome]:https://fortawesome.github.io/Font-Awesome/icons/
 [MapBoxEditor]:https://www.mapbox.com/editor
 [bower]:http://bower.io/
 [1]:http://storage8.static.itmages.com/i/14/0806/h_1407325196_3280150_2cf97ebe34.png

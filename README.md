@@ -9,7 +9,7 @@ Tech
 
 `<open-map></open-map>` use:
 * [Polymer] - awesome framework for web components.
-* [FortAwesome] - Icons for markers, you can set it into `icon` attribute..
+* [FortAwesome] - Icons for markers, you can set it into `icon` attribute.
  
 Use guide
 --------------

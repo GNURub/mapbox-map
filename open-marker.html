@@ -97,81 +97,67 @@ The `open-marker` element renders a Open Map Street thanks to [Mapbox](http://ma
            * @event open-map-ready
 
            */
-            this.marker.on( 'click', function (e) {
-              this.fire( 'click-marker', { data: e } );
-            })
+            function sendEvent(e){
+              this.fire(e.type + '-marker', { data:e } );
+              console.log(e, e.type + '-marker');
+            }
+            this.marker.on( 'click', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
            * 
            * @event open-map-ready
 
            */
-            .on( 'dblclick', function (e) {
-              this.fire( 'dblclick-marker', { data: e } );
-            })
+            .on( 'dblclick', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
            * 
            * @event open-map-ready
 
            */
-            .on( 'move', function (e) {
-              this.fire( 'move-marker', { data: e } );
-            })
+            .on( 'move', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
            * 
            * @event open-map-ready
 
            */
-            .on( 'dragstart', function (e) {
-              this.fire( 'dragstart-marker', { data: e } );
-            })
+            .on( 'dragstart', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
            * 
            * @event open-map-ready
 
            */
-            .on( 'drag', function (e) {
-              this.fire('drag-marker', {data: e});
-            })
+            .on( 'drag', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
            * 
            * @event open-map-ready
 
            */
-            .on( 'dragend', function (e) {
-              this.fire( 'dragend-marker', { data: e } );
-            })
+            .on( 'dragend', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
            * 
            * @event open-map-ready
 
            */
-            .on( 'remove', function (e) {
-              this.fire( 'remove-marker', { data: e } );
-            })
+            .on( 'remove', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
            * 
            * @event open-map-ready
 
            */
-            .on( 'popupopen', function (e) {
-              this.fire( 'popupopen-marker', { data: e } );
-            })
+            .on( 'popupopen', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
            * 
            * @event open-map-ready
 
            */
-            .on( 'popupclose', function (e) {
-              this.fire( 'popupclose-marker', { data: e } );
-            });
+            .on( 'popupclose', sendEvent.bind( this ));
 
           }
         },

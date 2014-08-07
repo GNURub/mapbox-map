@@ -99,6 +99,7 @@ The `open-marker` element renders a Open Map Street thanks to [Mapbox](http://ma
            */
             function sendEvent(e){
               this.fire(e.type + '-marker', { data:e } );
+              console.log(e);
             }
             this.marker.on( 'click', sendEvent.bind( this ))
           /**

@@ -229,7 +229,10 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
 
         this.map = L.mapbox.map( this.$.openMap, this.mapID, mapOptions );
         this.updateCenter();
-
+        var self = this;
+        this.map.on('zoomlevelschange', function (e) {
+          self.fire( 'open-map-zoomened', {data: e})
+        });
         /**
          * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
          * 
@@ -269,6 +272,7 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
 
       zoomChanged:function(){
         this.map.setZoom( Number( this.zoom ) );
+        this.fire( 'open-map-zoomened', { data: this.zoom } );
       },
 
       geolocationUIChanged:function(){

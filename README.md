@@ -106,10 +106,10 @@ Methods
 
 Events
 ------
-| Event           | Function                       |
-| --------------- | :----------------------------: |
-| `open-map-ready`| Fire the event map is Ready.   |
-
+| Event                | Function                       |
+| -------------------- | :----------------------------: |
+| `open-map-ready`     | Fired when map is ready        |
+| `'open-map-zoomened'`| Fired when zoom change         |
 
 # &lt;open-marker&gt;&lt;/open-marker&gt;
 
@@ -129,15 +129,15 @@ Events
 ------
 | Event               | Function                       |
 | ------------------- | :----------------------------: |
-| `dblclick-marker`   | Fire the event map is Ready.   |
-| `click-marker`      | Fire the event map is Ready.   |
-| `move-marker`       | Fire the event map is Ready.   |
-| `dragstart-marker`  | Fire the event map is Ready.   |
-| `dragend-marker`    | Fire the event map is Ready.   |
-| `drag-marker`       | Fire the event map is Ready.   |
-| `remove-marker`     | Fire the event map is Ready.   |
-| `popupopen-marker`  | Fire the event map is Ready.   |
-| `popupclose-marker` | Fire the event map is Ready.   |
+| `dblclick-marker`   | Fired when do doble click      |
+| `click-marker`      | Fired when do click.           |
+| `move-marker`       | Fired when move.               |
+| `dragstart-marker`  | Fired when drag starts.        |
+| `dragend-marker`    | Fired when drag ends.          |
+| `drag-marker`       | Fired when drag.               |
+| `remove-marker`     | Fired when marker is removed.  |
+| `popupopen-marker`  | Fired when the popup is open.  |
+| `popupclose-marker` | Fired whenthe popup is close.  |
 
 Personalize the map
 -------------------

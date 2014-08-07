@@ -37,18 +37,25 @@ $ bower install open-map#master
     </style>
   </head>
   <body unresolved>
-    <open-map longitude="77.2" latitude="28.4" mapID="examples.map-i875kd35">
-      <open-marker icon="{'icon': 'fa-twitter', 'markerColor':'red'}"></open-marker>
+    <open-map id="map"
+            zoom="15"
+            latitude="38.908847"
+            longitude="1.433900">
+        <open-marker title="School Bus" latitude="38.908847"
+            longitude="1.433900"
+            icon="{'icon':'bus', 'markerColor':'black'}"
+            draggable="true">
+        </open-marker>
+        <open-marker id="me" title="Me"
+            icon="{'icon':'fa-child', 'markerColor':'black'}">
+        </open-marker>
     </open-map>
-    <script>
-        var map = document.querySelector('open-map');
-        var me = document.querySelectorAll('open-marker')[0];
-        map.addEventListener('open-map-ready', funtion(){
-            navigator.geolocation.getCurrentPosition(function(pos){
-              me.latitude = pos.coords.latitude;
-              me.longitude = pos.coords.longitude;
-            });
-        });
+    <script type="text/javascript">
+    var me = document.querySelector('#me');
+    navigator.geolocation.watchPosition(function(pos){
+        me.latitude = pos.coords.latitude;
+        me.longitude = pos.coords.longitude;
+    });
     </script>
   </body>
 ```

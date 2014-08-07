@@ -1,13 +1,12 @@
 <!doctype html>
 <html>
 <head>
-
   <title>open-map Demo</title>
   <meta charset="UTF-8" />
   <script src='../platform/platform.js'></script>
   <link rel="import" href="open-map.html">
   <style type="text/css">
-  	body, html {
+    body, html {
         height: 100%;
         margin: 0;
     }
@@ -21,17 +20,24 @@
 </head>
 <body unresolved>
 
-	<open-map id="map"
+  <open-map id="map"
             zoom="15"
             latitude="38.908847"
             longitude="1.433900">
-    <open-marker id="yo" title="yo" latitude="38.908847"
-            longitude="1.433900" icon="{'icon':'bus', 'markerColor':'lightblue'}" draggable="true"></open-marker>
+    <open-marker title="School Bus" latitude="38.908847"
+            longitude="1.433900"
+            icon="{'icon':'bus', 'markerColor':'black'}"
+            draggable="true">
+    </open-marker>
+    <open-marker id="me" title="Me"
+            icon="{'icon':'fa-child', 'markerColor':'black'}">
+    </open-marker>
   </open-map>
   <script type="text/javascript">
-    var marker = document.querySelector('open-marker');
-    marker.addEventListener('move-marker', function(e){
-      console.log(e);
+    var me = document.querySelector('#me');
+    navigator.geolocation.watchPosition(function(pos){
+      me.latitude = pos.coords.latitude;
+      me.longitude = pos.coords.longitude;
     });
   </script>
 </body>

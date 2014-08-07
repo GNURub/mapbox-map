@@ -89,7 +89,7 @@ The `open-marker` element renders a Open Map Street thanks to [Mapbox](http://ma
               draggable: !!this.getAttribute("draggable"),
               title: this.title,
               alt: this.title,
-              icon: new L.AwesomeMarkers.icon(this.icon)
+              icon: this.createIcon()
             } ).addTo( this.map );
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
@@ -99,7 +99,6 @@ The `open-marker` element renders a Open Map Street thanks to [Mapbox](http://ma
            */
             function sendEvent(e){
               this.fire(e.type + '-marker', { data:e } );
-              console.log(e, e.type + '-marker');
             }
             this.marker.on( 'click', sendEvent.bind( this ))
           /**
@@ -171,11 +170,55 @@ The `open-marker` element renders a Open Map Street thanks to [Mapbox](http://ma
         },
 
         iconChanged:function(){
-          var icon = new L.AwesomeMarkers.Icon( this.icon );
           if( !!this.marker )
-            this.marker.setIcon(icon);
+            this.marker.setIcon(this.createIcon());
           else
             this.mapReady();
+        },
+
+        createIcon:function  () {
+          var isMarkerIcon = ((this.icon.hasOwnProperty('icon') 
+              && this.icon.icon.indexOf('fa-') === -1)
+              || (this.icon.hasOwnProperty('marker-icon'))
+              || (this.icon.hasOwnProperty('marker-color')))
+          if ( Object.keys(this.icon).length === 0 ){
+            return new L.mapbox.marker.icon();
+          }else if (isMarkerIcon){
+            if(this.icon.hasOwnProperty('markerColor') && (this.icon.markerColor.indexOf('#') === -1)){
+              var colors = {
+                red: '#ff0000',
+                darkred: '#8B0000',
+                lightred:'#e74c3c',
+                orange: '#FFA500',
+                beige: '#F5F5DC',
+                green:'#008000',
+                darkgreen: '#006400',
+                lightgreen:'#90EE90 ',
+                blue:'#0000FF',
+                darkblue: '#0000A0',
+                lightblue: '#3498db',
+                purple:'#800080',
+                darkpurple: '#563c5c',
+                pink: '#FFC0CB ',
+                cadetblue: '#5F9EA0 ',
+                white: '#FFFFFF',
+                gray: '#9F9F9F',
+                lightgray:'#DDDADA',
+                black: '#000000'
+              };
+
+              this.icon.markerColor = colors[this.icon.markerColor];
+            }
+            return new L.mapbox.marker.icon({
+              'marker-size': this.icon.size || 'large',
+              'marker-symbol': this.icon.icon,
+              'marker-color': this.icon.markerColor || '#ff0000'
+            });
+          }else{
+            console.log(this.icon.length)
+            return new L.AwesomeMarkers.Icon( this.icon );
+          }
+
         },
 
         mapChanged: function () {

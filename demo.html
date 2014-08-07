@@ -26,12 +26,12 @@
             latitude="38.908847"
             longitude="1.433900">
     <open-marker id="yo" title="yo" latitude="38.908847"
-            longitude="1.433900" icon="{'icon':'car', 'markerColor':'darkblue'}" draggable="true"></open-marker>
+            longitude="1.433900" icon="{'icon':'bus', 'markerColor':'lightblue'}" draggable="true"></open-marker>
   </open-map>
   <script type="text/javascript">
     var marker = document.querySelector('open-marker');
     marker.addEventListener('move-marker', function(e){
-      //console.log(e);
+      console.log(e);
     });
   </script>
 </body>

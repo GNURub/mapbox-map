@@ -8,8 +8,9 @@ Tech
 -----------
 
 `<open-map></open-map>` use:
-* [Polymer] - awesome framework for web components.
-* [FortAwesome] - Icons for markers, you can set it into `icon` attribute.
+* [Mapbox] - Awesome library for use Open Maps
+* [Polymer] - Awesome framework for web components.
+* [FortAwesome] - Icons for markers, you can set it into `icon` attribute or also you can use [maki] icons.
  
 Use guide
 --------------
@@ -153,5 +154,7 @@ MIT
 [Polymer]:http://www.polymer-project.org/
 [FortAwesome]:https://fortawesome.github.io/Font-Awesome/icons/
 [MapBoxEditor]:https://www.mapbox.com/editor
+[Mapbox]:https://www.mapbox.com/
+[maki]:https://www.mapbox.com/maki/
 [bower]:http://bower.io/
 [1]:http://storage8.static.itmages.com/i/14/0806/h_1407325196_3280150_2cf97ebe34.png

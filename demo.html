@@ -24,21 +24,13 @@
             zoom="15"
             latitude="38.908847"
             longitude="1.433900">
+
     <open-marker title="School Bus" latitude="38.908847"
             longitude="1.433900"
-            icon="{'icon':'bus', 'markerColor':'black'}"
+            icon="{'marker-symbol':'bus', 'marker-color':'#ff0000', 'marker-size':'large'}"
             draggable="true">
-    </open-marker>
-    <open-marker id="me" title="Me"
-            icon="{'icon':'fast-food', 'markerColor':'red'}">
+
     </open-marker>
   </open-map>
-  <script type="text/javascript">
-    var me = document.querySelector('#me');
-    navigator.geolocation.watchPosition(function(pos){
-      me.latitude = pos.coords.latitude;
-      me.longitude = pos.coords.longitude;
-    });
-  </script>
 </body>
 </html>

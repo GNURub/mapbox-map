@@ -54,21 +54,21 @@ a child element of the `open-map` element.
         * @type L.mapbox.map
         * @default null
         */
-        map:null,
+        map: null,
 
-        marker:null,
+        marker: null,
 
         title: '',
 
         publish:{
-          latitude:{
-            value:null,
-            reflect:true
+          latitude: {
+            value: null,
+            reflect: true
           },
 
-          longitude:{
-            value:null,
-            reflect:true
+          longitude: {
+            value: null,
+            reflect: true
           }
         },
 
@@ -84,6 +84,7 @@ a child element of the `open-map` element.
         mapReady:function () {
           var canUpdate = ( this.map && this.latitude && this.longitude );
           if( canUpdate ) {
+            if( this.marker ) this.map.removeLayer(this.marker);
             this.marker = L.marker( [ this.latitude, this.longitude ], {
               draggable: !!this.getAttribute("draggable"),
               title: this.title,
@@ -176,49 +177,7 @@ a child element of the `open-map` element.
         },
 
         createIcon:function  () {
-          var isMarkerIcon = ((this.icon.hasOwnProperty('icon') &&
-            this.icon.icon.indexOf('fa-') === -1) ||
-            (this.icon.hasOwnProperty('marker-icon')) ||
-            (this.icon.hasOwnProperty('marker-color')));
-
-          if ( Object.keys(this.icon).length === 0 ){
-            return new L.mapbox.marker.icon();
-          }else if (isMarkerIcon){
-            if(this.icon.hasOwnProperty('markerColor')
-                && (this.icon.markerColor.indexOf('#') === -1)){
-              var colors = {
-                red: '#D43E2A',
-                darkred: '#9F3336',
-                lightred:'#FF8D7E',
-                orange: '#F2952F',
-                beige: '#FFCA92',
-                green:'#72AF26',
-                darkgreen: '#718123',
-                lightgreen:'#B9F770',
-                blue:'#38AADD',
-                darkblue: '#0066A2',
-                lightblue: '#88DAFF',
-                purple:'#CD50B5',
-                darkpurple: '#593869',
-                pink: '#FF90E9',
-                cadetblue: '#436877',
-                white: '#FFFFFF',
-                gray: '#575757',
-                lightgray:'#A3A3A3',
-                black: '#303030'
-              };
-
-              this.icon.markerColor = colors[this.icon.markerColor];
-            }
-            return new L.mapbox.marker.icon({
-              'marker-size': this.icon.size || 'large',
-              'marker-symbol': this.icon.icon,
-              'marker-color': this.icon.markerColor || '#ff0000'
-            });
-          }else{
-            return new L.AwesomeMarkers.Icon( this.icon );
-          }
-
+          return L.mapbox.marker.icon( this.icon )
         },
 
         mapChanged: function () {

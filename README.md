@@ -32,7 +32,7 @@ $ bower install open-map#master
         margin: 0;
         height: 100%;
       }
-      leaflet-map {
+      open-map {
         height: 100%;
       }
     </style>

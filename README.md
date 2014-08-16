@@ -10,7 +10,7 @@ Tech
 `<open-map></open-map>` use:
 * [Mapbox] - Awesome library for use Open Maps
 * [Polymer] - Awesome framework for web components.
-* [maki] - Native icons for mapbox. `<open-marker icon={'icon':'restaurant'}></open-marker>`
+* [maki] - Native icons for mapbox. `<open-marker icon="{'icon':'restaurant'}"></open-marker>`
 
 Use guide
 --------------

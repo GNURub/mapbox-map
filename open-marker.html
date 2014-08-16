@@ -98,7 +98,6 @@ a child element of the `open-map` element.
            */
             function sendEvent(e){
               this.fire(e.type + '-marker', { data:e } );
-              console.log(e);
             }
             this.marker.on( 'click', sendEvent.bind( this ))
           /**
@@ -177,10 +176,11 @@ a child element of the `open-map` element.
         },
 
         createIcon:function  () {
-          var isMarkerIcon = ((this.icon.hasOwnProperty('icon')
-              && this.icon.icon.indexOf('fa-') === -1)
-              || (this.icon.hasOwnProperty('marker-icon'))
-              || (this.icon.hasOwnProperty('marker-color')))
+          var isMarkerIcon = ((this.icon.hasOwnProperty('icon') &&
+            this.icon.icon.indexOf('fa-') === -1) ||
+            (this.icon.hasOwnProperty('marker-icon')) ||
+            (this.icon.hasOwnProperty('marker-color')));
+
           if ( Object.keys(this.icon).length === 0 ){
             return new L.mapbox.marker.icon();
           }else if (isMarkerIcon){

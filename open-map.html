@@ -1,5 +1,3 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="open-marker.html">
 <!--
 The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbox.com/).
 
@@ -20,20 +18,20 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
 @element open-map
 @blurb Element for rendering a Open Street Map with MapBox.
 @status alpha
-@homepage https://ruben96.github.io/open-map
+@homepage https://ruben96.github.io/open-map/components/open-map/
 -->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="open-import.html">
+<link rel="import" href="open-marker.html">
+
 <polymer-element name="open-map" attributes="latitude longitude zoom minZoom maxZoom mapID disableZoomUI zoomable geolocationUI fullscreenUI">
-
-  <script src="build/js/mapbox.min.js"></script>
-  <link href='build/css/mapbox.min.css' rel='stylesheet'/>
-  
   <template>
-
+    <link href='build/css/mapbox.min.css' rel='stylesheet'/>
     <style>
       :host{
         position:relative;
       }
-      #openMap{ 
+      #openMap{
         position: absolute;
         top: 0;
         left: 0;
@@ -58,7 +56,7 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
       /**
        * The `mapID`, it is the identifier of the map in mapbox, you can create your own map in [Mapbox](http://mapbox.com/editor) or use the default.
 
-       * 
+       *
 
        * @attribute mapID
 
@@ -72,7 +70,7 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
       /**
        * If set, enable a button for geolocation.
 
-       * 
+       *
 
        * @attribute geolocationUI
 
@@ -86,7 +84,7 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
       /**
        * If set, enable a button for fullsceeen of the map.
 
-       * 
+       *
 
        * @attribute fullscreenUI
 
@@ -100,7 +98,7 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
       /**
        * The map's zoom level.
 
-       * 
+       *
 
        * @attribute zoom
 
@@ -114,7 +112,7 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
       /**
        * If set, removes the map's default UI zoom
 
-       * 
+       *
 
        * @attribute disableZoomUI
 
@@ -128,7 +126,7 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
       /**
        * If false, prevent the user from zooming the map interactively.
 
-       * 
+       *
 
        * @attribute zoomable
 
@@ -142,7 +140,7 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
       /**
        * A latitude to center the map on.
 
-       * 
+       *
 
        * @attribute latitude
 
@@ -155,7 +153,7 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
 
       /**
        * A longitude to center the map on.
-       * 
+       *
 
        * @attribute longitude
 
@@ -169,7 +167,7 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
       /**
        * The `maxZoom` is the maximum zoom level of the map.
 
-       * 
+       *
 
        * @attribute maxZoom
 
@@ -183,7 +181,7 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
       /**
        * The `minZoom` is the minimum zoom level of the map.
 
-       * 
+       *
 
        * @attribute minZoom
 
@@ -228,13 +226,12 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
 
         this.map = L.mapbox.map( this.$.openMap, this.mapID, mapOptions );
         this.updateCenter();
-        var self = this;
         this.map.on('zoomlevelschange', function (e) {
-          self.fire( 'open-map-zoomened', {data: e});
-        });
+          this.fire( 'open-map-zoomened', {data: e});
+        }.bind( this ) );
         /**
          * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
-         * 
+         *
          * @event open-map-ready
 
          */

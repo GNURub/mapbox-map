@@ -1,6 +1,6 @@
 <!--
-The `open-marker` element renders a Open Map Street thanks to [Mapbox](http://mapbox.com/).
-
+The `open-marker` element represents a marker on the map and is used as
+a child element of the `open-map` element.
 ##### Example: Add marker
     <style>
       open-map {
@@ -25,19 +25,18 @@ The `open-marker` element renders a Open Map Street thanks to [Mapbox](http://ma
             'shadowSize': [68, 95],
             'shadowAnchor': [22, 94]
         }"
-        latitude=""
-        longitude="">
+        latitude="0"
+        longitude="0">
         </open-marker>
     </open-map>
-
 @element open-marker
-@blurb Element for rendering a Open Street Map with MapBox.
+@blurb Element for putting a marker on the map
 @status alpha
-@homepage https://ruben96.github.io/open-map
+@homepage https://ruben96.github.io/open-map/components/open-map/
 -->
 <polymer-element name="open-marker" attributes="icon title">
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   <template>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
         :host {
           display: none;
@@ -93,7 +92,7 @@ The `open-marker` element renders a Open Map Street thanks to [Mapbox](http://ma
             } ).addTo( this.map );
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
-           * 
+           *
            * @event open-map-ready
 
            */
@@ -104,56 +103,56 @@ The `open-marker` element renders a Open Map Street thanks to [Mapbox](http://ma
             this.marker.on( 'click', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
-           * 
+           *
            * @event open-map-ready
 
            */
             .on( 'dblclick', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
-           * 
+           *
            * @event open-map-ready
 
            */
             .on( 'move', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
-           * 
+           *
            * @event open-map-ready
 
            */
             .on( 'dragstart', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
-           * 
+           *
            * @event open-map-ready
 
            */
             .on( 'drag', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
-           * 
+           *
            * @event open-map-ready
 
            */
             .on( 'dragend', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
-           * 
+           *
            * @event open-map-ready
 
            */
             .on( 'remove', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
-           * 
+           *
            * @event open-map-ready
 
            */
             .on( 'popupopen', sendEvent.bind( this ))
           /**
            * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
-           * 
+           *
            * @event open-map-ready
 
            */
@@ -178,14 +177,14 @@ The `open-marker` element renders a Open Map Street thanks to [Mapbox](http://ma
         },
 
         createIcon:function  () {
-          var isMarkerIcon = ((this.icon.hasOwnProperty('icon') 
+          var isMarkerIcon = ((this.icon.hasOwnProperty('icon')
               && this.icon.icon.indexOf('fa-') === -1)
               || (this.icon.hasOwnProperty('marker-icon'))
               || (this.icon.hasOwnProperty('marker-color')))
           if ( Object.keys(this.icon).length === 0 ){
             return new L.mapbox.marker.icon();
           }else if (isMarkerIcon){
-            if(this.icon.hasOwnProperty('markerColor') 
+            if(this.icon.hasOwnProperty('markerColor')
                 && (this.icon.markerColor.indexOf('#') === -1)){
               var colors = {
                 red: '#D43E2A',

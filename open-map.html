@@ -1,5 +1,6 @@
 <!--
-The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbox.com/).
+The `open-map` element renders a Open Map Street thanks to
+ [Mapbox](http://mapbox.com/).
 
 ##### Example: Simple Map
     <style>
@@ -24,7 +25,8 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
 <link rel="import" href="open-import.html">
 <link rel="import" href="open-marker.html">
 
-<polymer-element name="open-map" attributes="latitude longitude zoom minZoom maxZoom mapID disableZoomUI zoomable geolocationUI fullscreenUI">
+<polymer-element name="open-map" attributes="latitude longitude zoom minZoom
+              maxZoom mapID disableZoomUI zoomable geolocationUI fullscreenUI">
   <template>
     <link href='build/css/mapbox.min.css' rel='stylesheet'/>
     <style>
@@ -54,7 +56,8 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
       map: null,
 
       /**
-       * The `mapID`, it is the identifier of the map in mapbox, you can create your own map in [Mapbox](http://mapbox.com/editor) or use the default.
+       * The `mapID`, it is the identifier of the map in mapbox, you can create
+       * your own map in [Mapbox](http://mapbox.com/editor) or use the default.
 
        *
 
@@ -230,7 +233,8 @@ The `open-map` element renders a Open Map Street thanks to [Mapbox](http://mapbo
           this.fire( 'open-map-zoomened', {data: e});
         }.bind( this ) );
         /**
-         * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
+         * The `open-map-ready` event is fired when the Open Street Map API has
+         * fully loaded.
          *
          * @event open-map-ready
 

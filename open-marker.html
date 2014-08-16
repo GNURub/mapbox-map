@@ -14,19 +14,19 @@ a child element of the `open-map` element.
               zoom="15"
               mapID="examples.map-i875kd35">
         <open-marker
-        icon="{
-            'iconUrl': 'my-icon.png',
-            'iconRetinaUrl': 'my-icon@2x.png',
-            'iconSize': [38, 95],
-            'iconAnchor': [22, 94],
-            'popupAnchor': [-3, -76],
-            'shadowUrl': 'my-icon-shadow.png',
-            'shadowRetinaUrl': 'my-icon-shadow@2x.png',
-            'shadowSize': [68, 95],
-            'shadowAnchor': [22, 94]
-        }"
-        latitude="0"
-        longitude="0">
+          icon="{
+              'iconUrl': 'my-icon.png',
+              'iconRetinaUrl': 'my-icon@2x.png',
+              'iconSize': [38, 95],
+              'iconAnchor': [22, 94],
+              'popupAnchor': [-3, -76],
+              'shadowUrl': 'my-icon-shadow.png',
+              'shadowRetinaUrl': 'my-icon-shadow@2x.png',
+              'shadowSize': [68, 95],
+              'shadowAnchor': [22, 94]
+          }"
+          latitude="0"
+          longitude="0">
         </open-marker>
     </open-map>
 @element open-marker
@@ -36,7 +36,9 @@ a child element of the `open-map` element.
 -->
 <polymer-element name="open-marker" attributes="icon title">
   <template>
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link
+      href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
+      rel="stylesheet">
     <style>
         :host {
           display: none;
@@ -55,17 +57,42 @@ a child element of the `open-map` element.
         * @default null
         */
         map: null,
-
+      /**
+        * A Mapbox marker object
+        *
+        * @property marker
+        * @type L.marker
+        * @default null
+        */
         marker: null,
-
+      /**
+        * A Mapbox marker object
+        *
+        * @attribute title
+        * @type String
+        * @default null
+        */
         title: '',
 
         publish:{
+        /**
+          * Latitude marker
+          *
+          * @attribute latitude
+          * @type float
+          * @default null
+          */
           latitude: {
             value: null,
             reflect: true
           },
-
+        /**
+          * Longitude marker
+          *
+          * @attribute longitude
+          * @type float
+          * @default null
+          */
           longitude: {
             value: null,
             reflect: true
@@ -92,7 +119,8 @@ a child element of the `open-map` element.
               icon: this.createIcon()
             } ).addTo( this.map );
           /**
-           * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
+           * The `open-map-ready` event is fired when the Open
+           * Street Map API has fully loaded.
            *
            * @event open-map-ready
 
@@ -102,56 +130,64 @@ a child element of the `open-map` element.
             }
             this.marker.on( 'click', sendEvent.bind( this ))
           /**
-           * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
+           * The `open-map-ready` event is fired when the Open Street Map API
+           * has fully loaded.
            *
            * @event open-map-ready
 
            */
             .on( 'dblclick', sendEvent.bind( this ))
           /**
-           * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
+           * The `open-map-ready` event is fired when the Open Street Map API
+           * has fully loaded.
            *
            * @event open-map-ready
 
            */
             .on( 'move', sendEvent.bind( this ))
           /**
-           * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
+           * The `open-map-ready` event is fired when the Open Street Map API
+           * has fully loaded.
            *
            * @event open-map-ready
 
            */
             .on( 'dragstart', sendEvent.bind( this ))
           /**
-           * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
+           * The `open-map-ready` event is fired when the Open Street Map API
+           * has fully loaded.
            *
            * @event open-map-ready
 
            */
             .on( 'drag', sendEvent.bind( this ))
           /**
-           * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
+           * The `open-map-ready` event is fired when the Open Street Map API
+           * has fully loaded.
            *
            * @event open-map-ready
 
            */
             .on( 'dragend', sendEvent.bind( this ))
           /**
-           * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
+           * The `open-map-ready` event is fired when the Open Street Map API
+           * has fully loaded.
            *
            * @event open-map-ready
 
            */
             .on( 'remove', sendEvent.bind( this ))
           /**
-           * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
+           * The `open-map-ready` event is fired when the Open Street Map API
+           * has fully loaded.
            *
            * @event open-map-ready
 
            */
             .on( 'popupopen', sendEvent.bind( this ))
           /**
-           * The `open-map-ready` event is fired when the Open Street Map API has fully loaded.
+           * The `open-map-ready` event is fired when the Open Street Map API
+           * has fully loaded.
            *
            * @event open-map-ready
 
@@ -162,7 +198,9 @@ a child element of the `open-map` element.
         },
 
         updateMarker:function(){
-          var canUpdate = ( this.map && this.marker && this.latitude && this.longitude );
+          var canUpdate = ( this.map && this.marker &&
+            this.latitude &&
+            this.longitude );
           if( canUpdate )
             this.marker.setLatLng( [ this.latitude, this.longitude ] );
           else if( !this.marker )
@@ -177,7 +215,13 @@ a child element of the `open-map` element.
         },
 
         createIcon:function  () {
-          return L.mapbox.marker.icon( this.icon )
+          this.icon['marker-symbol'] = this.icon['marker-symbol'] ||
+            this.icon.icon;
+          this.icon['marker-size'] = this.icon['marker-size'] ||
+            this.icon.size;
+          this.icon['marker-color'] = this.icon['marker-color'] ||
+            this.icon.markerColor;
+          return L.mapbox.marker.icon( this.icon );
         },
 
         mapChanged: function () {

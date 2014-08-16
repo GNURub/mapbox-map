@@ -10,8 +10,8 @@ Tech
 `<open-map></open-map>` use:
 * [Mapbox] - Awesome library for use Open Maps
 * [Polymer] - Awesome framework for web components.
-* [FortAwesome] - Icons for markers, you can set it into `icon` attribute or also you can use [maki] icons.
- 
+* [maki] - Native icons for mapbox. `<open-marker icon={'icon':'restaurant'}></open-marker>`
+
 Use guide
 --------------
 ##### Install open-map component using [bower].
@@ -44,11 +44,11 @@ $ bower install open-map#master
             longitude="1.433900">
         <open-marker title="School Bus" latitude="38.908847"
             longitude="1.433900"
-            icon="{'icon':'bus', 'markerColor':'black'}"
+            icon="{'icon':'bus', 'markerColor':'#ff0000'}"
             draggable="true">
         </open-marker>
         <open-marker id="me" title="Me"
-            icon="{'icon':'fa-child', 'markerColor':'black'}">
+            icon="{'icon':'pitch', 'markerColor':'#000'}">
         </open-marker>
     </open-map>
     <script type="text/javascript">
@@ -81,21 +81,6 @@ Attributes
 | `maxZoom`       | Number  | 16                 |
 | `minZoom`       | Number  | 1                  |
 
-##### Params for Icon
-| Param             | Type    | Default   |
-| ----------------- | :-----: | --------: |
-| `'icon'`          | String  | 'home'    |
-| `'iconUrl'`       | URL     |  null     |
-| `'iconRetinaUrl'` | URL     |  null     |
-| `'iconSize'`      | Array   | [35, 45]  |
-| `'iconAnchor'`    | Array   | [17, 42]  |
-| `'popupAnchor'`   | Array   | [1, -32]  |
-| `'shadowUrl'`     | URL     | null      |
-| `shadowRetinaUrl'`| URL     | null      |
-| `'shadowSize'`    | Array   | [36, 16]  |
-| `'shadowAnchor'`  | Array   | [10, 12]  |
-| `'markerColor'`   | String  | 'blue'    |
-| `'iconColor'`     | String  | 'white'   |
 
 
 Methods
@@ -122,6 +107,23 @@ Attributes
 | `longitude`     | Float   | null               |
 | `icon`          | Object  | null               |
 | `title`         | String  | null               |
+
+
+##### Params for Icon
+| Param             | Type    | Default   |
+| ----------------- | :-----: | --------: |
+| `'icon'`          | String  |  null     |
+| `'iconUrl'`       | URL     |  null     |
+| `'iconRetinaUrl'` | URL     |  null     |
+| `'iconSize'`      | Array   | [35, 45]  |
+| `'iconAnchor'`    | Array   | [17, 42]  |
+| `'popupAnchor'`   | Array   | [1, -32]  |
+| `'shadowUrl'`     | URL     | null      |
+| `shadowRetinaUrl'`| URL     | null      |
+| `'shadowSize'`    | Array   | [36, 16]  |
+| `'shadowAnchor'`  | Array   | [10, 12]  |
+| `'markerColor'`   | String  | '#ff0000' |
+
 
 Methods
 -------
@@ -152,7 +154,6 @@ MIT
 [&lt;open-demo&gt;&lt;/open-demo&gt;]:https://ruben96.github.io/open-map/components/open-map/demo.html
 [&lt;open-doc&gt;&lt;/open-doc&gt;]:https://ruben96.github.io/open-map
 [Polymer]:http://www.polymer-project.org/
-[FortAwesome]:https://fortawesome.github.io/Font-Awesome/icons/
 [MapBoxEditor]:https://www.mapbox.com/editor
 [Mapbox]:https://www.mapbox.com/
 [maki]:https://www.mapbox.com/maki/

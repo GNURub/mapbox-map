@@ -3,18 +3,18 @@ The `open-map` element renders a Open Map Street thanks to
  [Mapbox](http://mapbox.com/).
 
 ##### Example: Simple Map
-    <style>
-      open-map {
-        display: block;
-        height: 100vh;
-      }
-    </style>
-    <open-map latitude="38.867847"
-              longitude="1.310977"
-              geolocationUI
-              zoom="15"
-              mapID="examples.map-i875kd35">
-    </open-map>
+        <style>
+          open-map {
+              display: block;
+              height: 100vh;
+          }
+        </style>
+        <open-map latitude="38.867847"
+          longitude="1.310977"
+          geolocationUI
+          zoom="15"
+          mapID="examples.map-i875kd35">
+        </open-map>
 
 @element open-map
 @blurb Element for rendering a Open Street Map with MapBox.
@@ -26,7 +26,7 @@ The `open-map` element renders a Open Map Street thanks to
 <link rel="import" href="open-marker.html">
 
 <polymer-element name="open-map" attributes="latitude longitude zoom minZoom
-              maxZoom mapID disableZoomUI zoomable geolocationUI fullscreenUI">
+  maxZoom mapID disableZoomUI zoomable geolocationUI fullscreenUI">
   <template>
     <link href='build/css/mapbox.min.css' rel='stylesheet'/>
     <style>
@@ -34,11 +34,11 @@ The `open-map` element renders a Open Map Street thanks to
         position:relative;
       }
       #openMap{
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
         bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
       }
     </style>
     <div id="openMap"></div>
@@ -152,7 +152,7 @@ The `open-map` element renders a Open Map Street thanks to
        * @default 38.867847507701114
 
       */
-      latitude: ﻿38.867847507701114,
+      latitude: 38.867847507701114,
 
       /**
        * A longitude to center the map on.
@@ -200,7 +200,8 @@ The `open-map` element renders a Open Map Street thanks to
         longitude: 'updateCenter'
       },
 
-      accessToken:'pk.eyJ1IjoiZ251cnViIiwiYSI6InRZRVNjWDQifQ.Db2dDEClQ3ybQe_egT87lg',
+      accessToken:'pk.eyJ1IjoiZ251cnViIiwiYSI6InRZRVNjWDQifQ.'+
+                  'Db2dDEClQ3ybQe_egT87lg',
 
       attached: function() {
         this.resize();
@@ -211,27 +212,29 @@ The `open-map` element renders a Open Map Street thanks to
         this.markers = [];
       },
 
-      setCenter:function(){
+      setCenter: function() {
         this.center = [];
         this.center[0] = this.latitude;
         this.center[1] = this.longitude;
       },
 
-      ready:function(){
+      ready: function() {
         L.mapbox.accessToken = this.accessToken;
         var mapOptions = {
           minZoom: this.minZoom,
           maxZoom: this.maxZoom,
           scrollWheelZoom: this.zoomable,
           touchZoom: this.zoomable,
-          doubleClickZoom: this.zoomable
+          doubleClickZoom: this.zoomable,
+          attributionControl: false
         };
 
         this.map = L.mapbox.map( this.$.openMap, this.mapID, mapOptions );
         this.updateCenter();
         this.map.on('zoomlevelschange', function (e) {
-          this.fire( 'open-map-zoomened', {data: e});
+            this.fire( 'open-map-zoomened', {data: e});
         }.bind( this ) );
+
         /**
          * The `open-map-ready` event is fired when the Open Street Map API has
          * fully loaded.
@@ -242,54 +245,56 @@ The `open-map` element renders a Open Map Street thanks to
         this.fire( 'open-map-ready' );
       },
 
-      updateCenter:function(){
+      updateCenter: function (){
         this.setCenter();
         this.map.setView( this.center, Number(this.zoom) );
       },
 
-      toggleGeolocator:function () {
+      toggleGeolocator: function () {
         var locate;
-        if( this.geolocationUI )
+        if( this.geolocationUI ){
           locate = L.control.locate().addTo( this.map );
-        else if( locate )
+        }else if( locate ){
           locate.removeFrom( this.map );
+        }
       },
 
-      toggleFullscreen:function () {
+      toggleFullscreen: function () {
         var fullscreen;
-        if( this.fullscreenUI )
+        if( this.fullscreenUI ){
           fullscreen = L.control.fullscreen().addTo( this.map );
-        else if( fullscreen )
+        }else if( fullscreen ){
           fullscreen.removeFrom( this.map );
+        }
       },
 
-      disableZoomUIChanged:function( oldVal, newVal ){
-        if( newVal )
+      disableZoomUIChanged: function( oldVal, newVal ){
+        if( newVal ){
           this.map.zoomControl.removeFrom( this.map );
-        else
+        }else{
           this.map.zoomControl.addTo( this.map );
+        }
       },
 
-      zoomChanged:function(){
+      zoomChanged: function() {
         this.map.setZoom( Number( this.zoom ) );
         this.fire( 'open-map-zoomened', { data: this.zoom } );
       },
 
-      geolocationUIChanged:function(){
+      geolocationUIChanged: function() {
         this.toggleGeolocator();
       },
 
-      fullscreenUIChanged:function () {
+      fullscreenUIChanged: function () {
         this.toggleFullscreen();
       },
 
-      resize:function () {
+      resize: function () {
         this.map.on( 'resize', this.updateCenter.bind( this ) );
       },
-
       updateMarkers: function() {
         this.markers = Array.prototype.slice.call(
-            this.$.markers.getDistributedNodes());
+          this.$.markers.getDistributedNodes());
         this.onMutation(this, this.updateMarkers);
 
         if (this.markers.length && this.map) {
@@ -298,11 +303,10 @@ The `open-map` element renders a Open Map Street thanks to
           }
         }
       },
-
-      clear:function() {
+      clear: function() {
         for( var i = 0, m; m = this.markers[i]; i++ ) {
-           this.map.removeLayer( m.markers );
-           m.map = null;
+          this.map.removeLayer( m.markers );
+          m.map = null;
         }
       }
     });

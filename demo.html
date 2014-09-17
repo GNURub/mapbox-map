@@ -21,25 +21,28 @@
 <body unresolved>
 
   <open-map id="map"
-            zoom="15"
-            latitude="38.908847"
-            longitude="1.433900">
-
-
+    zoom="15"
+    latitude="38.908847"
+    fullscreenUI
+    longitude="1.433900">
     <open-marker title="School Bus" latitude="38.909847"
-            longitude="1.435900"
-            icon="{'icon':'bus', 'markerColor':'#ff0000'}"
-            draggable="true">
+      longitude="1.435900"
+      icon="{'icon':'bus', 'markerColor':'#ff0000'}"
+      draggable="true">
     </open-marker>
-    <open-marker id="me" title="Me" icon="{'icon':'pitch', 'markerColor':'#000'}" >
+    <open-marker id="me" title="Me"
+        icon="{'icon':'pitch', 'markerColor':'#000'}" >
     </open-marker>
   </open-map>
   <script type="text/javascript">
-    var me = document.querySelector('#me');
-    navigator.geolocation.watchPosition(function(pos){
+    (function(document, navigator){
+      'use strict';
+      var me = document.querySelector('#me');
+      navigator.geolocation.watchPosition(function(pos) {
         me.latitude = pos.coords.latitude;
         me.longitude = pos.coords.longitude;
-    });
+      });
+    }(document, navigator));
   </script>
 </body>
 </html>

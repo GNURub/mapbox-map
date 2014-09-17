@@ -2,19 +2,19 @@
 The `open-marker` element represents a marker on the map and is used as
 a child element of the `open-map` element.
 ##### Example: Add marker
-    <style>
-      open-map {
-        display: block;
-        height: 100vh;
-      }
-    </style>
-    <open-map latitude="38.867847"
-              longitude="1.310977"
-              geolocationUI
-              zoom="15"
-              mapID="examples.map-i875kd35">
-        <open-marker
-          icon="{
+        <style>
+          open-map {
+            display: block;
+            height: 100vh;
+          }
+        </style>
+        <open-map latitude="38.867847"
+          longitude="1.310977"
+          geolocationUI
+          zoom="15"
+          mapID="examples.map-i875kd35">
+          <open-marker
+            icon="{
               'iconUrl': 'my-icon.png',
               'iconRetinaUrl': 'my-icon@2x.png',
               'iconSize': [38, 95],
@@ -24,11 +24,13 @@ a child element of the `open-map` element.
               'shadowRetinaUrl': 'my-icon-shadow@2x.png',
               'shadowSize': [68, 95],
               'shadowAnchor': [22, 94]
-          }"
-          latitude="0"
-          longitude="0">
-        </open-marker>
-    </open-map>
+            }"
+            latitude="0"
+            longitude="0">
+          </open-marker>
+        </open-map>
+
+
 @element open-marker
 @blurb Element for putting a marker on the map
 @status alpha
@@ -44,201 +46,222 @@ a child element of the `open-map` element.
           display: none;
         }
     </style>
-    <content select="img"></content>
   </template>
   <script>
   (function(){
-      Polymer( 'open-marker', {
+    'use strict';
+
+    Polymer( 'open-marker', {
+    /**
+      * A Mapbox map object
+      *
+      * @property map
+      * @type L.mapbox.map
+      * @default null
+      */
+      map: null,
+
+    /**
+      * A Mapbox marker object
+      *
+      * @property marker
+      * @type L.marker
+      * @default null
+      */
+      marker: null,
+
+    /**
+      * A Mapbox marker object
+      *
+      * @attribute title
+      * @type String
+      * @default null
+      */
+      title: '',
+
+      publish:{
       /**
-        * A Mapbox map object
+        * Latitude marker
         *
-        * @property map
-        * @type L.mapbox.map
+        * @attribute latitude
+        * @type float
         * @default null
         */
-        map: null,
+        latitude: {
+          value: null,
+          reflect: true
+        },
+
       /**
-        * A Mapbox marker object
+        * Longitude marker
         *
-        * @property marker
-        * @type L.marker
+        * @attribute longitude
+        * @type float
         * @default null
         */
-        marker: null,
-      /**
-        * A Mapbox marker object
-        *
-        * @attribute title
-        * @type String
-        * @default null
-        */
-        title: '',
-
-        publish:{
-        /**
-          * Latitude marker
-          *
-          * @attribute latitude
-          * @type float
-          * @default null
-          */
-          latitude: {
-            value: null,
-            reflect: true
-          },
-        /**
-          * Longitude marker
-          *
-          * @attribute longitude
-          * @type float
-          * @default null
-          */
-          longitude: {
-            value: null,
-            reflect: true
-          }
-        },
-
-        observe:{
-          latitude: 'updateMarker',
-          longitude: 'updateMarker'
-        },
-
-        created:function () {
-          this.icon = {};
-        },
-
-        mapReady:function () {
-          var canUpdate = ( this.map && this.latitude && this.longitude );
-          if( canUpdate ) {
-            if( this.marker ) this.map.removeLayer(this.marker);
-            this.marker = L.marker( [ this.latitude, this.longitude ], {
-              draggable: !!this.getAttribute("draggable"),
-              title: this.title,
-              alt: this.title,
-              icon: this.createIcon()
-            } ).addTo( this.map );
-          /**
-           * The `open-map-ready` event is fired when the Open
-           * Street Map API has fully loaded.
-           *
-           * @event open-map-ready
-
-           */
-            function sendEvent(e){
-              this.fire(e.type + '-marker', { data:e } );
-            }
-            this.marker.on( 'click', sendEvent.bind( this ))
-          /**
-           * The `open-map-ready` event is fired when the Open Street Map API
-           * has fully loaded.
-           *
-           * @event open-map-ready
-
-           */
-            .on( 'dblclick', sendEvent.bind( this ))
-          /**
-           * The `open-map-ready` event is fired when the Open Street Map API
-           * has fully loaded.
-           *
-           * @event open-map-ready
-
-           */
-            .on( 'move', sendEvent.bind( this ))
-          /**
-           * The `open-map-ready` event is fired when the Open Street Map API
-           * has fully loaded.
-           *
-           * @event open-map-ready
-
-           */
-            .on( 'dragstart', sendEvent.bind( this ))
-          /**
-           * The `open-map-ready` event is fired when the Open Street Map API
-           * has fully loaded.
-           *
-           * @event open-map-ready
-
-           */
-            .on( 'drag', sendEvent.bind( this ))
-          /**
-           * The `open-map-ready` event is fired when the Open Street Map API
-           * has fully loaded.
-           *
-           * @event open-map-ready
-
-           */
-            .on( 'dragend', sendEvent.bind( this ))
-          /**
-           * The `open-map-ready` event is fired when the Open Street Map API
-           * has fully loaded.
-           *
-           * @event open-map-ready
-
-           */
-            .on( 'remove', sendEvent.bind( this ))
-          /**
-           * The `open-map-ready` event is fired when the Open Street Map API
-           * has fully loaded.
-           *
-           * @event open-map-ready
-
-           */
-            .on( 'popupopen', sendEvent.bind( this ))
-          /**
-           * The `open-map-ready` event is fired when the Open Street Map API
-           * has fully loaded.
-           *
-           * @event open-map-ready
-
-           */
-            .on( 'popupclose', sendEvent.bind( this ));
-
-          }
-        },
-
-        updateMarker:function(){
-          var canUpdate = ( this.map && this.marker &&
-            this.latitude &&
-            this.longitude );
-          if( canUpdate )
-            this.marker.setLatLng( [ this.latitude, this.longitude ] );
-          else if( !this.marker )
-            this.mapReady();
-        },
-
-        iconChanged:function(){
-          if( !!this.marker )
-            this.marker.setIcon(this.createIcon());
-          else
-            this.mapReady();
-        },
-
-        createIcon:function  () {
-          this.icon['marker-symbol'] = this.icon['marker-symbol'] ||
-            this.icon.icon;
-          this.icon['marker-size'] = this.icon['marker-size'] ||
-            this.icon.size;
-          this.icon['marker-color'] = this.icon['marker-color'] ||
-            this.icon.markerColor;
-          return L.mapbox.marker.icon( this.icon );
-        },
-
-        mapChanged: function () {
-          this.mapReady();
-        },
-
-        contentChanged: function () {
-         this.onMutation( this, this.contentChanged );
-         var content = this.innerHTML;
-         this.marker.bindPopup( content );
-        },
-        attributeChanged: function(attrName, oldVal, newVal) {
-          if (!this.marker) {
-            return;
-          }
+        longitude: {
+          value: null,
+          reflect: true
         }
-      } );
+      },
+
+      observe:{
+        latitude: 'updateMarker',
+        longitude: 'updateMarker'
+      },
+
+      created: function () {
+        this.icon = {};
+      },
+
+      mapReady: function () {
+        var canUpdate = ( this.map && this.latitude && this.longitude );
+        if( canUpdate ) {
+          if( this.marker ) {
+            this.map.removeLayer(this.marker);
+          }
+
+          this.marker = L.marker( [ this.latitude, this.longitude ], {
+            draggable: !!this.getAttribute("draggable"),
+            title: this.title,
+            alt: this.title,
+            icon: this.createIcon()
+          } ).addTo( this.map );
+        /**
+         * Fired when user clicks (or tabs) the marker.
+         *
+         * @event click-marker
+
+         */
+
+          this.marker.on( 'click', this.sendEvent.bind( this ))
+
+        /**
+         * Fired when user dobleclicks (or doble-tabs) the marker
+         *
+         * @event dblclick-marker
+
+         */
+          .on( 'dblclick', this.sendEvent.bind( this ))
+
+        /**
+         * Fired when the marker is moved via latitude/longitude.
+         *
+         * @event move-marker
+
+         */
+          .on( 'move', this.sendEvent.bind( this ))
+
+        /**
+         * Fired when user starts dragging the marker.
+         *
+         * @event dragstart-marker
+
+         */
+          .on( 'dragstart', this.sendEvent.bind( this ))
+
+        /**
+         * Fired reapetedly while the user drags the marker.
+         *
+         * @event drag-marker
+
+         */
+          .on( 'drag', this.sendEvent.bind( this ))
+
+        /**
+         * Fired when user stops dragging the marker.
+         *
+         * @event dragend-marker
+
+         */
+          .on( 'dragend', this.sendEvent.bind( this ))
+
+        /**
+         * Fired when the marker is added from the map.
+         *
+         * @event add-marker
+
+         */
+          .on( 'add', this.sendEvent.bind( this ))
+
+        /**
+         * Fired when the marker is removed from the map.
+         *
+         * @event remove-marker
+
+         */
+          .on( 'remove', this.sendEvent.bind( this ))
+
+        /**
+         * Fired when popup bound to the marker is open.
+         *
+         * @event popupopen-marker
+
+         */
+          .on( 'popupopen', this.sendEvent.bind( this ))
+
+        /**
+         * Fired when popup bound to the marker is close.
+         *
+         * @event popupclose-marker
+
+         */
+          .on( 'popupclose', this.sendEvent.bind( this ));
+
+        }
+      },
+
+      sendEvent: function (e){
+        this.fire(e.type + '-marker', { data: e } );
+      },
+
+      updateMarker:function(){
+        var canUpdate = ( this.map && this.marker &&
+          this.latitude &&
+          this.longitude );
+        if( canUpdate ){
+          this.marker.setLatLng( [ this.latitude, this.longitude ] );
+        }else if( !this.marker ){
+          this.mapReady();
+        }
+      },
+
+      iconChanged:function(){
+        if( !!this.marker ) {
+          this.marker.setIcon(this.createIcon());
+        }else{
+          this.mapReady();
+        }
+      },
+
+      createIcon:function  () {
+        this.icon['marker-symbol'] ||
+          (this.icon['marker-symbol'] = this.icon.icon);
+        this.icon['marker-size'] ||
+          (this.icon['marker-size'] = this.icon.size);
+        this.icon['marker-color'] ||
+          (this.icon['marker-color'] = this.icon.markerColor);
+        return L.mapbox.marker.icon( this.icon );
+      },
+
+      mapChanged: function () {
+        this.mapReady();
+      },
+
+      contentChanged: function () {
+       this.onMutation( this, this.contentChanged );
+       var content = this.innerHTML;
+       if( content ){
+         this.marker.bindPopup( content );
+       }
+     },
+
+      attributeChanged: function() {
+        if (!this.marker) {
+          return;
+        }
+      }
+    } );
     })();
   </script>
 </polymer-element>

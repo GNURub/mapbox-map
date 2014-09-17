@@ -3,3 +3,4 @@ src/
 node_modules/
 gulpfile.js
 package.json
+NEXT_VERSIONS.md

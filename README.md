@@ -25,40 +25,40 @@ $ bower install open-map#master
 
 ```html
 <head>
-    <script src="../platform/platform.js"></script>
-    <link rel="import" href="../open-map/open-map.html">
-    <style>
-      html, body {
-        margin: 0;
-        height: 100%;
-      }
-      leaflet-map {
-        height: 100%;
-      }
-    </style>
-  </head>
-  <body unresolved>
-    <open-map id="map"
-            zoom="15"
-            latitude="38.908847"
-            longitude="1.433900">
-        <open-marker title="School Bus" latitude="38.908847"
-            longitude="1.433900"
-            icon="{'icon':'bus', 'markerColor':'#ff0000'}"
-            draggable="true">
-        </open-marker>
-        <open-marker id="me" title="Me"
-            icon="{'icon':'pitch', 'markerColor':'#000'}">
-        </open-marker>
-    </open-map>
-    <script type="text/javascript">
-    var me = document.querySelector('#me');
-    navigator.geolocation.watchPosition(function(pos){
-        me.latitude = pos.coords.latitude;
-        me.longitude = pos.coords.longitude;
-    });
-    </script>
-  </body>
+  <script src="../platform/platform.js"></script>
+  <link rel="import" href="../open-map/open-map.html">
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+    }
+    leaflet-map {
+      height: 100%;
+    }
+  </style>
+</head>
+<body unresolved>
+  <open-map id="map"
+    zoom="15"
+    latitude="38.908847"
+    longitude="1.433900">
+    <open-marker title="School Bus" latitude="38.908847"
+      longitude="1.433900"
+      icon="{'icon':'bus', 'markerColor':'#ff0000'}"
+      draggable="true">
+    </open-marker>
+    <open-marker id="me" title="Me"
+      icon="{'icon':'pitch', 'markerColor':'#000'}">
+    </open-marker>
+  </open-map>
+  <script type="text/javascript">
+  var me = document.querySelector('#me');
+  navigator.geolocation.watchPosition(function(pos){
+      me.latitude = pos.coords.latitude;
+      me.longitude = pos.coords.longitude;
+  });
+  </script>
+</body>
 ```
 
 ![Preview][1]

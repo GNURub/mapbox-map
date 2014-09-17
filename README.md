@@ -41,22 +41,26 @@ $ bower install open-map#master
   <open-map id="map"
     zoom="15"
     latitude="38.908847"
+    mapID="villeda.c4c63d13"
     longitude="1.433900">
-    <open-marker title="School Bus" latitude="38.908847"
-      longitude="1.433900"
+    <open-marker title="School Bus" latitude="38.909847"
+      longitude="1.435900"
       icon="{'icon':'bus', 'markerColor':'#ff0000'}"
       draggable="true">
     </open-marker>
     <open-marker id="me" title="Me"
-      icon="{'icon':'pitch', 'markerColor':'#000'}">
+        icon="{'icon':'pitch', 'markerColor':'#000'}" >
     </open-marker>
   </open-map>
   <script type="text/javascript">
-  var me = document.querySelector('#me');
-  navigator.geolocation.watchPosition(function(pos){
-      me.latitude = pos.coords.latitude;
-      me.longitude = pos.coords.longitude;
-  });
+    (function(document, navigator){
+      'use strict';
+      var me = document.querySelector('#me');
+      navigator.geolocation.watchPosition(function(pos) {
+        me.latitude = pos.coords.latitude;
+        me.longitude = pos.coords.longitude;
+      });
+    }(document, navigator));
   </script>
 </body>
 ```
@@ -144,7 +148,7 @@ Events
 
 Personalize the map
 -------------------
-You can personalize the map using the [MapBoxEditor], introduce your map id in the attribute `mapID`.
+You can personalize the map using the [MapBoxEditor] or [MapBoxStudio], introduce your map id in the attribute `mapID`.
 
 License
 -------
@@ -155,7 +159,8 @@ MIT
 [&lt;open-doc&gt;&lt;/open-doc&gt;]:https://ruben96.github.io/open-map
 [Polymer]:http://www.polymer-project.org/
 [MapBoxEditor]:https://www.mapbox.com/editor
+[MapBoxStudio]:https://www.mapbox.com/mapbox-studio/
 [Mapbox]:https://www.mapbox.com/
 [maki]:https://www.mapbox.com/maki/
 [bower]:http://bower.io/
-[1]:http://storage8.static.itmages.com/i/14/0806/h_1407325196_3280150_2cf97ebe34.png
+[1]:http://pix.toile-libre.org/upload/original/1410995143.png

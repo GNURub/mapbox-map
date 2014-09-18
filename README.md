@@ -92,14 +92,14 @@ Methods
 
 | Method          | Function               |
 | --------------- | :--------------------: |
-| `clear`         | Remove alls markers.   |
+| `clear`         | Remove all markers.    |
 
 Events
 ------
 | Event                | Function                       |
 | -------------------- | :----------------------------: |
 | `open-map-ready`     | Fired when map is ready        |
-| `'open-map-zoomened'`| Fired when zoom change         |
+| `'open-map-zoomened'`| Fired on zoom change           |
 
 # &lt;open-marker&gt;&lt;/open-marker&gt;
 
@@ -134,17 +134,17 @@ Methods
 
 Events
 ------
-| Event               | Function                       |
+| Event| Function     |                                |
 | ------------------- | :----------------------------: |
-| `dblclick-marker`   | Fired when do doble click      |
-| `click-marker`      | Fired when do click.           |
-| `move-marker`       | Fired when move.               |
+| `dblclick-marker`   | Fired when double clicked      |
+| `click-marker`      | Fired when clicked.            |
+| `move-marker`       | Fired when moved.              |
 | `dragstart-marker`  | Fired when drag starts.        |
 | `dragend-marker`    | Fired when drag ends.          |
-| `drag-marker`       | Fired when drag.               |
+| `drag-marker`       | Fired when dragged.            |
 | `remove-marker`     | Fired when marker is removed.  |
-| `popupopen-marker`  | Fired when the popup is open.  |
-| `popupclose-marker` | Fired whenthe popup is close.  |
+| `popupopen-marker`  | Fired when the popup is opened.|
+| `popupclose-marker` | Fired when the popup is closed.|
 
 Personalize the map
 -------------------

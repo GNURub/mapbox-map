@@ -134,7 +134,7 @@ Methods
 
 Events
 ------
-| Event| Function     |                                |
+| Even                |   Function                     |
 | ------------------- | :----------------------------: |
 | `dblclick-marker`   | Fired when double clicked      |
 | `click-marker`      | Fired when clicked.            |

@@ -337,6 +337,11 @@ The `open-map` element renders a Open Map Street thanks to
         }
       },
 
+    /**
+     * Delete the layers.
+     *
+     * @method clear
+     */
       clear: function() {
         for( var i = 0, m; m = this.layers[i]; i++ ) {
           m.removeLayer();

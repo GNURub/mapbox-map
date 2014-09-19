@@ -147,6 +147,27 @@ Events
 | `popupopen-marker`  | Fired when the popup is opened.												|
 | `popupclose-marker` | Fired when the popup is closed.												|
 
+# &lt;open-search&gt;&lt;/open-search&gt;
+
+Properties
+----------
+| Property        | Type    | Funtion                            |
+| --------------- | :-----: | ---------------------------------: |
+| `result`        | Object  | Returns an object with the results |
+
+Attributes
+----------
+| Attribute       | Type    | Function                           |
+| --------------- | :-----: | ---------------------------------: |
+| `query`         | Array   | Array that contains the querys     |
+| `accessToken`   | String  | String whit the access token       |
+
+Events
+------
+| Even                    |   Function                               |
+| ----------------------- | :-------------------------------------:	 |
+| `open-search-results`   | Fired it when the result is available.   |
+
 Personalize the map
 -------------------
 You can personalize the map using the [MapBoxEditor] or [MapBoxStudio], introduce your map id in the attribute `mapID`.

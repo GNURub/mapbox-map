@@ -1,8 +1,40 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../core-ajax/core-ajax.html">
 
-<!-- [] -->
-<polymer-element name="open-search" attributes="map query result">
+<!--
+The `open-search` requests are queries composed of location text, zip or lat/lon coordinates that can be used to find corresponding place data..
+##### Example:
+        ...
+        <style>
+          open-map {
+            display: block;
+            height: 100vh;
+          }
+        </style>
+        <open-map latitude="38.867847" longitude="1.310977">
+        </open-map>
+        <open-search
+          query="['1600 pennsylvania ave nw', [-73.989, 40.733], [07800]]">
+        </open-search>
+        <script>
+          var map = document.querySelector('open-map'),
+              searcher = document.querySelector('open-search');
+          searcher.accessToken = map.accesToken;
+
+          searcher.addEventListener('open-search-results', function(docs){
+            console.log(docs);
+          }, false);
+        </script>
+        ...
+
+
+@element open-search
+@blurb Requests are queries composed of location text, zip or lat/lon coordinates
+@status alpha
+@homepage https://ruben96.github.io/open-map/components/open-map/
+-->
+
+<polymer-element name="open-search" attributes="query result">
   <template>
     <core-ajax id="searcher" auto
       on-core-response="{{ gotResult }}">
@@ -12,15 +44,19 @@
     (function() {
       'use-strit';
       Polymer({
-        map: null,
         publish: {
+          /**
+            *
+            * @property accessToken
+            * @type L.mapbox.accessToken
+            * @default null
+            */
           accessToken: {
             value: null,
             reflect: true
           }
         },
         observe:{
-          map: 'search',
           query: 'search',
           accessToken: 'search'
         },
@@ -59,7 +95,7 @@
         },
 
         search: function() {
-          if(this.map && this.query.length && this.accessToken){
+          if(this.query.length && this.accessToken){
             var parsedQuery = this.parseQuery();
             this.$.searcher.url = 'http://api.tiles.mapbox.com/v4'+
             '/geocode/mapbox.places-v1/'+ parsedQuery +'.json?access_token=' +
@@ -80,6 +116,13 @@
           this.result = {
             results: results
           };
+
+          /**
+           * Fired when the request was successful.
+           *
+           * @event open-search-results
+           */
+          this.fire('open-search-results', this.result);
         }
       });
     })();

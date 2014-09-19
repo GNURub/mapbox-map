@@ -1,0 +1,87 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-ajax/core-ajax.html">
+
+<!-- [] -->
+<polymer-element name="open-search" attributes="map query result">
+  <template>
+    <core-ajax id="searcher" auto
+      on-core-response="{{ gotResult }}">
+    </core-ajax>
+  </template>
+  <script>
+    (function() {
+      'use-strit';
+      Polymer({
+        map: null,
+        publish: {
+          accessToken: {
+            value: null,
+            reflect: true
+          }
+        },
+        observe:{
+          map: 'search',
+          query: 'search',
+          accessToken: 'search'
+        },
+
+        created: function(){
+        /**
+         * The search result.
+         *
+         * @attribute result
+         * @type object
+         */
+          this.result = {};
+          this.query = [];
+        },
+
+        parseQuery: function(){
+          var query = '',
+              subquery;
+          this.query.forEach(function(element, index){
+
+            if(typeof element === 'object'){
+               subquery = element.join(',');
+            }else{
+              subquery = element.toLowerCase()
+                        .split(' ')
+                        .join('+');
+            }
+
+            if(index === 0){
+              query += subquery;
+            }else{
+              query += ';' + subquery;
+            }
+          });
+          return query;
+        },
+
+        search: function() {
+          if(this.map && this.query.length && this.accessToken){
+            var parsedQuery = this.parseQuery();
+            this.$.searcher.url = 'http://api.tiles.mapbox.com/v4'+
+            '/geocode/mapbox.places-v1/'+ parsedQuery +'.json?access_token=' +
+              this.accessToken;
+            console.log(this.$.searcher.url);
+            this.$.searcher.go();
+          }
+        },
+
+        gotResult: function(e){
+          var results = [];
+          JSON.parse(e.detail.response).forEach(function(query){
+            query.features.forEach(function(place){
+              results.push(place);
+            });
+          });
+
+          this.result = {
+            results: results
+          };
+        }
+      });
+    })();
+  </script>
+</polymer-element>

@@ -26,7 +26,7 @@ The `open-map` element renders a Open Map Street thanks to
 <link rel="import" href="open-marker.html">
 
 <polymer-element name="open-map" attributes="latitude longitude zoom minZoom
-  maxZoom mapID disableZoomUI zoomable geolocationUI fullscreenUI">
+  maxZoom mapID disableZoomUI zoomable geolocationUI fullscreenUI accessToken">
   <template>
     <link href='build/css/mapbox.min.css' rel='stylesheet'/>
     <style>
@@ -42,7 +42,7 @@ The `open-map` element renders a Open Map Street thanks to
       }
     </style>
     <div id="openMap"></div>
-    <content id="markers" select="open-marker"></content>
+    <content id="layers" select="open-marker"></content>
   </template>
   <script>
     Polymer( 'open-map', {
@@ -195,10 +195,29 @@ The `open-map` element renders a Open Map Street thanks to
       */
       minZoom: 1,
 
+      publish:{
+        /**
+         * Use maxBounds to restrict map panning
+
+         *
+
+         * @attribute maxBounds
+
+         * @type Array
+
+         * @default null
+
+        */
+        maxBounds: {
+          value: []
+        }
+      },
+
       observe:{
         latitude: 'updateCenter',
         longitude: 'updateCenter'
       },
+
 
       accessToken:'pk.eyJ1IjoiZ251cnViIiwiYSI6InRZRVNjWDQifQ.'+
                   'Db2dDEClQ3ybQe_egT87lg',
@@ -209,7 +228,7 @@ The `open-map` element renders a Open Map Street thanks to
       },
 
       created:function(){
-        this.markers = [];
+        this.layers = [];
       },
 
       setCenter: function() {
@@ -231,6 +250,13 @@ The `open-map` element renders a Open Map Street thanks to
 
         this.map = L.mapbox.map( this.$.openMap, this.mapID, mapOptions );
         this.updateCenter();
+
+        /**
+         * The `open-map-zoomened` Fired on zoom change
+         *
+         * @event open-map-zoomened
+
+         */
         this.map.on('zoomlevelschange', function (e) {
             this.fire( 'open-map-zoomened', {data: e});
         }.bind( this ) );
@@ -240,7 +266,6 @@ The `open-map` element renders a Open Map Street thanks to
          * fully loaded.
          *
          * @event open-map-ready
-
          */
         this.fire( 'open-map-ready' );
       },
@@ -257,6 +282,11 @@ The `open-map` element renders a Open Map Street thanks to
         }else if( locate ){
           locate.removeFrom( this.map );
         }
+      },
+
+      maxBoundsChanged: function(oldVal, newVal){
+        this.map.setMaxBounds(newVal);
+        this.map.fitBounds(newVal);
       },
 
       toggleFullscreen: function () {
@@ -292,20 +322,24 @@ The `open-map` element renders a Open Map Street thanks to
       resize: function () {
         this.map.on( 'resize', this.updateCenter.bind( this ) );
       },
+
       updateMarkers: function() {
-        this.markers = Array.prototype.slice.call(
-          this.$.markers.getDistributedNodes());
+        this.layers = Array.prototype.slice.call(
+          this.$.layers.getDistributedNodes()
+        );
+
         this.onMutation(this, this.updateMarkers);
 
-        if (this.markers.length && this.map) {
-          for (var i = 0, m; m = this.markers[i]; ++i) {
+        if (this.layers.length && this.map) {
+          for (var i = 0, m; m = this.layers[i]; ++i) {
             m.map = this.map;
           }
         }
       },
+
       clear: function() {
-        for( var i = 0, m; m = this.markers[i]; i++ ) {
-          this.map.removeLayer( m.markers );
+        for( var i = 0, m; m = this.layers[i]; i++ ) {
+          m.removeLayer();
           m.map = null;
         }
       }

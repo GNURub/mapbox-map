@@ -115,7 +115,10 @@ a child element of the `open-map` element.
       },
 
       mapReady: function () {
-        var canUpdate = ( this.map && this.latitude && this.longitude );
+        var canUpdate = ( this.map &&
+                          this.latitude &&
+                          this.longitude );
+
         if( canUpdate ) {
           if( this.marker ) {
             this.map.removeLayer(this.marker);
@@ -127,13 +130,13 @@ a child element of the `open-map` element.
             alt: this.title,
             icon: this.createIcon()
           } ).addTo( this.map );
+
         /**
          * Fired when user clicks (or tabs) the marker.
          *
          * @event click-marker
 
          */
-
           this.marker.on( 'click', this.sendEvent.bind( this ))
 
         /**
@@ -216,9 +219,10 @@ a child element of the `open-map` element.
       },
 
       updateMarker:function(){
-        var canUpdate = ( this.map && this.marker &&
-          this.latitude &&
-          this.longitude );
+        var canUpdate = ( this.map &&
+                          this.marker &&
+                          this.latitude &&
+                          this.longitude );
         if( canUpdate ){
           this.marker.setLatLng( [ this.latitude, this.longitude ] );
         }else if( !this.marker ){
@@ -260,6 +264,11 @@ a child element of the `open-map` element.
         if (!this.marker) {
           return;
         }
+      },
+
+      removeLayer: function() {
+        this.map.removeLayer(this.marker);
+        this.remove();
       }
     } );
     })();

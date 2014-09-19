@@ -84,6 +84,7 @@ Attributes
 | `longitude`     | Float   | 1.3109779357910156 |
 | `maxZoom`       | Number  | 16                 |
 | `minZoom`       | Number  | 1                  |
+| `maxBounds`     | Array   | null               |
 
 
 
@@ -99,7 +100,7 @@ Events
 | Event                | Function                       |
 | -------------------- | :----------------------------: |
 | `open-map-ready`     | Fired when map is ready        |
-| `'open-map-zoomened'`| Fired on zoom change           |
+| `open-map-zoomened`| Fired on zoom change           |
 
 # &lt;open-marker&gt;&lt;/open-marker&gt;
 
@@ -116,17 +117,17 @@ Attributes
 ##### Params for Icon
 | Param             | Type    | Default   |
 | ----------------- | :-----: | --------: |
-| `'icon'`          | String  |  null     |
-| `'iconUrl'`       | URL     |  null     |
-| `'iconRetinaUrl'` | URL     |  null     |
-| `'iconSize'`      | Array   | [35, 45]  |
-| `'iconAnchor'`    | Array   | [17, 42]  |
-| `'popupAnchor'`   | Array   | [1, -32]  |
-| `'shadowUrl'`     | URL     | null      |
-| `shadowRetinaUrl'`| URL     | null      |
-| `'shadowSize'`    | Array   | [36, 16]  |
-| `'shadowAnchor'`  | Array   | [10, 12]  |
-| `'markerColor'`   | String  | '#ff0000' |
+| `icon`            | String  |  null     |
+| `iconUrl`         | URL     |  null     |
+| `iconRetinaUrl`   | URL     |  null     |
+| `iconSize`        | Array   | [35, 45]  |
+| `iconAnchor`      | Array   | [17, 42]  |
+| `popupAnchor`     | Array   | [1, -32]  |
+| `shadowUrl`       | URL     | null      |
+| `shadowRetinaUrl` | URL     | null      |
+| `shadowSize`      | Array   | [36, 16]  |
+| `shadowAnchor`    | Array   | [10, 12]  |
+| `markerColor`     | String  | '#ff0000' |
 
 
 Methods
@@ -134,17 +135,17 @@ Methods
 
 Events
 ------
-| Even                |   Function                     |
-| ------------------- | :----------------------------: |
-| `dblclick-marker`   | Fired when double clicked      |
-| `click-marker`      | Fired when clicked.            |
-| `move-marker`       | Fired when moved.              |
-| `dragstart-marker`  | Fired when drag starts.        |
-| `dragend-marker`    | Fired when drag ends.          |
-| `drag-marker`       | Fired when dragged.            |
-| `remove-marker`     | Fired when marker is removed.  |
-| `popupopen-marker`  | Fired when the popup is opened.|
-| `popupclose-marker` | Fired when the popup is closed.|
+| Even                |   Function                                           	|
+| ------------------- | :----------------------------:												|
+| `dblclick-marker`   | Fired when double clicked     										    |
+| `click-marker`      | Fired when clicked.          												  |
+| `move-marker`       | Fired when the marker is moved via latitude/longitude |
+| `dragstart-marker`  | Fired when drag starts.        												|
+| `dragend-marker`    | Fired when drag ends.          												|
+| `drag-marker`       | Fired when dragged.            												|
+| `remove-marker`     | Fired when marker is removed.  												|
+| `popupopen-marker`  | Fired when the popup is opened.												|
+| `popupclose-marker` | Fired when the popup is closed.												|
 
 Personalize the map
 -------------------

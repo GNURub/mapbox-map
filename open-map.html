@@ -1,3 +1,8 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="open-import.html">
+<link rel="import" href="open-marker.html">
+<link rel="import" href="open-circle.html">
+<link rel="import" href="open-polyline.html">
 <!--
 The `open-map` element renders a Open Map Street thanks to
  [Mapbox](http://mapbox.com/).
@@ -21,12 +26,9 @@ The `open-map` element renders a Open Map Street thanks to
 @status alpha
 @homepage https://ruben96.github.io/open-map/components/open-map/
 -->
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="open-import.html">
-<link rel="import" href="open-marker.html">
 
 <polymer-element name="open-map" attributes="latitude longitude zoom minZoom
-  maxZoom mapID disableZoomUI zoomable geolocationUI fullscreenUI accessToken">
+  maxZoom mapID disableZoomUI zoomable geolocationUI fullscreenUI geocoderUI accessToken">
   <template>
     <link href='build/css/mapbox.min.css' rel='stylesheet'/>
     <style>
@@ -42,7 +44,7 @@ The `open-map` element renders a Open Map Street thanks to
       }
     </style>
     <div id="openMap"></div>
-    <content id="layers" select="open-marker"></content>
+    <content id="layers" select="open-marker, open-circle"></content>
   </template>
   <script>
     Polymer( 'open-map', {
@@ -97,6 +99,8 @@ The `open-map` element renders a Open Map Street thanks to
 
        */
       fullscreenUI: false,
+
+      geocoderUI: false,
 
       /**
        * The map's zoom level.
@@ -298,6 +302,18 @@ The `open-map` element renders a Open Map Street thanks to
         }
       },
 
+      toggleGeocoder: function () {
+        var geocoder;
+        if( this.geocoderUI ){
+          geocoder = this.map
+            .addControl(L.mapbox.geocoderControl('mapbox.places-v1', {
+              autocomplete: true
+            }));
+        }else if( geocoder ){
+          this.map.removeControl( geocoder );
+        }
+      },
+
       disableZoomUIChanged: function( oldVal, newVal ){
         if( newVal ){
           this.map.zoomControl.removeFrom( this.map );
@@ -317,6 +333,10 @@ The `open-map` element renders a Open Map Street thanks to
 
       fullscreenUIChanged: function () {
         this.toggleFullscreen();
+      },
+
+      geocoderUIChanged: function () {
+        this.toggleGeocoder();
       },
 
       resize: function () {

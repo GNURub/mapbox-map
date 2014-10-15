@@ -27,7 +27,6 @@ The `open-search` requests are queries composed of location text, zip or lat/lon
         </script>
         ...
 
-
 @element open-search
 @blurb Requests are queries composed of location text, zip or lat/lon coordinates
 @status alpha
@@ -36,6 +35,11 @@ The `open-search` requests are queries composed of location text, zip or lat/lon
 
 <polymer-element name="open-search" attributes="query result">
   <template>
+    <style>
+      :host{
+        display: none;
+      }
+    </style>
     <core-ajax id="searcher" auto
       on-core-response="{{ gotResult }}">
     </core-ajax>
@@ -77,14 +81,13 @@ The `open-search` requests are queries composed of location text, zip or lat/lon
               subquery;
           this.query.forEach(function(element, index){
 
-            if(typeof element === 'object'){
+            if(Array.isArray(element)){
                subquery = element.join(',');
             }else{
               subquery = element.toLowerCase()
-                        .split(' ')
-                        .join('+');
+                                .split(' ')
+                                .join('+');
             }
-
             if(index === 0){
               query += subquery;
             }else{
@@ -98,9 +101,8 @@ The `open-search` requests are queries composed of location text, zip or lat/lon
           if(this.query.length && this.accessToken){
             var parsedQuery = this.parseQuery();
             this.$.searcher.url = 'http://api.tiles.mapbox.com/v4'+
-            '/geocode/mapbox.places-v1/'+ parsedQuery +'.json?access_token=' +
+              '/geocode/mapbox.places-v1/'+ parsedQuery +'.json?access_token=' +
               this.accessToken;
-            console.log(this.$.searcher.url);
             this.$.searcher.go();
           }
         },

@@ -100,7 +100,7 @@ Events
 | Event                | Function                       |
 | -------------------- | :----------------------------: |
 | `open-map-ready`     | Fired when map is ready        |
-| `open-map-zoomened`| Fired on zoom change           |
+| `open-map-zoomened`  | Fired on zoom change           |
 
 # &lt;open-marker&gt;&lt;/open-marker&gt;
 

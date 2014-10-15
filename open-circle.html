@@ -1,0 +1,51 @@
+<polymer-element name="open-circle"
+  attributes="latitude longitude radius">
+  <template>
+    <style>
+      :host{
+        display: none;
+      }
+    </style>
+  </template>
+  <script>
+    (function(){
+      'use strict';
+      Polymer({
+        map: null,
+        latitude: null,
+        longitude: null,
+        radius: null,
+        circle: null,
+        observe:{
+          latitude: 'updateCircle',
+          longitude: 'updateCircle',
+          radius: 'updateCircle',
+        },
+
+        created: function(){
+          this.opts = {};
+        },
+
+        renderCircle: function(){
+          this.circle = L.circle([Number(this.latitude),
+                                  Number(this.longitude)],
+                                  Number(this.radius), this.opts)
+                                  .addTo(this.map);
+        },
+
+        updateCircle: function(){
+          var canUpdate = this.map &&
+              this.latitude &&
+              this.longitude &&
+              this.radius;
+          if(this.circle) { this.removeLayer(true); }
+          if(canUpdate) { this.renderCircle(); }
+        },
+        removeLayer: function(keep){
+          this.map.removeLayer(this.circle);
+          if(!keep) { this.remove(); }
+        }
+      });
+    })();
+  </script>
+</polymer-element>

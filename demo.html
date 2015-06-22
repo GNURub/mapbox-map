@@ -21,24 +21,30 @@
 </head>
 <body unresolved>
 
-  <open-map id="map"
-    zoom="15"
-    fullscreenUI
-    latitude="38.908847"
-    mapID="villeda.c4c63d13"
-    longitude="1.433900">
-    <open-circle
-      latitude="38.908847" longitude="1.433900" radius="300"></open-circle>
-    <open-marker title="School Bus" latitude="38.909847"
-      longitude="1.435900"
-      icon="{'icon':'bus', 'markerColor':'#ff0000'}"
-      draggable="true">
+  <open-map id        = "map"
+            zoom      = "15"
+            fullscreenUI
+            latitude  = "38.908847"
+            mapID     = "villeda.c4c63d13"
+            longitude = "1.433900">
+    <open-circle latitude  = "38.908847"
+                 longitude = "1.433900"
+                 radius    = "300">
+    </open-circle>
+    <open-marker title     = "School Bus"
+                 latitude  = "38.909847"
+                 longitude = "1.435900"
+                 icon      = "{'icon':'bus', 'markerColor':'#ff0000'}"
+                 draggable = "true">
     </open-marker>
-    <open-marker id="me" title="Me"
-        icon="{'icon':'pitch', 'markerColor':'#000'}" >
+    <open-marker id    = "me"
+                 title = "Me"
+                 icon  = "{'icon':'pitch', 'markerColor':'#000'}" >
     </open-marker>
-    <open-polyline map={{map}}>
-      <open-point lantitude="0" lontitude="0"></open-point>
+    <open-polyline map = {{map}}>
+      <open-point lantitude = "0"
+                  lontitude = "0">
+      </open-point>
     </open-polyline>
   </open-map>
   <script type="text/javascript">

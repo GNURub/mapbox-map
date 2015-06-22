@@ -1,0 +1,56 @@
+<link rel="import" href="open-import.html">
+<polymer-element name="open-polyline">
+  <template>
+    <style>
+      :host{ display: none; }
+    </style>
+    <content id="points" select="open-point"></content>
+  </template>
+  <script>
+  Polymer( 'open-polyline', {
+    /**
+    * A Leaflet [Polyline](http://leafletjs.com/reference.html#polyline) object
+    *
+    * @property feature
+    * @type L.polyline
+    * @default null
+    */
+    feature: null,
+    /**
+    * A Leaflet map object
+    *
+    * @property map
+    * @type L.map
+    * @default null
+    */
+    map: null,
+    ready: function () {
+      this.mapReady();
+    },
+    mapChanged: function () {
+      this.mapReady();
+    },
+    mapReady: function () {
+      if ( this.map ) {
+        this.feature = L.polyline( [], {
+        } );
+        this.feature.addTo( this.map );
+        this.contentChanged();
+      }
+    },
+    contentChanged: function () {
+      this.points = Array.prototype.slice.call(
+        this.$.points.getDistributedNodes()
+      );
+      this.onMutation( this, this.contentChanged );
+      this.points.forEach( function ( p ) {
+        var latlng = L.latLng(
+          p.getAttribute( 'latitude' ),
+          p.getAttribute( 'longitude' )
+        );
+        this.feature.addLatLng( latlng );
+      }.bind( this ) );
+    }
+  });
+  </script>
+</polymer-element>

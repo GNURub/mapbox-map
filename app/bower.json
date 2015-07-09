@@ -1,0 +1,28 @@
+{
+  "name": "map-box",
+  "version": "0.0.1",
+  "authors": [
+    "Ruben Cid <rubencidlara@gmail.com>"
+  ],
+  "keywords": [
+    "map-box",
+    "customelement",
+    "webcomponent",
+    "webcomponents",
+    "polymer",
+    "maps",
+    "openstreetmap"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0",
+    "mapbox.js": "^2.2.1"
+  }
+}

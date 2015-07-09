@@ -32,7 +32,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="import" type="css" href="../../bower_components/mapbox.js/mapbox.css">
   <template>
     <div id="mapBox"></div>
-    <content id="layers" select="open-marker, open-circle"></content>
+    <content id="layers" select="*"></content>
   </template>
 </dom-module>
 <script>
@@ -279,7 +279,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       attributionControl: {
            type: Boolean,
-           value: true
+           value: false
       },
 
       /**
@@ -364,28 +364,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     domReady: function(){
       L.mapbox.accessToken = this.accessToken;
       var mapOptions = {
+        tap: this.tap,
         minZoom: this.minZoom,
         maxZoom: this.maxZoom,
-        dragging: this.dragging,
-        scrollWheelZoom: this.zoomable,
-        touchZoom: this.zoomable,
-        doubleClickZoom: this.zoomable,
         boxZoom: this.boxZoom,
-        tap: this.tap,
-        tapTolerance: this.tapTolerance,
-        trackResize: this.trackResize,
-        worldCopyJump: this.worldCopyJump,
-        closePopupOnClick: this.closePopupOnClick,
-        bounceAtZoomLimits: this.bounceAtZoomLimits,
-        keyboard: this.keyboard,
-        keyboardPanOffset: this.keyboardPanOffset,
-        keyboardZoomOffset: this.keyboardZoomOffset,
         inertia: this.inertia,
-        inertiaDeceleration: this.inertiaDeceleration,
+        dragging: this.dragging,
+        keyboard: this.keyboard,
+        touchZoom: this.zoomable,
+        trackResize: this.trackResize,
+        doubleClickZoom: this.zoomable,
+        scrollWheelZoom: this.zoomable,
+        tapTolerance: this.tapTolerance,
+        zoomControl: !this.disableZoomUi,
+        worldCopyJump: this.worldCopyJump,
         inertiaMaxSpeed: this.inertiaMaxSpeed,
-        zoomAnimationThreshold: this.zoomAnimationThreshold,
+        closePopupOnClick: this.closePopupOnClick,
+        keyboardPanOffset: this.keyboardPanOffset,
+        bounceAtZoomLimits: this.bounceAtZoomLimits,
+        keyboardZoomOffset: this.keyboardZoomOffset,
         attributionControl: this.attributionControl,
-        zoomControl: !this.disableZoomUi
+        inertiaDeceleration: this.inertiaDeceleration,
+        zoomAnimationThreshold: this.zoomAnimationThreshold
       };
       var map = L.mapbox.map( this.$.mapBox, this.mapId, mapOptions );
       this.map = map;
@@ -406,13 +406,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }, this);
 
 
+      // var defaultLayerRequired = true;
+      // for (var i = 0; i < this.children.length; i++) {
+      //   var e = this.children[i];
+      //   if (e.isLayer && e.isLayer()) {
+      //     defaultLayerRequired = false;
+      //   }
+      // }
+      // if (defaultLayerRequired) {
+      //   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      //     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://mapbox.com">Mapbox</a>',
+      //     maxZoom: 18
+      //   }).addTo(this.map);
+      // }
+      this.registerMapOnChildren();
+      this._mutationObserver = new MutationObserver(this.registerMapOnChildren.bind(this));
+      this._mutationObserver.observe(this, {childList: true});
 
-      this.map.on('zoomlevelschange', function (e) {
-            this.fire( 'open-map-zoomened', {data: e});
-        }.bind( this ) );
 
-      this.fire( 'open-map-ready' );
 
+
+
+      // this.map.on('zoomlevelschange', function (e) {
+      //       this.fire( 'open-map-zoomened', {data: e});
+      //   }.bind( this ) );
+
+      // this.fire( 'open-map-ready' );
+
+    },
+
+    detached: function() {
+      this._mutationObserver.disconnect();
+    },
+
+    registerMapOnChildren: function() {
+      for (var i = 0; i < this.children.length; i++) {
+        this.children[i].container = this.map;
+      }
     },
 
     _updateCenter: function(){
@@ -445,7 +475,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     attached: function() {
       this.resize();
-      this.updateMarkers();
+      // this.updateMarkers();
     },
 
     created:function(){

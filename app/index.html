@@ -9,23 +9,26 @@
         height: 100%;
         margin: 0;
     }
-    map-box {
+    mapbox-map {
         display: block;
         height: 100%;
         width: 100%;
     }
  </style>
- <link rel="import" href="elements/map-box/map-box.html" charset="utf-8">
+ <link rel="import" href="elements/mapbox-map/mapbox-map.html" charset="utf-8">
 
 </head>
 <body unresolved>
- <map-box   id        = "map"
+ <mapbox-map   id        = "map"
             zoom      = "19"
-            zoomable
-            disable-zoom-ui
-            geocoder-ui
             latitude  = "38.908847"
             map-id    = "villeda.c4c63d13"
-            longitude = "1.433900"></map-box>
+            longitude = "1.433900"
+            disable-zoom-ui>
+<mapbox-marker
+ latitude  = "38.908847"
+ longitude = "1.433900"
+></mapbox-marker>
+            </mapbox-map>
 </body>
 </html>

@@ -32,7 +32,6 @@
     "commit": "6cbc36be646cb2ecf038cca76cad06897d34a97d"
   },
   "_source": "git://github.com/mapbox/mapbox.js-bower.git",
-  "_target": "~2.2.1",
-  "_originalSource": "mapbox.js",
-  "_direct": true
+  "_target": "^2.2.1",
+  "_originalSource": "mapbox.js"
 }

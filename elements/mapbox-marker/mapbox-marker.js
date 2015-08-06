@@ -1,0 +1,216 @@
+(function() {
+  'use strict';
+  Polymer({
+   is: 'mapbox-marker',
+   properties:{
+    marker: Object,
+
+    title: {
+      type: String,
+      value: null,
+      notify: true,
+      reflectToAttribute: true,
+      observer: '_titleChanged'
+    },
+
+    map: {
+     type: Object,
+     observer: '_mapChanged'
+    },
+
+    /**
+     * The marker's longitude coordinate.
+     */
+    longitude: {
+      type: Number,
+      value: null,
+      reflectToAttribute: true
+    },
+    draggable: {
+      type: Boolean,
+      value: false,
+      notify: true
+    },
+
+
+    /**
+     * The marker's latitude coordinate.
+     */
+    latitude: {
+      type: Number,
+      value: null,
+      reflectToAttribute: true
+    },
+
+    icon: {
+      type: Object,
+      value: null,
+      observer: '_iconChanged'
+    }
+   },
+
+   observers: [
+     '_updatePosition(latitude, longitude)'
+   ],
+
+   _updatePosition:function(){
+     var canUpdate = ( this.map &&
+                       this.marker &&
+                       this.latitude &&
+                       this.longitude );
+     if( canUpdate ){
+       this.marker.setLatLng( [ parseFloat(this.latitude), parseFloat(this.longitude) ] );
+     }else if( !this.marker ){
+       this._mapReady();
+     }
+   },
+
+
+   _mapChanged: function() {
+     // Marker will be rebuilt, so disconnect existing one from old map and listeners.
+     if (this.marker) {
+       this.marker.setMap(null);
+       // google.maps.event.clearInstanceListeners(this.marker);
+     }
+     if (this.map) {
+       this._mapReady();
+     }
+   },
+
+   _mapReady: function () {
+    var canUpdate = ( this.map &&
+                      this.latitude &&
+                      this.longitude );
+
+    if( canUpdate ) {
+      if( this.marker ) {
+        this.map.removeLayer(this.marker);
+      }
+      var newCenter = new L.latLng(this.latitude, this.longitude);
+
+      this.marker = L.marker(newCenter, {
+          draggable: !!this.draggable,
+          icon: L.mapbox.marker.icon({
+            'marker-color': '#f86767'
+          })
+      });
+
+
+      this.marker.addTo(this.map);
+      this._titleChanged();
+
+      // this.marker = L.marker( [ this.latitude, this.longitude ], {
+      //   draggable: !!this.getAttribute("draggable"),
+      //   title: this.title,
+      //   alt: this.title,
+      //   icon: this._createIcon()
+      // } ).addTo( this.map );
+
+    /**
+     * Fired when user clicks (or tabs) the marker.
+     *
+     * @event click-marker
+
+     */
+      this.marker.on( 'click', this._sendEvent.bind( this ))
+
+    /**
+     * Fired when user dobleclicks (or doble-tabs) the marker
+     *
+     * @event dblclick-marker
+
+     */
+      .on( 'dblclick', this._sendEvent.bind( this ))
+
+    /**
+     * Fired when the marker is moved via latitude/longitude.
+     *
+     * @event move-marker
+
+     */
+      .on( 'move', this._sendEvent.bind( this ))
+
+    /**
+     * Fired when user starts dragging the marker.
+     *
+     * @event dragstart-marker
+
+     */
+      .on( 'dragstart', this._sendEvent.bind( this ))
+
+    /**
+     * Fired reapetedly while the user drags the marker.
+     *
+     * @event drag-marker
+
+     */
+      .on( 'drag', this._sendEvent.bind( this ))
+
+    /**
+     * Fired when user stops dragging the marker.
+     *
+     * @event dragend-marker
+
+     */
+      .on( 'dragend', this._sendEvent.bind( this ))
+
+    /**
+     * Fired when the marker is added from the map.
+     *
+     * @event add-marker
+
+     */
+      .on( 'add', this._sendEvent.bind( this ))
+
+    /**
+     * Fired when the marker is removed from the map.
+     *
+     * @event remove-marker
+
+     */
+      .on( 'remove', this._sendEvent.bind( this ))
+
+    /**
+     * Fired when popup bound to the marker is open.
+     *
+     * @event popupopen-marker
+
+     */
+      .on( 'popupopen', this._sendEvent.bind( this ))
+
+    /**
+     * Fired when popup bound to the marker is close.
+     *
+     * @event popupclose-marker
+
+     */
+      .on( 'popupclose', this._sendEvent.bind( this ));
+
+    }
+   },
+
+   _sendEvent: function (e){
+     this.fire(e.type + '-marker', { data: e } );
+   },
+
+   _iconChanged: function () {
+    // if( !!this.marker ) {
+    //   this.marker.setIcon(this._createIcon());}
+   },
+
+   _createIcon:function  () {
+     // this.icon['marker-symbol'] ||
+     //   (this.icon['marker-symbol'] = this.icon.icon);
+     // this.icon['marker-size'] ||
+     //   (this.icon['marker-size'] = this.icon.size);
+     // this.icon['marker-color'] ||
+     //   (this.icon['marker-color'] = this.icon.markerColor);
+     // return L.mapbox.marker.icon( this.icon );
+   },
+   _titleChanged: function(){
+     if(!!this.title && this.marker){
+       this.marker.bindLabel(this.title);
+     }
+   }
+  });
+})();

@@ -19,16 +19,24 @@
 
 </head>
 <body unresolved>
- <mapbox-map   id        = "map"
+ <mapbox-map   id     = "map"
             zoom      = "19"
             latitude  = "38.908847"
             map-id    = "villeda.c4c63d13"
             longitude = "1.433900"
-            disable-zoom-ui>
-<mapbox-marker
- latitude  = "38.908847"
- longitude = "1.433900"
-></mapbox-marker>
-            </mapbox-map>
+            geolocation-ui
+            zoomable
+            >
+    <mapbox-marker
+     latitude  = "38.908847"
+     longitude = "1.433900"
+     title= "hola mundo"
+     draggable
+    ></mapbox-marker>
+    <mapbox-marker
+     latitude  = "38.808847"
+     longitude = "1.433900"
+    ></mapbox-marker>
+  </mapbox-map>
 </body>
 </html>

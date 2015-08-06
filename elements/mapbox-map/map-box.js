@@ -317,7 +317,8 @@
       fullscreenUi: {
         type: Boolean,
         value: false,
-        notify: true
+        notify: true,
+        observe: '_fullscreenUiChanged'
       },
 
       geocoderUi: {
@@ -411,6 +412,7 @@
       this._updateCenter();
       this._updateLayers();
       this._geolocationUiChanged();
+      this._fullscreenUiChanged();
 
 
 
@@ -602,7 +604,7 @@
     },
 
 
-    fullscreenUiChanged: function () {
+    _fullscreenUiChanged: function () {
       this._toggleFullscreen();
     },
 

@@ -1,11 +1,18 @@
 (function() {
   'use strict';
+
+  function setPos(pos){
+    this.latitude  = pos.coords.latitude;
+    this.longitude = pos.coords.longitude;
+    this._updatePosition();
+  }
+
   Polymer({
    is: 'mapbox-marker',
    properties:{
     marker: Object,
 
-    title: {
+    label: {
       type: String,
       value: null,
       notify: true,
@@ -18,6 +25,24 @@
      observer: '_mapChanged'
     },
 
+    draggable: {
+      type: Boolean,
+      value: false,
+      notify: true
+    },
+
+    getPosition: {
+      type: Boolean,
+      value: false,
+      observe: '_getPositionChanged'
+    },
+
+    watchPosition: {
+      type: Boolean,
+      value: false,
+      observe: '_watchPositionChanged'
+    },
+
     /**
      * The marker's longitude coordinate.
      */
@@ -26,11 +51,7 @@
       value: null,
       reflectToAttribute: true
     },
-    draggable: {
-      type: Boolean,
-      value: false,
-      notify: true
-    },
+
 
 
     /**
@@ -41,6 +62,7 @@
       value: null,
       reflectToAttribute: true
     },
+
 
     icon: {
       type: Object,
@@ -98,11 +120,13 @@
 
       this.marker.addTo(this.map);
       this._titleChanged();
+      this._getPositionChanged();
+      this._watchPositionChanged();
 
       // this.marker = L.marker( [ this.latitude, this.longitude ], {
       //   draggable: !!this.getAttribute("draggable"),
-      //   title: this.title,
-      //   alt: this.title,
+      //   title: this.label,
+      //   alt: this.label,
       //   icon: this._createIcon()
       // } ).addTo( this.map );
 
@@ -208,8 +232,21 @@
      // return L.mapbox.marker.icon( this.icon );
    },
    _titleChanged: function(){
-     if(!!this.title && this.marker){
-       this.marker.bindLabel(this.title);
+     if(!!this.label && this.marker){
+       this.marker.bindLabel(this.label);
+     }
+   },
+   _getPositionChanged: function(){
+     console.log("hola")
+     if(this.getPosition && ('geolocation' in navigator)){
+
+       navigator.geolocation.getCurrentPosition(setPos.bind(this));
+     }
+   },
+   _watchPositionChanged: function(){
+     if(!this.getPosition && this.watchPosition && ('geolocation' in navigator)){
+       console.log("hola")
+       navigator.geolocation.watchPosition(setPos.bind(this));
      }
    }
   });

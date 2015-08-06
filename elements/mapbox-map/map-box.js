@@ -2,14 +2,14 @@
   'use strict';
   Polymer({
     is: 'mapbox-map',
-
     // Attributes
     properties: {
 
      /**
-           * A Maps API for Business Client ID. To obtain a Maps API for Business Client ID, see developers.google.com/maps/documentation/business/.
-           * If set, a Client ID will take precedence over an API Key.
-           */
+       * A Maps API for Business Client ID. To obtain a Maps API f`or
+       * Business Client ID, see developers.google.com/maps/documentation/business/.
+       * If set, a Client ID will take precedence over an API Key.
+       */
       accessToken: {
         type: String,
         value: 'pk.eyJ1IjoiZ251cnViIiwiYSI6InRZRVNjWDQifQ.'+
@@ -53,7 +53,7 @@
 
       zoom: {
         type: Number,
-        value: 10,
+        value: 16,
         reflectToAttribute: true,
         notify: true,
         observer: '_zoomChanged'
@@ -347,7 +347,6 @@
 
     observers: [
       '_debounceUpdateCenter(latitude, longitude)'
-
     ],
 
 
@@ -384,6 +383,7 @@
         tap: this.tap,
         minZoom: this.minZoom,
         maxZoom: this.maxZoom,
+        zoom: this.zoom,
         boxZoom: this.boxZoom,
         inertia: this.inertia,
         dragging: this.dragging,
@@ -413,37 +413,21 @@
 
 
 
-      map.on('click dblclick mousedown mouseup mouseover mouseout mousemove contextmenu focus blur preclick load unload viewreset movestart move moveend dragstart drag dragend zoomstart zoomend zoomlevelschange resize autopanstart layeradd layerremove baselayerchange overlayadd overlayremove locationfound locationerror popupopen popupclose', function(e) {
+      map.on('click dblclick mousedown mouseup mouseover mouseout mousemove contextmenu focus blur preclick load unload viewreset movestart move dragstart drag dragend zoomstart zoomlevelschange resize autopanstart layeradd layerremove baselayerchange overlayadd overlayremove locationfound locationerror popupopen popupclose', function(e) {
         this.fire(e.type, e);
       }, this);
 
       map.on('moveend', function(e) {
         this._ignoreViewChange = true;
         this.longitude = map.getCenter().lng;
-        this.latitude = map.getCenter().lat;
+        this.latitude  = map.getCenter().lat;
         this._ignoreViewChange = false;
+        this.fire(e.type, e);
       }, this);
       map.on('zoomend', function(e) {
         this.zoom = map.getZoom();
+        this.fire(e.type, e);
       }, this);
-
-
-      // var defaultLayerRequired = true;
-      // for (var i = 0; i < this.children.length; i++) {
-      //   var e = this.children[i];
-      //   if (e.isLayer && e.isLayer()) {
-      //     defaultLayerRequired = false;
-      //   }
-      // }
-      // if (defaultLayerRequired) {
-      //   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      //     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://mapbox.com">Mapbox</a>',
-      //     maxZoom: 18
-      //   }).addTo(this.map);
-      // }
-      // this.registerMapOnChildren();
-      // this._mutationObserver = new MutationObserver(this.registerMapOnChildren.bind(this));
-      // this._mutationObserver.observe(this, {childList: true});
 
 
 
@@ -471,24 +455,11 @@
        var newLayers = Array.prototype.slice.call(
         Polymer.dom(this.$.layers).getDistributedNodes());
 
-
-       // if (newLayers.length === this.layers.length) {
-       //  var added = newLayers.filter(function(m) {
-       //    return this.layers && this.layers.indexOf(m) === -1;
-       //  }.bind(this));
-       //  console.log(added);
-       //
-       //  if (added.length === 0) {
-       //    // set up observer first time around
-       //    if (!this._mutationObserver) {
-       //      this._observeLayers();
-       //    }
-       //    return;
-       //  }
         this._observeLayers();
 
 
         this.layers = newLayers;
+        console.log(newLayers);
 
        if (this.layers.length && this.map) {
          for (var i = 0, m; m = this.layers[i]; ++i) {

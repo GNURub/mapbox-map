@@ -8,248 +8,289 @@
   }
 
   Polymer({
-   is: 'mapbox-marker',
-   properties:{
-    marker: Object,
+    is: 'mapbox-marker',
+    properties:{
+      marker: Object,
 
-    label: {
-      type: String,
-      value: null,
-      notify: true,
-      reflectToAttribute: true,
-      observer: '_titleChanged'
-    },
+      label: {
+        type: String,
+        value: null,
+        notify: true,
+        reflectToAttribute: true,
+        observer: '_titleChanged'
+      },
 
-    map: {
-     type: Object,
-     observer: '_mapChanged'
-    },
+      map: {
+        type: Object,
+        observer: '_mapChanged'
+      },
 
-    draggable: {
-      type: Boolean,
-      value: false,
-      notify: true
-    },
+      draggable: {
+        type: Boolean,
+        value: false,
+        notify: true
+      },
 
-    getPosition: {
-      type: Boolean,
-      value: false,
-      observer: '_getPositionChanged'
-    },
+      getPosition: {
+        type: Boolean,
+        value: false,
+        observer: '_getPositionChanged'
+      },
 
-    watchPosition: {
-      type: Boolean,
-      value: false,
-      observer: '_watchPositionChanged'
-    },
+      watchPosition: {
+        type: Boolean,
+        value: false,
+        observer: '_watchPositionChanged'
+      },
 
-    /**
-     * The marker's longitude coordinate.
-     */
-    longitude: {
-      type: Number,
-      value: null,
-      reflectToAttribute: true
-    },
-
-
-
-    /**
-     * The marker's latitude coordinate.
-     */
-    latitude: {
-      type: Number,
-      value: null,
-      reflectToAttribute: true
-    },
+      /**
+      * The marker's longitude coordinate.
+      */
+      longitude: {
+        type: Number,
+        value: null,
+        reflectToAttribute: true
+      },
 
 
-    icon: {
-      type: Object,
-      value: null,
-      observer: '_iconChanged'
-    }
-   },
 
-   observers: [
-     '_updatePosition(latitude, longitude)'
-   ],
-
-   _updatePosition:function(){
-     var canUpdate = ( this.map &&
-                       this.marker &&
-                       this.latitude &&
-                       this.longitude );
-     if( canUpdate ){
-       this.marker.setLatLng( [ parseFloat(this.latitude), parseFloat(this.longitude) ] );
-     }else if( !this.marker ){
-       this._mapReady();
-     }
-   },
+      /**
+      * The marker's latitude coordinate.
+      */
+      latitude: {
+        type: Number,
+        value: null,
+        reflectToAttribute: true
+      },
 
 
-   _mapChanged: function() {
-     // Marker will be rebuilt, so disconnect existing one from old map and listeners.
-     if (this.marker) {
-      //  this.marker.addTo();
-       // google.maps.event.clearInstanceListeners(this.marker);
-     }
-     if (this.map) {
-       this._mapReady();
-     }
-   },
-
-   _mapReady: function () {
-    var canUpdate = ( this.map &&
-                      this.latitude &&
-                      this.longitude );
-
-    if( canUpdate ) {
-      if( this.marker ) {
-        this.map.removeLayer(this.marker);
+      color: {
+        type: String,
+        value: ''
+      },
+      size: {
+        type: String,
+        value: ''
+      },
+      symbol: {
+        type: String,
+        value: ''
+      },
+      iconUrl: {
+        type: String,
+        value: ''
+      },
+      iconRetinaUrl: {
+        type: String,
+        value: ''
+      },
+      iconSize: {
+        type: Array,
+        value: []
+      },
+      iconAnchor: {
+        type: Array,
+        value: []
+      },
+      popupAnchor: {
+        type: Array,
+        value: []
+      },
+      shadowUrl: {
+        type: String,
+        value: ''
+      },
+      shadowRetinaUrl: {
+        type: String,
+        value: ''
+      },
+      shadowSize: {
+        type: Array,
+        value: []
+      },
+      shadowAnchor: {
+        type: Array,
+        value: []
       }
-      var newCenter = new L.latLng(this.latitude, this.longitude);
+    },
 
-      this.marker = L.marker(newCenter, {
-          draggable: !!this.draggable,
-          icon: L.mapbox.marker.icon({
-            'marker-color': '#f86767'
-          })
-      });
+    observers: [
+      '_updatePosition(latitude, longitude)',
+      '_iconChanged(color, size, symbol)'
+    ],
+
+    _updatePosition:function(){
+      var canUpdate = ( this.map &&
+        this.marker &&
+        this.latitude &&
+        this.longitude );
+      if( canUpdate ){
+        this.marker.setLatLng( [ parseFloat(this.latitude), parseFloat(this.longitude) ] );
+      }else if( !this.marker ){
+        this._mapReady();
+      }
+    },
 
 
-      this.marker.addTo(this.map);
-      this._titleChanged();
-      this._getPositionChanged();
-      this._watchPositionChanged();
+    _mapChanged: function() {
+      // Marker will be rebuilt, so disconnect existing one from old map and listeners.
+      if (this.marker) {
+        //  this.marker.addTo();
+        // google.maps.event.clearInstanceListeners(this.marker);
+      }
+      if (this.map) {
+        this._mapReady();
+      }
+    },
 
-      // this.marker = L.marker( [ this.latitude, this.longitude ], {
-      //   draggable: !!this.getAttribute("draggable"),
-      //   title: this.label,
-      //   alt: this.label,
-      //   icon: this._createIcon()
-      // } ).addTo( this.map );
+    _mapReady: function () {
+      var canUpdate = ( this.map &&
+        this.latitude &&
+        this.longitude );
 
-    /**
-     * Fired when user clicks (or tabs) the marker.
-     *
-     * @event click-marker
+        if( canUpdate ) {
+          if( this.marker ) {
+            this.map.removeLayer(this.marker);
+          }
+          var newCenter = new L.latLng(this.latitude, this.longitude);
 
-     */
-      this.marker.on( 'click', this._sendEvent.bind( this ))
+          this.marker = L.marker(newCenter, {
+            draggable: !!this.draggable,
+            icon: this._createIcon()
+          });
 
-    /**
-     * Fired when user dobleclicks (or doble-tabs) the marker
-     *
-     * @event dblclick-marker
 
-     */
-      .on( 'dblclick', this._sendEvent.bind( this ))
+          this.marker.addTo(this.map);
+          this._titleChanged();
+          this._getPositionChanged();
+          this._watchPositionChanged();
 
-    /**
-     * Fired when the marker is moved via latitude/longitude.
-     *
-     * @event move-marker
+          // this.marker = L.marker( [ this.latitude, this.longitude ], {
+          //   draggable: !!this.getAttribute("draggable"),
+          //   title: this.label,
+          //   alt: this.label,
+          //   icon: this._createIcon()
+          // } ).addTo( this.map );
 
-     */
-      .on( 'move', this._sendEvent.bind( this ))
+          /**
+          * Fired when user clicks (or tabs) the marker.
+          *
+          * @event click-marker
 
-    /**
-     * Fired when user starts dragging the marker.
-     *
-     * @event dragstart-marker
+          */
+          this.marker.on( 'click', this._sendEvent.bind( this ))
 
-     */
-      .on( 'dragstart', this._sendEvent.bind( this ))
+          /**
+          * Fired when user dobleclicks (or doble-tabs) the marker
+          *
+          * @event dblclick-marker
 
-    /**
-     * Fired reapetedly while the user drags the marker.
-     *
-     * @event drag-marker
+          */
+          .on( 'dblclick', this._sendEvent.bind( this ))
 
-     */
-      .on( 'drag', this._sendEvent.bind( this ))
+          /**
+          * Fired when the marker is moved via latitude/longitude.
+          *
+          * @event move-marker
 
-    /**
-     * Fired when user stops dragging the marker.
-     *
-     * @event dragend-marker
+          */
+          .on( 'move', this._sendEvent.bind( this ))
 
-     */
-      .on( 'dragend', this._sendEvent.bind( this ))
+          /**
+          * Fired when user starts dragging the marker.
+          *
+          * @event dragstart-marker
 
-    /**
-     * Fired when the marker is added from the map.
-     *
-     * @event add-marker
+          */
+          .on( 'dragstart', this._sendEvent.bind( this ))
 
-     */
-      .on( 'add', this._sendEvent.bind( this ))
+          /**
+          * Fired reapetedly while the user drags the marker.
+          *
+          * @event drag-marker
 
-    /**
-     * Fired when the marker is removed from the map.
-     *
-     * @event remove-marker
+          */
+          .on( 'drag', this._sendEvent.bind( this ))
 
-     */
-      .on( 'remove', this._sendEvent.bind( this ))
+          /**
+          * Fired when user stops dragging the marker.
+          *
+          * @event dragend-marker
 
-    /**
-     * Fired when popup bound to the marker is open.
-     *
-     * @event popupopen-marker
+          */
+          .on( 'dragend', this._sendEvent.bind( this ))
 
-     */
-      .on( 'popupopen', this._sendEvent.bind( this ))
+          /**
+          * Fired when the marker is added from the map.
+          *
+          * @event add-marker
 
-    /**
-     * Fired when popup bound to the marker is close.
-     *
-     * @event popupclose-marker
+          */
+          .on( 'add', this._sendEvent.bind( this ))
 
-     */
-      .on( 'popupclose', this._sendEvent.bind( this ));
+          /**
+          * Fired when the marker is removed from the map.
+          *
+          * @event remove-marker
 
-    }
-   },
+          */
+          .on( 'remove', this._sendEvent.bind( this ))
 
-   _sendEvent: function (e){
-     this.fire(e.type + '-marker', { data: e } );
-   },
+          /**
+          * Fired when popup bound to the marker is open.
+          *
+          * @event popupopen-marker
 
-   _iconChanged: function () {
-    // if( !!this.marker ) {
-    //   this.marker.setIcon(this._createIcon());}
-   },
+          */
+          .on( 'popupopen', this._sendEvent.bind( this ))
 
-   _createIcon:function  () {
-     // this.icon['marker-symbol'] ||
-     //   (this.icon['marker-symbol'] = this.icon.icon);
-     // this.icon['marker-size'] ||
-     //   (this.icon['marker-size'] = this.icon.size);
-     // this.icon['marker-color'] ||
-     //   (this.icon['marker-color'] = this.icon.markerColor);
-     // return L.mapbox.marker.icon( this.icon );
-   },
-   _titleChanged: function(){
-     if(!!this.label && this.marker){
-       this.marker.bindLabel(this.label);
-     }
-   },
-   _getPositionChanged: function(){
-     if(this.getPosition && ('geolocation' in navigator)){
+          /**
+          * Fired when popup bound to the marker is close.
+          *
+          * @event popupclose-marker
 
-       navigator.geolocation.getCurrentPosition(setPos.bind(this));
-     }
-   },
-   _watchPositionChanged: function(){
-     if(!this.getPosition && this.watchPosition && ('geolocation' in navigator)){
-       navigator.geolocation.watchPosition(setPos.bind(this));
-     }
-   },
-   removeLayer: function() {
-      this.map.removeLayer(this.marker);
-      this.remove();
-    }
+          */
+          .on( 'popupclose', this._sendEvent.bind( this ));
+
+        }
+      },
+
+      _sendEvent: function (e){
+        this.fire(e.type + '-marker', { data: e } );
+      },
+
+      _iconChanged: function (color, size, symbol) {
+        if( this.map && !!this.marker ) {
+          this.marker.setIcon(this._createIcon());}
+      },
+
+      _createIcon:function  () {
+
+        return L.mapbox.marker.icon( {
+          'marker-size': this.size,
+          'marker-symbol': this.symbol,
+          'marker-color': this.color
+        } );
+
+      },
+      _titleChanged: function(){
+        if(!!this.label && this.marker){
+          this.marker.bindLabel(this.label);
+        }
+      },
+      _getPositionChanged: function(){
+        if(this.getPosition && ('geolocation' in navigator)){
+          navigator.geolocation.getCurrentPosition(setPos.bind(this));
+        }
+      },
+      _watchPositionChanged: function(){
+        if(!this.getPosition && this.watchPosition && ('geolocation' in navigator)){
+          navigator.geolocation.watchPosition(setPos.bind(this));
+        }
+      },
+      removeLayer: function() {
+        this.map.removeLayer(this.marker);
+        this.remove();
+      }
   });
 })();

@@ -61,13 +61,13 @@
 
       minZoom: {
         type: Number,
-        value: 1,
+        value: 0,
         readOnly: true
       },
 
       maxZoom: {
         type: Number,
-        value: 16,
+        value: 20,
         readOnly: true
       },
 

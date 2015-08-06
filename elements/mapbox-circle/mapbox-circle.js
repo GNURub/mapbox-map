@@ -65,7 +65,8 @@
     _updatePosition: function (latitude, longitude){
       var canUpdate = this.map &&
           this.latitude &&
-          this.longitude;
+          this.longitude &&
+          this.circle;
       if (canUpdate) {
         this.circle.setLatLng(L.latLng( this.latitude, this.longitude) );
       }

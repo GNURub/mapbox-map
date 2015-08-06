@@ -7,19 +7,18 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-<link rel="import" href="../mapbox-import/maxpbox-import.html">
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
 
+
+<link rel="import" href="../mapbox-import/maxpbox-import.html">
 <link rel="import" href="../mapbox-marker/mapbox-marker.html">
 <link rel="import" href="../mapbox-circle/mapbox-circle.html">
 
 
 <!-- <link rel="import" type="css" href="../../bower_components/mapbox.js/mapbox.css"> -->
-<link rel="stylesheet" href="../../src/css/L.Control.Locate.mapbox.css" charset="utf-8">
-<link rel="stylesheet" href="../../bower_components/mapbox.js/mapbox.css">
-<dom-module id="mapbox-map">
 
+<dom-module id="mapbox-map">
   <style>
       :host{
        position: relative;
@@ -35,11 +34,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
   </style>
 
-  <!-- <link rel="stylesheet" href="../../bower_components/mapbox.js/mapbox.css">
-  <link rel="import" type="css" href="../../bower_components/mapbox.js/mapbox.css"> -->
+  <link rel="stylesheet" href="../../src/css/L.Control.Locate.mapbox.css">
+  <link rel="stylesheet" href="../../bower_components/mapbox.js/mapbox.css">
+  <link rel="import" type="css" href="../../bower_components/mapbox.js/mapbox.css" />
   <template>
     <div id="mapBox"></div>
-    <content id="layers" select="mapbox-marker, mapbox-circle"></content>
+    <content id="layers" select="*"></content>
   </template>
+
 </dom-module>
 <script src="map-box.js"></script>

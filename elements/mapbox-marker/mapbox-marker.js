@@ -34,13 +34,13 @@
     getPosition: {
       type: Boolean,
       value: false,
-      observe: '_getPositionChanged'
+      observer: '_getPositionChanged'
     },
 
     watchPosition: {
       type: Boolean,
       value: false,
-      observe: '_watchPositionChanged'
+      observer: '_watchPositionChanged'
     },
 
     /**
@@ -91,7 +91,7 @@
    _mapChanged: function() {
      // Marker will be rebuilt, so disconnect existing one from old map and listeners.
      if (this.marker) {
-       this.marker.setMap(null);
+      //  this.marker.addTo();
        // google.maps.event.clearInstanceListeners(this.marker);
      }
      if (this.map) {
@@ -237,7 +237,6 @@
      }
    },
    _getPositionChanged: function(){
-     console.log("hola")
      if(this.getPosition && ('geolocation' in navigator)){
 
        navigator.geolocation.getCurrentPosition(setPos.bind(this));
@@ -245,9 +244,12 @@
    },
    _watchPositionChanged: function(){
      if(!this.getPosition && this.watchPosition && ('geolocation' in navigator)){
-       console.log("hola")
        navigator.geolocation.watchPosition(setPos.bind(this));
      }
-   }
+   },
+   removeLayer: function() {
+      this.map.removeLayer(this.marker);
+      this.remove();
+    }
   });
 })();

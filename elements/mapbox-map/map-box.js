@@ -293,13 +293,14 @@
       mapId: {
         type: String,
         value: 'mapbox.streets',
-        notify: true
+        notify: true,
+        observer: '_mapIdChanged'
       },
 
       disableZoomUi: {
         type: Boolean,
         value: false,
-        notify: true
+        observer: '_toggleZoomChanged'
       },
 
       zoomable: {
@@ -311,26 +312,24 @@
       geolocationUi: {
         type: Boolean,
         value: false,
-        notify: true
+        observer: '_toggleGeolocator'
       },
 
       fullscreenUi: {
         type: Boolean,
         value: false,
-        notify: true,
-        observe: '_fullscreenUiChanged'
+        observer: '_toggleFullscreen'
       },
 
       geocoderUi: {
         type: Boolean,
-        value: true,
-        notify: true,
-        observe: '_geolocationUiChanged'
+        value: true
       },
 
       maxBounds: {
         type: Array,
-        value: []
+        value: [],
+        observer: '_maxBoundsChanged'
       },
 
       center: {
@@ -411,9 +410,6 @@
       this.map.setView(newCenter, this.zoom);
       this._updateCenter();
       this._updateLayers();
-      this._geolocationUiChanged();
-      this._fullscreenUiChanged();
-
 
 
 
@@ -567,49 +563,31 @@
     },
 
 
-    disableZoomUiChanged: function( oldVal, newVal ){
-     if (!this.map) {
+    _toggleZoomChanged: function( newVal ){
+      if (!this.map) {
        return;
-     }
-     if( newVal ){
+      }
+      if( newVal ){
        this.map.zoomControl.removeFrom( this.map );
-     }else{
+      }else{
        this.map.zoomControl.addTo( this.map );
-     }
-    },
-
-
-
-
-    _toggleGeolocator: function () {
-      var locate;
-      if( this.geolocationUi ){
-        locate = L.control.locate().addTo( this.map );
-      }else if( locate ){
-        locate.removeFrom( this.map );
       }
     },
 
-    _geolocationUiChanged: function() {
-      this._toggleGeolocator();
+    _toggleGeolocator: function () {
+      if( this.geolocationUi ){
+        this.locate = L.control.locate().addTo( this.map );
+      }else if( this.locate ){
+        this.locate.removeFrom( this.map );
+      }
     },
 
     _toggleFullscreen: function () {
-      var fullscreen;
       if( this.fullscreenUi ){
-        fullscreen = L.control.fullscreen().addTo( this.map );
-      }else if( fullscreen ){
-        fullscreen.removeFrom( this.map );
+        this.fullscreen = L.control.fullscreen().addTo( this.map );
+      }else if( this.fullscreen ){
+        this.fullscreen.removeFrom( this.map );
       }
-    },
-
-
-    _fullscreenUiChanged: function () {
-      this._toggleFullscreen();
-    },
-
-    geocoderUiChanged: function () {
-      this._toggleGeocoder();
     },
 
 
@@ -623,11 +601,20 @@
         }else if( geocoder ){
           this.map.removeControl( geocoder );
         }
-      },
+    },
 
-    maxBoundsChanged: function(oldVal, newVal){
-      this.map.setMaxBounds(newVal);
-      this.map.fitBounds(newVal);
+    _maxBoundsChanged: function(newVal){
+      if(this.map && newVal){
+        this.map.setMaxBounds(newVal);
+        this.map.fitBounds(newVal);
+      }
+
+    },
+
+    _mapIdChanged: function(){
+      if(this.map){
+        L.mapbox.tileLayer(this.mapId).addTo(this.map);
+      }
     }
 
   });

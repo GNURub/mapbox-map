@@ -25,31 +25,22 @@
             longitude = "1.433900"
             zoomable
             >
-    <mapbox-marker
-     latitude  = "38.908847"
-     longitude = "1.433900"
-     color="#000"
-     symbol="bus"
+    <mapbox-cluster>
+      <mapbox-marker
+       latitude  = "38.908847"
+       longitude = "1.433900"
+       color="#000"
+       symbol="bus"
 
-     watch-position
-     draggable
-    ></mapbox-marker>
-    <mapbox-circle latitude  = "38.908847"
-                   longitude = "1.433900"
-                   radius    = "150">
+       watch-position
+       draggable
+      ></mapbox-marker>
 
-    </mapbox-circle>
-
-    <mapbox-marker
-     latitude  = "38.918847"
-     longitude = "1.433900"
-    ></mapbox-marker>
-
-    <mapbox-circle latitude  = "38.918847"
-                   longitude = "1.433900"
-                   radius    = "150">
-
-    <mapbox-polyline></mapbox-polyline>
+      <mapbox-marker
+       latitude  = "38.918847"
+       longitude = "1.433900"
+      ></mapbox-marker>
+    </mapbox-cluster>
   </mapbox-map>
 </body>
 </html>

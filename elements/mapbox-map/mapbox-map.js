@@ -323,7 +323,16 @@
 
       geocoderUi: {
         type: Boolean,
-        value: true
+        value: true,
+        observer: '_toggleGeocoder'
+      },
+      labelGeocoder: {
+        type: String,
+        value: ''
+      },
+      autocompleteGeocoder: {
+        type: Boolean,
+        value: false
       },
 
       maxBounds: {
@@ -466,7 +475,6 @@
            m.map = this.map;
          }
        }
-     // }
     },
 
     /**
@@ -563,14 +571,15 @@
 
 
     _toggleGeocoder: function () {
-        var geocoder;
-        if( this.geocoderUi ){
-          geocoder = this.map
-            .addControl(L.mapbox.geocoderControl('mapbox.places-v1', {
-              autocomplete: true
-            }));
-        }else if( geocoder ){
-          this.map.removeControl( geocoder );
+        if( this.map && this.geocoderUi ){
+          this.geocoder =
+              this.map.addControl(
+                L.mapbox.geocoderControl(this.labelGeocoder, {
+                  autocomplete: this.autocompleteGeocoder
+                })
+              );
+        }else if( this.geocoder ){
+          this.map.removeControl( this.geocoder );
         }
     },
 

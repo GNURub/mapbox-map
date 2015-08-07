@@ -29,6 +29,7 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#>=0.3.3",
-    "core-ajax": "Polymer/core-ajax#^0.4.1"
+    "core-ajax": "Polymer/core-ajax#^0.4.1",
+    "webcomponentsjs": "~0.7.5"
   }
 }

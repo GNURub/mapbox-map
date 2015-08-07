@@ -2,6 +2,7 @@
   'use strict';
   Polymer({
     is: 'mapbox-circle',
+    behaviors: [MapBox.MapBoxPath],
     properties: {
       map: {
         type: Object,
@@ -37,9 +38,7 @@
         value: null,
         reflectToAttribute: true,
         observer: '_radiusChanged'
-      },
-
-      opts: Object
+      }
     },
 
     observers: [
@@ -54,7 +53,8 @@
     _renderCircle: function(){
       this.circle = L.circle([Number(this.latitude),
                               Number(this.longitude)],
-                              Number(this.radius), this.opts)
+                              Number(this.radius),
+                              this.pathOpts)
                               .addTo(this.map);
 
       this.circle.on('click dblclick mousedown mouseover mouseout contextmenu add remove popupopen popupclose', function(e) {

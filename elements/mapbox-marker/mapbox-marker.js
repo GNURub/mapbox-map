@@ -164,7 +164,7 @@
           this._titleChanged();
           this._getPositionChanged();
           this._watchPositionChanged();
-
+          // this.marker.bindPopup('<button class="trigger">Say hi</button>')
           // this.marker = L.marker( [ this.latitude, this.longitude ], {
           //   draggable: !!this.getAttribute("draggable"),
           //   title: this.label,
@@ -291,6 +291,9 @@
       removeLayer: function() {
         this.map.removeLayer(this.marker);
         this.remove();
+      },
+      detached: function(){
+        this.removeLayer();
       }
   });
 })();

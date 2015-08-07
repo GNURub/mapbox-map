@@ -586,6 +586,40 @@
       if(this.map){
         L.mapbox.tileLayer(this.mapId).addTo(this.map);
       }
+    },
+
+    setFilter: function(cb){
+      if(typeof cb === "function"){
+        this.map.featureLayer.setFilter(function(f){
+          return cb(f);
+        }.bind(this));
+      }else{
+        throw new TypeError('It has to be a function', "mapbox-map.js", 595);
+      }
+    },
+
+    // Used to create Canvas-based tile layers where tiles get drawn on the browser side.
+    // canvasTiles(function(canvas){
+    // var ctx = canvas.getContext('2d');
+    // ctx.fillText(tilePoint.toString(), 50, 50);
+    // ctx.globalAlpha = 0.2;
+    // ctx.fillStyle = '#000';
+    // ctx.fillRect(10, 10, 246, 246);
+    // })
+    canvasTiles: function(cb){
+
+      if(typeof cb === "function"){
+        var canvasTiles = L.tileLayer.canvas();
+
+        canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
+        	cb(canvas, titlePoint, zoom)
+        };
+
+        canvasTiles.addTo(this.map);
+      }else{
+        throw new TypeError('It has to be a function', "mapbox-map.js", 607);
+      }
+
     }
 
   });

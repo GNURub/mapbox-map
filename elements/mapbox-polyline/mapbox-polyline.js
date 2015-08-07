@@ -22,5 +22,12 @@
         }
       }
     },
+    removeLayer: function() {
+      this.map.removeLayer(this.feature);
+      this.remove();
+    },
+    detached: function(){
+      this.removeLayer();
+    }
   });
 })();

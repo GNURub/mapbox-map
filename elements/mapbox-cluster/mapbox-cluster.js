@@ -3,7 +3,10 @@
   Polymer({
     is: "mapbox-cluster",
     properties: {
-      markers: Object,
+      markers: {
+        type: Object,
+        value: {}
+      },
       map: {
         type: Object,
         observer: '_mapChanged'
@@ -33,6 +36,7 @@
       });
     },
     _updatedMarkers: function(){
+      console.log("holaa")
       var newMarkers = Array.prototype.slice.call(
        Polymer.dom(this.$.markers).getDistributedNodes());
 

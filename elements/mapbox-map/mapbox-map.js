@@ -473,10 +473,10 @@
 
         this._observeLayers();
 
-
         this.layers = newLayers;
        if (this.layers.length && this.map) {
          for (var i = 0, m; m = this.layers[i]; ++i) {
+
            m.map = this.map;
          }
        }

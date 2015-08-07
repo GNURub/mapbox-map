@@ -18,14 +18,6 @@
       },
 
       /**
-       * A Maps API object.
-       */
-      map: {
-        type: Object,
-        notify: true,
-        value: null
-      },
-      /**
        * A latitude to center the map on.
        */
       latitude: {
@@ -346,6 +338,11 @@
         value: []
       }
     },
+
+    /**
+     * A Maps API object.
+     */
+    map: undefined,
 
     behaviors: [
      Polymer.IronResizableBehavior

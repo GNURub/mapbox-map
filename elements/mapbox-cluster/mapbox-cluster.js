@@ -34,10 +34,10 @@
     //
       if (newMarkers.length && this.markers) {
         for (var i = 0, m; m = newMarkers[i]; ++i) {
-          console.log(m.marker)
-          //  this.markers.addLayer(m.marker);
+          m.map = this.map;
+          this.markers.addLayer(m.marker);
         }
-    //     this.map.addLayer(this.markers);
+        this.map.addLayer(this.markers);
       }
     }
 

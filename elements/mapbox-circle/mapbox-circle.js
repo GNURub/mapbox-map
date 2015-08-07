@@ -76,11 +76,22 @@
         this.circle.setRadius(this.radius);
       }
     },
+    /**
+     * Description
+     * @method removeLayer
+     * @param {} keep
+     * @return 
+     */
     removeLayer: function(keep){
       this.map.removeLayer(this.circle);
       this.remove();
     },
 
+    /**
+     * Description
+     * @method detached
+     * @return 
+     */
     detached: function(){
       this.removeLayer();
     }

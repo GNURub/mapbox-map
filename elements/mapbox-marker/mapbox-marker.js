@@ -1,6 +1,12 @@
 (function() {
   'use strict';
 
+  /**
+   * Description
+   * @method setPos
+   * @param {} pos
+   * @return 
+   */
   function setPos(pos){
     this.latitude  = pos.coords.latitude;
     this.longitude = pos.coords.longitude;
@@ -290,10 +296,20 @@
           navigator.geolocation.watchPosition(setPos.bind(this));
         }
       },
+      /**
+       * Description
+       * @method removeLayer
+       * @return 
+       */
       removeLayer: function() {
         this.map.removeLayer(this.marker);
         this.remove();
       },
+      /**
+       * Description
+       * @method detached
+       * @return 
+       */
       detached: function(){
         this.removeLayer();
       }

@@ -38,11 +38,21 @@
       }
     },
 
+    /**
+     * Description
+     * @method removeLayer
+     * @return 
+     */
     removeLayer: function() {
       this.map.removeLayer(this.feature);
       this.remove();
     },
-    
+
+    /**
+     * Description
+     * @method detached
+     * @return 
+     */
     detached: function(){
       this.removeLayer();
     }

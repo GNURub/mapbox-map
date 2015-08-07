@@ -24,8 +24,7 @@
         type: Number,
         value: 38.867847507701114,
         notify: true,
-        reflectToAttribute: true,
-        observer: '_updateCenter'
+        reflectToAttribute: true
       },
 
       /**
@@ -35,8 +34,7 @@
        type: Number,
        value: 38.867847507701114,
        notify: true,
-       reflectToAttribute: true,
-       observer: '_updateCenter'
+       reflectToAttribute: true
       },
 
       /**
@@ -360,20 +358,35 @@
     },
 
     observers: [
-      '_debounceUpdateCenter(latitude, longitude)'
+      '_updateCenter(latitude, longitude)'
     ],
 
 
 
     // Methods
 
+    /**
+     * Description
+     * @method created
+     * @return
+     */
     created: function() {
       this.layers = [];
     },
+    /**
+     * Description
+     * @method attached
+     * @return
+     */
     attached: function() {
          this._initMapbox();
     },
 
+    /**
+     * Description
+     * @method detached
+     * @return
+     */
     detached: function() {
      if (this._mutationObserver) {
       this._mutationObserver.disconnect();
@@ -420,13 +433,8 @@
       };
       var map = L.mapbox.map( this.$.mapBox, this.mapId, mapOptions );
       this.map = map;
-      var newCenter = new L.latLng(this.latitude, this.longitude);
-      this.map.setView(newCenter, this.zoom);
       this._updateCenter();
       this._updateLayers();
-
-
-
 
 
       map.on('click dblclick mousedown mouseup mouseover mouseout mousemove contextmenu focus blur preclick load unload viewreset movestart move dragstart drag dragend zoomstart zoomlevelschange resize autopanstart layeradd layerremove baselayerchange overlayadd overlayremove locationfound locationerror popupopen popupclose', function(e) {
@@ -444,14 +452,6 @@
         this.zoom = map.getZoom();
         this.fire(e.type, e);
       }, this);
-
-
-
-
-
-      // this.map.on('zoomlevelschange', function (e) {
-      //       this.fire( 'open-map-zoomened', {data: e});
-      //   }.bind( this ) );
 
       this.fire( 'open-map-ready' );
 
@@ -475,8 +475,6 @@
 
 
         this.layers = newLayers;
-        console.log(newLayers);
-
        if (this.layers.length && this.map) {
          for (var i = 0, m; m = this.layers[i]; ++i) {
            m.map = this.map;
@@ -486,8 +484,8 @@
 
     /**
      * Delete the layers.
-     *
      * @method clear
+     * @return
      */
     clear: function() {
       for( var i = 0, m; m = this.layers[i]; i++ ) {
@@ -496,48 +494,48 @@
       }
     },
 
+    /**
+     * Description
+     * @method resize
+     * @return
+     */
     resize: function () {
       if(this.map)
         this.map.on( 'resize', this._updateCenter.bind( this ) );
     },
 
-    _debounceUpdateCenter: function() {
-      this.debounce('updateCenter', this._updateCenter);
-    },
-
-    // registerMapOnChildren: function() {
-    //   for (var i = 0; i < this.children.length; i++) {
-    //     this.children[i].container = this.map;
-    //   }
-    // },
-
     _updateCenter: function(){
-      this.cancelDebouncer('updateCenter');
-      if (this.map && this.latitude !== undefined && this.longitude !== undefined) {
-       var lati = Number(this.latitude);
-        if (isNaN(lati)) {
-          throw new TypeError('latitude must be a number');
-        }
-        var longi = Number(this.longitude);
-        if (isNaN(longi)) {
-          throw new TypeError('longitude must be a number');
-        }
-
-        var newCenter = new L.latLng(lati, longi);
-        var oldCenter = this.map.getCenter();
-        if (!oldCenter) {
-          // If the map does not have a center, set it right away.
-          this.map.setView(newCenter, this.zoom);
-        } else {
-          if (!oldCenter.equals(newCenter)) {
-            // this.map.panTo(newCenter);
-            // this.map.setView(newCenter, this.zoom);
-          }else{
-            this.map.setView(newCenter, this.zoom);
-          }
-        }
-
-      }
+      if (this.map && !this._ignoreViewChange) {
+				setTimeout(function() {
+					this.map.setView(L.latLng(this.latitude, this.longitude), this.zoom);
+				}.bind(this), 1);
+			}
+      // this.cancelDebouncer('updateCenter');
+      // if (this.map && this.latitude !== undefined && this.longitude !== undefined) {
+      //  var lati = Number(this.latitude);
+      //   if (isNaN(lati)) {
+      //     throw new TypeError('latitude must be a number');
+      //   }
+      //   var longi = Number(this.longitude);
+      //   if (isNaN(longi)) {
+      //     throw new TypeError('longitude must be a number');
+      //   }
+      //
+      //   var newCenter = new L.latLng(lati, longi);
+      //   var oldCenter = this.map.getCenter();
+      //   if (!oldCenter) {
+      //     // If the map does not have a center, set it right away.
+      //     this.map.setView(newCenter, this.zoom);
+      //   } else {
+      //     if (!oldCenter.equals(newCenter)) {
+      //       // this.map.panTo(newCenter);
+      //       // this.map.setView(newCenter, this.zoom);
+      //     }else{
+      //       this.map.setView(newCenter, this.zoom);
+      //     }
+      //   }
+      //
+      // }
 
     },
 
@@ -657,6 +655,12 @@
       }
     },
 
+    /**
+     * Description
+     * @method setFilter
+     * @param {} cb
+     * @return
+     */
     setFilter: function(cb){
       if(typeof cb === "function"){
         this.map.featureLayer.setFilter(function(f){
@@ -667,19 +671,31 @@
       }
     },
 
-    // Used to create Canvas-based tile layers where tiles get drawn on the browser side.
-    // canvasTiles(function(canvas){
-    // var ctx = canvas.getContext('2d');
-    // ctx.fillText(tilePoint.toString(), 50, 50);
-    // ctx.globalAlpha = 0.2;
-    // ctx.fillStyle = '#000';
-    // ctx.fillRect(10, 10, 246, 246);
-    // })
+    /**
+     * Used to create Canvas-based tile layers where tiles get drawn on the browser side.
+     * @method canvasTiles
+     * @param Function cb
+     * canvasTiles(function(canvas){
+     * var ctx = canvas.getContext('2d');
+     * ctx.fillText(tilePoint.toString(), 50, 50);
+     * ctx.globalAlpha = 0.2;
+     * ctx.fillStyle = '#000';
+     * ctx.fillRect(10, 10, 246, 246);
+     * })
+     */
     canvasTiles: function(cb){
 
       if(typeof cb === "function"){
         var canvasTiles = L.tileLayer.canvas();
 
+        /**
+         * Description
+         * @method drawTile
+         * @param {} canvas
+         * @param {} tilePoint
+         * @param {} zoom
+         * @return
+         */
         canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
         	cb(canvas, titlePoint, zoom)
         };
@@ -691,10 +707,10 @@
 
     },
     /**
-    * Returns a GeoJSON including all the features of the map
-    *
-    * @method toGeoJSON
-    */
+     * Returns a GeoJSON including all the features of the map
+     * @method toGeoJSON
+     * @return geoJSON
+     */
     toGeoJSON: function () {
       var geoJSON = {
         "type": "FeatureCollection",

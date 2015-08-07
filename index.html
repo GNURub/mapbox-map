@@ -3,18 +3,18 @@
 <head>
  <meta charset="UTF-8">
  <title>Document</title>
- <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+ <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
  <style type="text/css">
  	body, html {
         height: 100%;
         margin: 0;
     }
     mapbox-map {
-        display: block;
         height: 100%;
         width: 100%;
     }
  </style>
+
  <link rel="import" href="elements/mapbox-map/mapbox-map.html" charset="utf-8">
 
 </head>
@@ -24,31 +24,7 @@
             map-id    = "villeda.c4c63d13"
             longitude = "1.433900"
             zoomable
-            geocoder-ui
-            autocomplete-geocoder
             >
-      <mapbox-marker
-       latitude  = "38.908847"
-       longitude = "1.433900"
-       color="#000"
-       symbol="bus"
-
-       watch-position
-       draggable
-      ></mapbox-marker>
-
-      <mapbox-marker
-       latitude  = "38.918847"
-       longitude = "1.433900"
-      ></mapbox-marker>
-      <mapbox-marker
-       latitude  = "39.918847"
-       longitude = "1.433900"
-      ></mapbox-marker>
-      <mapbox-marker
-       latitude  = "39.918847"
-       longitude = "1.467910"
-      ></mapbox-marker>
   </mapbox-map>
 </body>
 </html>

@@ -469,7 +469,7 @@
 
     _updateLayers: function() {
        var newLayers = Array.prototype.slice.call(
-        Polymer.dom(this.$.layers).getDistributedNodes());
+        Polymer.dom(this.$.features).getDistributedNodes());
 
         this._observeLayers();
 

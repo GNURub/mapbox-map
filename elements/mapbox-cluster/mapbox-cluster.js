@@ -35,10 +35,9 @@
     _updatedMarkers: function(){
       var newMarkers = Array.prototype.slice.call(
        Polymer.dom(this.$.markers).getDistributedNodes());
-       console.log(newMarkers)
 
-       this._observeMarkers();
-    //
+      this._observeMarkers();
+
       if (newMarkers.length && this.markers) {
         for (var i = 0, m; m = newMarkers[i]; ++i) {
           m.map = this.map;

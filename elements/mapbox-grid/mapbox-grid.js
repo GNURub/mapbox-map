@@ -30,16 +30,19 @@
           this.fire(e.type, e);
       }, this);
     },
+
     _controlChanged: function(){
       var canUpdate = this.map && this.layer && this.control;
       if(canUpdate){
         this.featureCtrl = L.mapbox.gridControl(this.feature).addTo(this.map);
       }
-    }
+    },
+
     removeLayer: function() {
       this.map.removeLayer(this.feature);
       this.remove();
     },
+    
     detached: function(){
       this.removeLayer();
     }

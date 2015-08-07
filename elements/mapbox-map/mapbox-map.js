@@ -71,7 +71,8 @@
        */
       dragging: {
            type: Boolean,
-           value: true
+           value: true,
+           observer: '_draggingChanged'
       },
 
       /**
@@ -82,7 +83,8 @@
        */
       touchZoom: {
            type: Boolean,
-           value: true
+           value: true,
+           observer: '_touchZoomChanged'
       },
 
       /**
@@ -93,7 +95,8 @@
        */
       scrollWheelZoom: {
            type: Boolean,
-           value: true
+           value: true,
+           observer: '_scrollWheelZoomChanged'
       },
 
       /**
@@ -104,8 +107,10 @@
        */
       doubleClickZoom: {
            type: Boolean,
-           value: true
+           value: true,
+           observer: '_doubleClickZoomChanged'
       },
+
 
             /**
        * The `tap` attribute enables mobile hacks for supporting instant taps (fixing 200ms click delay on iOS/Android) and touch holds (fired as contextmenu events).
@@ -115,7 +120,8 @@
        */
       tap: {
            type: Boolean,
-           value: true
+           value: true,
+           observer: '_tapChanged'
       },
 
       /**
@@ -315,13 +321,15 @@
 
       geocoderUi: {
         type: Boolean,
-        value: true,
+        value: false,
         observer: '_toggleGeocoder'
       },
+
       labelGeocoder: {
         type: String,
-        value: ''
+        value: "mapbox.places"
       },
+
       autocompleteGeocoder: {
         type: Boolean,
         value: false
@@ -416,6 +424,8 @@
       this.map.setView(newCenter, this.zoom);
       this._updateCenter();
       this._updateLayers();
+
+
 
 
 
@@ -568,15 +578,18 @@
 
 
     _toggleGeocoder: function () {
-        if( this.map && this.geocoderUi ){
-          this.geocoder =
-              this.map.addControl(
-                L.mapbox.geocoderControl(this.labelGeocoder, {
-                  autocomplete: this.autocompleteGeocoder
-                })
-              );
+        if( this.geocoderUi ){
+          this.geocoder = L.mapbox.geocoderControl('mapbox.places', {
+            keepOpen: false,
+            autocomplete: this.autocompleteGeocoder,
+            accessToken: this.accessToken
+          });
+          this.geocoder.on('found error select autoselect', function(e){
+            this.fire(e.type, e);
+          }, this);
+
         }else if( this.geocoder ){
-          this.map.removeControl( this.geocoder );
+          this.geocoder.removeFrom( this.map );
         }
     },
 
@@ -591,6 +604,56 @@
     _mapIdChanged: function(){
       if(this.map){
         L.mapbox.tileLayer(this.mapId).addTo(this.map);
+      }
+    },
+
+    _tapChanged: function(){
+      if(this.map){
+        if(!this.tap) {
+          this.map.touchZoom.disable();
+          return;
+        }
+        this.map.touchZoom.enable();
+      }
+    },
+
+    _doubleClickZoomChanged: function(){
+      if(this.map){
+        if(!this.doubleClickZoom) {
+          this.map.doubleClickZoom.disable();
+          return;
+        }
+        this.map.doubleClickZoom.enable();
+      }
+    },
+
+    _scrollWheelZoomChanged: function(){
+      if(this.map){
+        if(!this.scrollWheelZoom) {
+          this.map.scrollWheelZoom.disable();
+          return;
+        }
+        this.map.scrollWheelZoom.enable();
+      }
+    },
+
+    _touchZoomChanged: function(){
+      if(this.map){
+        if(!this.touchZoom) {
+          this.map.touchZoom.disable();
+          return;
+        }
+        this.map.touchZoom.enable();
+      }
+    },
+
+    _draggingChanged: function(){
+      if(this.map){
+        if(!this.dragging) {
+          this.map.dragging.disable();
+          return;
+        }
+        this.map.dragging.enable();
       }
     },
 
@@ -626,6 +689,22 @@
         throw new TypeError('It has to be a function', "mapbox-map.js", 607);
       }
 
+    },
+    /**
+    * Returns a GeoJSON including all the features of the map
+    *
+    * @method toGeoJSON
+    */
+    toGeoJSON: function () {
+      var geoJSON = {
+        "type": "FeatureCollection",
+        "features": []
+      };
+      this.map.eachLayer(function(layer){
+        if(typeof layer.toGeoJSON == 'function')
+          geoJSON.features.push( layer.toGeoJSON() );
+      })
+      return geoJSON;
     }
 
   });

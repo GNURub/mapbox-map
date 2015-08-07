@@ -159,6 +159,8 @@
             icon: this._createIcon()
           });
 
+          // this.marker.bindPopup("Hola mundo")
+
 
           this.marker.addTo(this.map);
           this._titleChanged();

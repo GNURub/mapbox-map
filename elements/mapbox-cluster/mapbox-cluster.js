@@ -7,13 +7,20 @@
       map: {
         type: Object,
         observer: '_mapChanged'
+      },
+      radius: {
+        type: Number,
+        value: 80
       }
     },
     _mapChanged: function(){
-      this.markers = new L.MarkerClusterGroup();
+      this.markers = new L.MarkerClusterGroup({maxClusterRadius: this.radius});
       if(this.map){
         this._updatedMarkers();
       }
+      this.markers.on('click clusterclick', function (e) {
+        this.fire(e.type, e);
+      }, this);
 
     },
     _observeMarkers: function(){

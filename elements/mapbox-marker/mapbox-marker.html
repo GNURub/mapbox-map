@@ -1,5 +1,201 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../mapbox-behaviors/mapbox-behaviors.html">
+<dom-module id="mapbox-icon">
+  <style>
+    :host {
+      display: none;
+    }
+  </style>
+  <template>
+  </template>
+  <script>
+    Polymer({
+      is: "mapbox-icon",
+      properties: {
+          /**
+  			 * The `icon-url` attribute sets the URL to the icon image (absolute or relative to your script path).
+  			 *
+  			 * @attribute icon-url
+  			 * @type string
+  			 */
+  			iconUrl: {
+  				type: String
+  			},
+
+  			/**
+  			 * The `icon-retina-url` attribute sets the URL to a retina sized version of the icon image (absolute or relative to your script path). Used for Retina screen devices.
+  			 *
+  			 * @attribute icon-retina-url
+  			 * @type string
+  			 */
+  			iconRetinaUrl: {
+  				type: String
+  			},
+  			/**
+  			 * The `icon-width` attribute sets the size of the icon image in pixels.
+  			 *
+  			 * @attribute icon-width
+  			 * @type number
+  			 */
+  			iconWidth: {
+  				type: Number
+  			},
+  			/**
+  			 * The `icon-height` attribute sets the size of the icon image in pixels.
+  			 *
+  			 * @attribute icon-height
+  			 * @type number
+  			 */
+  			iconHeight: {
+  				type: Number
+  			},
+  			/**
+  			 * The `icon-anchor-x` attribute sets the coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that this point is at the marker's geographical location. Centered by default if size is specified, also can be set in CSS with negative margins.
+  			 *
+  			 * @attribute icon-anchor-x
+  			 * @type number
+  			 */
+  			iconAnchorX: {
+  				type: Number
+  			},
+  			/**
+  			 * The `icon-anchor-y` attribute sets the coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that this point is at the marker's geographical location. Centered by default if size is specified, also can be set in CSS with negative margins.
+  			 *
+  			 * @attribute icon-anchor-y
+  			 * @type number
+  			 */
+  			iconAnchorY: {
+  				type: Number
+  			},
+  			/**
+  			 * The `shadow-url` attribute sets the URL to the icon shadow image. If not specified, no shadow image will be created.
+  			 *
+  			 * @attribute shadow-url
+  			 * @type string
+  			 */
+  			shadowUrl: {
+  				type: String
+  			},
+  			/**
+  			 * The `shadow-retina-url` attribute sets the URL to the retina sized version of the icon shadow image. If not specified, no shadow image will be created. Used for Retina screen devices.
+  			 *
+  			 * @attribute shadow-retina-url
+  			 * @type string
+  			 */
+  			shadowRetinaUrl: {
+  				type: String
+  			},
+  			/**
+  			 * The `shadow-width` attribute sets the size of the shadow image in pixels.
+  			 *
+  			 * @attribute shadow-width
+  			 * @type number
+  			 */
+  			shadowWidth: {
+  				type: Number
+  			},
+  			/**
+  			 * The `shadow-height` attribute sets the size of the shadow image in pixels.
+  			 *
+  			 * @attribute shadow-height
+  			 * @type number
+  			 */
+  			shadowHeight: {
+  				type: Number
+  			},
+  			/**
+  			 * The `shadow-anchor-x` attribute sets the coordinates of the "tip" of the shadow (relative to its top left corner) (the same as iconAnchor if not specified).
+  			 *
+  			 * @attribute shadow-anchor-x
+  			 * @type number
+  			 */
+  			shadowAnchorX: {
+  				type: Number
+  			},
+  			/**
+  			 * The `shadow-anchor-y` attribute sets the coordinates of the "tip" of the shadow (relative to its top left corner) (the same as iconAnchor if not specified).
+  			 *
+  			 * @attribute shadow-anchor-y
+  			 * @type number
+  			 */
+  			shadowAnchorY: {
+  				type: Number
+  			},
+  			/**
+  			 * The `popup-anchor-x` attribute sets the coordinates of the point from which popups will "open", relative to the icon anchor.
+  			 *
+  			 * @attribute popup-anchor-x
+  			 * @type number
+  			 */
+  			popupAnchorX: {
+  				type: Number
+  			},
+  			/**
+  			 * The `popupanchory` attribute sets the coordinates of the point from which popups will "open", relative to the icon anchor.
+  			 *
+  			 * @attribute popup-anchor-y
+  			 * @type number
+  			 */
+  			popupAnchorY: {
+  				type: Number
+  			},
+  			/**
+  			 * The `class-name` attribute sets a custom class name to assign to both icon and shadow images. Empty by default.
+  			 *
+  			 * @attribute class-name
+  			 * @type string
+  			 */
+  			className: {
+  				type: String,
+  				value: ''
+  			},
+        icon: Object
+  		},
+
+      observers: [
+        '_iconChanged(iconUrl, iconRetinaUrl, shadowUrl, shadowRetinaUrl,'+
+        'shadowRetinaUrl, className, iconWidth, iconHeight, iconAnchorX,'+
+        'iconAnchorY, shadowWidth, shadowHeight, shadowAnchorX, popupAnchorY'+
+        'popupAnchorY)'
+      ],
+  		getIcon: function() {
+  			if (this.icon) {
+  				return this.icon;
+  			}
+  			var icon = {
+  				iconUrl:         this.iconUrl,
+  				iconRetinaUrl:   this.iconRetinaUrl,
+  				shadowUrl:       this.shadowUrl,
+  				shadowRetinaUrl: this.shadowRetinaUrl,
+  				className:       this.className
+  			};
+  			if (this.iconWidth && this.iconHeight) {
+  				icon.iconSize = L.point(this.iconWidth, this.iconHeight);
+  			}
+  			if (this.iconAnchorX && this.iconAnchorY) {
+  				icon.iconAnchor = L.point(this.iconAnchorX, this.iconAnchorY);
+  			}
+  			if (this.shadowWidth && this.shadowHeight) {
+  				icon.shadowSize = L.point(this.shadowWidth, this.shadowHeight);
+  			}
+  			if (this.shadowAnchorX && this.shadowAnchorY) {
+  				icon.shadowAnchor = L.point(this.shadowAnchorX, this.shadowAnchorY);
+  			}
+  			if (this.popupAnchorX && this.popupAnchorY) {
+  				icon.popupAnchor = L.point(this.popupAnchorX, this.popupAnchorY);
+  			}
+
+  			this.icon = L.icon(icon);
+  			return this.icon;
+  		},
+
+  		_iconChanged: function() {
+  			this.icon = null;
+  		}
+    });
+  </script>
+</dom-module>
+
 <dom-module id="mapbox-marker">
   <style>
     :host {
@@ -8,7 +204,8 @@
   </style>
   <link rel="stylesheet" href="../../bower_components/Leaflet.label/dist/leaflet.label.css">
   <template>
-    <content select="*"></content>
+    <content id="icon" select="mapbox-icon"></content>
+    <content></content>
   </template>
   <script>
     function setPos(pos){
@@ -83,51 +280,6 @@
           type: String,
           value: ''
         },
-
-        iconUrl: {
-          type: String,
-          value: ''
-        },
-
-        iconRetinaUrl: {
-          type: String,
-          value: ''
-        },
-
-        iconSize: {
-          type: Array,
-          value: []
-        },
-
-        iconAnchor: {
-          type: Array,
-          value: []
-        },
-
-        popupAnchor: {
-          type: Array,
-          value: []
-        },
-
-        shadowUrl: {
-          type: String,
-          value: ''
-        },
-
-        shadowRetinaUrl: {
-          type: String,
-          value: ''
-        },
-
-        shadowSize: {
-          type: Array,
-          value: []
-        },
-
-        shadowAnchor: {
-          type: Array,
-          value: []
-        }
       },
 
       observers: [
@@ -172,12 +324,20 @@
           if( this.feature ) {
             this.map.removeLayer(this.feature);
           }
-          var newCenter = new L.latLng(this.latitude, this.longitude);
 
+          var icon;
+          var newCenter = new L.latLng(this.latitude, this.longitude);
+          var iconNode = Array.prototype.slice.call(
+            Polymer.dom(this.$.icon).getDistributedNodes())[0];
+          if(!this.color  && !this.symbol && !this.size && iconNode){
+            icon = iconNode.getIcon();
+          }else{
+            icon = this._createIcon();
+          }
           this.feature = L.marker(newCenter, {
             draggable: !!this.draggable,
             alt: this.label,
-            icon: this._createIcon()
+            icon: icon
           });
 
           this.feature.addTo(this.map);

@@ -184,12 +184,15 @@
   		}
   	},
   	updatePopupContent: function() {
-      console.log("binding pop")
   		if (!this.feature) {
   			return;
   		}
   		this.feature.unbindPopup();
-  		var content = Polymer.dom(this).innerHTML.replace(/<\/?mapbox-point[^>]*>/g, "").trim();
+      var exp = /<\/?mapbox-point[^>]*>|<\/?mapbox-icon[^>]*>/g;
+  		var content = Polymer.dom(this)
+                    .innerHTML
+                    .replace(exp, "")
+                    .trim();
   		if (content) {
   			this.feature.bindPopup(content);
   		}

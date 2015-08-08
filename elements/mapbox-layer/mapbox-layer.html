@@ -1,5 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<dom-module id="mapbox-group">
+<dom-module id="mapbox-layers">
   <style>
     :host {
       display: block;
@@ -10,7 +10,7 @@
   </template>
   <script>
     Polymer({
-      is: "mapbox-group",
+      is: "mapbox-layers",
       feature: Object,
       layers: {
         type:Object,
@@ -21,7 +21,7 @@
         observer: '_mapChanged'
       },
       _mapChanged: function(){
-        console.log("Layer called!")
+        console.log("Layer called!");
         this.feature = L.control.layers();
         this.feature.on('baselayerchange overlayadd overlayremove', function(){
           this.fire(e.type, e);

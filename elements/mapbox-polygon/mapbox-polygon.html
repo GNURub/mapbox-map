@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../mapbox-behaviors/mapbox-behaviors.html">
-<dom-module id="mapbox-polyline">
+<dom-module id="mapbox-polygon">
   <style>
     :host {
       display: block;
@@ -10,12 +10,11 @@
     <content id="points" select="mapbox-point"></content>
   </template>
   <script>
+
 		Polymer({
-		  is: "mapbox-polyline",
-      behaviors: [
-        MapBox.MapBoxContentPoint,
-        MapBox.MapBoxPath
-      ],
+		  is: "mapbox-polygon",
+      behaviors: [MapBox.MapBoxContentPoint,
+              MapBox.MapBoxPath],
       properties: {
         feature: Object,
         map: {
@@ -23,9 +22,9 @@
           observer: '_mapChanged'
         },
         _mapChanged: function(){
-          console.log("Polyline called!!");
+          console.log("polygon called!!");
           if ( this.map ) {
-            this.feature = L.polyline( [],   this.pathOpts );
+            this.feature = L.polygon( [],   this.pathOpts );
             this.feature.addTo( this.map );
             this.updateMapBoxPoint();
 
@@ -55,6 +54,5 @@
         this.removeLayer();
       }
 		});
-
   </script>
 </dom-module>

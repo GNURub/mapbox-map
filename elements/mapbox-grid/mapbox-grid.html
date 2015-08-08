@@ -8,7 +8,7 @@
   <template>
   </template>
   <script>
-    HTMLImports.whenReady(function() {
+    // HTMLImports.whenReady(function() {
 			Polymer({
 			  is: "mapbox-grid",
         properties: {
@@ -30,6 +30,7 @@
 
         },
         _mapChanged: function(){
+          console.log("Grid called!!")
           var canUpdate = this.map && this.layer;
           if(canUpdate){
             this.feature = L.mapbox.gridLayer(this.layer);
@@ -67,6 +68,6 @@
         }
 
 			});
-    });
+    // });
   </script>
 </dom-module>

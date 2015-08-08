@@ -22,6 +22,7 @@
             observer: '_mapChanged'
           },
           _mapChanged: function(){
+            console.log("Polyline called!!");
             if ( this.map ) {
               this.feature = L.polyline( [],   this.pathOpts );
               this.feature.addTo( this.map );

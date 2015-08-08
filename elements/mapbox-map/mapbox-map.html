@@ -21,7 +21,7 @@
     <content id="features" select="*"></content>
   </template>
   <script>
-    HTMLImports.whenReady(function() {
+    // HTMLImports.whenReady(function() {
       Polymer({
         is: "mapbox-map",
         properties: {
@@ -66,21 +66,20 @@
 
           zoom: {
             type: Number,
-            value: 16,
+            value: 10,
             reflectToAttribute: true,
-            notify: true,
             observer: '_zoomChanged'
           },
 
           minZoom: {
             type: Number,
-            value: 0,
+            value: 3,
             readOnly: true
           },
 
           maxZoom: {
             type: Number,
-            value: 20,
+            value: 18,
             readOnly: true
           },
 
@@ -309,11 +308,11 @@
             value: false
           },
 
-          mapId: {
+          layer: {
             type: String,
             value: 'mapbox.streets',
             notify: true,
-            observer: '_mapIdChanged'
+            observer: '_layerChanged'
           },
 
           disableZoomUi: {
@@ -438,6 +437,12 @@
             scrollWheelZoom: this.zoomable,
             tapTolerance: this.tapTolerance,
             zoomControl: !this.disableZoomUi,
+            tileLayer: {
+                // This map option disables world wrapping. by default, it is false.
+                continuousWorld: false,
+                // This option disables loading tiles outside of the world bounds.
+                noWrap: false
+            },
             worldCopyJump: this.worldCopyJump,
             inertiaMaxSpeed: this.inertiaMaxSpeed,
             closePopupOnClick: this.closePopupOnClick,
@@ -448,7 +453,7 @@
             inertiaDeceleration: this.inertiaDeceleration,
             zoomAnimationThreshold: this.zoomAnimationThreshold
           };
-          var map = L.mapbox.map( this.$.mapbox, this.mapId, mapOptions );
+          var map = L.mapbox.map( this.$.mapbox, this.layer, mapOptions );
           this.map = map;
           this._updateCenter();
           this._updateLayers();
@@ -466,7 +471,7 @@
             this.fire(e.type, e);
           }, this);
           map.on('zoomend', function(e) {
-            this.zoom = map.getZoom();
+            // this.zoom = map.getZoom();
             this.fire(e.type, e);
           }, this);
 
@@ -530,6 +535,7 @@
 
         _zoomChanged: function() {
          if( this.map ){
+          console.log(this.zoom)
           this.map.setZoom( Number( this.zoom ) );
           this.fire( 'mapbox-e-zoomened', { data: this.zoom } );
          }
@@ -586,9 +592,9 @@
 
         },
 
-        _mapIdChanged: function(){
+        _layerChanged: function(){
           if(this.map){
-            L.mapbox.tileLayer(this.mapId).addTo(this.map);
+            L.mapbox.tileLayer(this.layer).addTo(this.map);
           }
         },
 
@@ -711,6 +717,6 @@
           return geoJSON;
         }
       });
-    });
+    // });
   </script>
 </dom-module>

@@ -9,7 +9,7 @@
   <template>
   </template>
   <script>
-    HTMLImports.whenReady(function() {
+    // HTMLImports.whenReady(function() {
       function setPos(pos){
         this.latitude  = pos.coords.latitude;
         this.longitude = pos.coords.longitude;
@@ -149,6 +149,7 @@
 
 
         _mapChanged: function() {
+          console.log("Marker Called!");
           // Marker will be rebuilt, so disconnect existing one from old map and listeners.
           if (this.marker) {
             return;
@@ -327,6 +328,6 @@
 
 
       });
-    });
+    // });
   </script>
 </dom-module>

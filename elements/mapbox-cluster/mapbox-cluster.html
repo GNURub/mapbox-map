@@ -27,7 +27,7 @@
         },
 
         _mapChanged: function(){
-          console.log("Hola")
+          console.log("Cluster called!")
           if(this.map){
             this.markers = new L.MarkerClusterGroup();
             this._updatedMarkers();
@@ -47,7 +47,6 @@
           });
         },
         _updatedMarkers: function(){
-          console.log("holaa")
           var newMarkers = Array.prototype.slice.call(
            Polymer.dom(this.$.markers).getDistributedNodes());
 

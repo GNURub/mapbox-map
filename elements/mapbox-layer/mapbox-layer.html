@@ -9,7 +9,7 @@
     <content id="layers" select="mapbox-layer"></content>
   </template>
   <script>
-    HTMLImports.whenReady(function() {
+    // HTMLImports.whenReady(function() {
       Polymer({
         is: "mapbox-group",
         feature: Object,
@@ -22,6 +22,7 @@
           observer: '_mapChanged'
         },
         _mapChanged: function(){
+          console.log("Layer called!")
           this.feature = L.control.layers();
           this.feature.on('baselayerchange overlayadd overlayremove', function(){
             this.fire(e.type, e);
@@ -66,6 +67,6 @@
         }
 
       });
-    });
+    // });
   </script>
 </dom-module>

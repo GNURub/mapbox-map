@@ -297,6 +297,7 @@
           this.latitude &&
           this.longitude );
         if( canUpdate ){
+          console.log("upda")
           this.feature.setLatLng( [ parseFloat(this.latitude), parseFloat(this.longitude) ] );
         }else if( !this.feature ){
           this._mapReady();
@@ -326,7 +327,7 @@
           }
 
           var icon;
-          var newCenter = new L.latLng(this.latitude, this.longitude);
+          var newCenter = L.latLng(this.latitude, this.longitude);
           var iconNode = Array.prototype.slice.call(
             Polymer.dom(this.$.icon).getDistributedNodes())[0];
           if(!this.color  && !this.symbol && !this.size && iconNode){
@@ -414,6 +415,11 @@
           * @event popupclose-marker
 
           */
+          this.feature.on('drag', function(e){
+            this.latitude  = e.target.getLatLng().lat;
+            this.longitude = e.target.getLatLng().lng;
+            console.log(e.target.getLatLng())
+          }, this);
           this.feature.on( 'click dblclick move dragstart drag dragend add remove popupopen popupclose', function(e){
             this.fire(e.type, e);
           }, this);

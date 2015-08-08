@@ -177,6 +177,44 @@
   };
 
   window.MapBox.MapBoxPopoutContent = {
+    properties: {
+      maxWidth: {
+        type: Number,
+        value: 300,
+      },
+      minWidth: {
+        type: Number,
+        value: 50,
+      },
+      maxHeight: {
+        type: Number,
+        value: 500,
+      },
+      autopan: {
+        type: Boolean,
+        value: true,
+      },
+      keepInView: {
+        type: Boolean,
+        value: false,
+      },
+      closeBotton: {
+        type: Boolean,
+        value: false,
+      },
+      zoomAnimation: {
+        type: Boolean,
+        value: true,
+      },
+      closeOnClick: {
+        type: Boolean,
+        value: null,
+      },
+      className: {
+        type: String,
+        value: '',
+      },
+    },
     attached: function() {
   		if ('MutationObserver' in window && !this._observer) {
   			this._observer = new MutationObserver(this.updatePopupContent.bind(this));
@@ -194,7 +232,17 @@
                     .replace(exp, "")
                     .trim();
   		if (content) {
-  			this.feature.bindPopup(content);
+  			this.feature.bindPopup(content,{
+          keepInView:    this.keepInView,
+          autoPan:       this.autoPan,
+          closeButton:   this.closeButton,
+          maxWidth:      this.maxWidth,
+          minWidth:      this.minWidth,
+          maxHeight:     this.maxHeight,
+          zoomAnimation: this.zoomAnimation,
+          closeOnClick:  this.closeOnClick,
+          className:     this.className
+        });
   		}
   	},
 

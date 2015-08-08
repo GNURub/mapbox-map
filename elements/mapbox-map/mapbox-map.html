@@ -47,6 +47,12 @@
             value: false
           },
 
+          loadFeature:{
+            type: String,
+            value: '',
+            observer: '_loadFeatureChanged'
+          },
+
           /**
            * A latitude to center the map on.
            */
@@ -715,6 +721,20 @@
             throw new TypeError('It has to be a function', "mapbox-map.js", 607);
           }
 
+        },
+
+        _loadFeatureChanged: function(){
+          var featureLayer = L.mapbox.featureLayer();
+          var loadFeature  = this.loadFeature;
+          var regexUrl = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+          var regexId = /^(\w)+\.{1}(\w)+$/;
+          if(loadFeature && regexId.test(loadFeature)){
+            featureLayer.loadID(loadFeature);
+            featureLayer.addTo(this.map);
+          }else if(loadFeature && regexUrl.test(loadFeature)){
+            featureLayer.loadID(loadFeature);
+            featureLayer.addTo(this.map);
+          }
         },
 
         /**

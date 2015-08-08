@@ -11,305 +11,305 @@
     <content select="*"></content>
   </template>
   <script>
-      function setPos(pos){
-        this.latitude  = pos.coords.latitude;
-        this.longitude = pos.coords.longitude;
-        this._updatePosition();
-      }
-      Polymer({
-        is: "mapbox-marker",
-        properties:{
-          feature: Object,
+    function setPos(pos){
+      this.latitude  = pos.coords.latitude;
+      this.longitude = pos.coords.longitude;
+      this._updatePosition();
+    }
+    Polymer({
+      is: "mapbox-marker",
+      properties:{
+        feature: Object,
 
-          label: {
-            type: String,
-            value: null,
-            reflectToAttribute: true,
-            observer: '_titleChanged'
-          },
-
-          map: {
-            type: Object,
-            observer: '_mapChanged'
-          },
-
-          draggable: {
-            type: Boolean,
-            value: false,
-            notify: true
-          },
-
-          getPosition: {
-            type: Boolean,
-            value: false,
-            observer: '_getPositionChanged'
-          },
-
-          watchPosition: {
-            type: Boolean,
-            value: false,
-            observer: '_watchPositionChanged'
-          },
-
-          /**
-          * The marker's longitude coordinate.
-          */
-          longitude: {
-            type: Number,
-            value: null,
-            reflectToAttribute: true
-          },
-
-          /**
-          * The marker's latitude coordinate.
-          */
-          latitude: {
-            type: Number,
-            value: null,
-            reflectToAttribute: true
-          },
-
-          color: {
-            type: String,
-            value: ''
-          },
-
-          size: {
-            type: String,
-            value: ''
-          },
-
-          symbol: {
-            type: String,
-            value: ''
-          },
-
-          iconUrl: {
-            type: String,
-            value: ''
-          },
-
-          iconRetinaUrl: {
-            type: String,
-            value: ''
-          },
-
-          iconSize: {
-            type: Array,
-            value: []
-          },
-
-          iconAnchor: {
-            type: Array,
-            value: []
-          },
-
-          popupAnchor: {
-            type: Array,
-            value: []
-          },
-
-          shadowUrl: {
-            type: String,
-            value: ''
-          },
-
-          shadowRetinaUrl: {
-            type: String,
-            value: ''
-          },
-
-          shadowSize: {
-            type: Array,
-            value: []
-          },
-
-          shadowAnchor: {
-            type: Array,
-            value: []
-          }
+        label: {
+          type: String,
+          value: null,
+          reflectToAttribute: true,
+          observer: '_titleChanged'
         },
 
-        observers: [
-          '_updatePosition(latitude, longitude)',
-          '_iconChanged(color, size, symbol)'
-        ],
-
-        behaviors: [
-          MapBox.MapBoxPopoutContent
-        ],
-
-        _updatePosition:function(){
-          var canUpdate = ( this.map &&
-            this.feature &&
-            this.latitude &&
-            this.longitude );
-          if( canUpdate ){
-            this.feature.setLatLng( [ parseFloat(this.latitude), parseFloat(this.longitude) ] );
-          }else if( !this.feature ){
-            this._mapReady();
-          }
+        map: {
+          type: Object,
+          observer: '_mapChanged'
         },
 
-
-        _mapChanged: function() {
-          console.log("Marker Called!");
-          // Marker will be rebuilt, so disconnect existing one from old map and listeners.
-          if (this.feature) {
-            return;
-          }
-          if (this.map) {
-            this._mapReady();
-          }
+        draggable: {
+          type: Boolean,
+          value: false,
+          notify: true
         },
 
-        _mapReady: function () {
-          var canUpdate = ( this.map &&
-            this.latitude &&
-            this.longitude );
-
-          if( canUpdate ) {
-            if( this.feature ) {
-              this.map.removeLayer(this.feature);
-            }
-            var newCenter = new L.latLng(this.latitude, this.longitude);
-
-            this.feature = L.marker(newCenter, {
-              draggable: !!this.draggable,
-              alt: this.label,
-              icon: this._createIcon()
-            });
-
-            this.feature.addTo(this.map);
-            this._titleChanged();
-            this._getPositionChanged();
-            this._watchPositionChanged();
-
-
-            /**
-            * Fired when user clicks (or tabs) the marker.
-            *
-            * @event click-marker
-
-            *//**
-            * Fired when user dobleclicks (or doble-tabs) the marker
-            *
-            * @event dblclick-marker
-
-            */
-
-            /**
-            * Fired when the marker is moved via latitude/longitude.
-            *
-            * @event move-marker
-
-            */
-
-            /**
-            * Fired when user starts dragging the marker.
-            *
-            * @event dragstart-marker
-
-            */
-
-            /**
-            * Fired reapetedly while the user drags the marker.
-            *
-            * @event drag-marker
-
-            */
-
-            /**
-            * Fired when user stops dragging the marker.
-            *
-            * @event dragend-marker
-
-            */
-
-            /**
-            * Fired when the marker is added from the map.
-            *
-            * @event add-marker
-
-            */
-
-            /**
-            * Fired when the marker is removed from the map.
-            *
-            * @event remove-marker
-
-            */
-
-            /**
-            * Fired when popup bound to the marker is open.
-            *
-            * @event popupopen-marker
-
-            */
-
-            /**
-            * Fired when popup bound to the marker is close.
-            *
-            * @event popupclose-marker
-
-            */
-            this.feature.on( 'click dblclick move dragstart drag dragend add remove popupopen popupclose', function(e){
-              this.fire(e.type, e);
-            }, this);
-          }
+        getPosition: {
+          type: Boolean,
+          value: false,
+          observer: '_getPositionChanged'
         },
 
-        _iconChanged: function (color, size, symbol) {
-          if( this.map && !!this.feature ) {
-            this.feature.setIcon(this._createIcon());}
-        },
-
-        _createIcon:function  () {
-          return L.mapbox.marker.icon( {
-            'marker-size': this.size,
-            'marker-symbol': this.symbol,
-            'marker-color': this.color
-          } );
-        },
-
-        _titleChanged: function(){
-          if(this.feature && this.map){
-            this.feature.bindLabel(this.label);
-          }
-        },
-
-        _getPositionChanged: function(){
-          if(this.getPosition && ('geolocation' in navigator)){
-            navigator.geolocation.getCurrentPosition(setPos.bind(this));
-          }
-        },
-
-        _watchPositionChanged: function(){
-          if(!this.getPosition && this.watchPosition && ('geolocation' in navigator)){
-            navigator.geolocation.watchPosition(setPos.bind(this));
-          }
+        watchPosition: {
+          type: Boolean,
+          value: false,
+          observer: '_watchPositionChanged'
         },
 
         /**
-         * Description
-         * @method removeLayer
-         * @return
-         */
-        removeLayer: function() {
-          this.map.removeLayer(this.feature);
-          this.remove();
+        * The marker's longitude coordinate.
+        */
+        longitude: {
+          type: Number,
+          value: null,
+          reflectToAttribute: true
         },
 
         /**
-         * Description
-         * @method detached
-         * @return
-         */
-        detached: function(){
-          this.removeLayer();
+        * The marker's latitude coordinate.
+        */
+        latitude: {
+          type: Number,
+          value: null,
+          reflectToAttribute: true
+        },
+
+        color: {
+          type: String,
+          value: ''
+        },
+
+        size: {
+          type: String,
+          value: ''
+        },
+
+        symbol: {
+          type: String,
+          value: ''
+        },
+
+        iconUrl: {
+          type: String,
+          value: ''
+        },
+
+        iconRetinaUrl: {
+          type: String,
+          value: ''
+        },
+
+        iconSize: {
+          type: Array,
+          value: []
+        },
+
+        iconAnchor: {
+          type: Array,
+          value: []
+        },
+
+        popupAnchor: {
+          type: Array,
+          value: []
+        },
+
+        shadowUrl: {
+          type: String,
+          value: ''
+        },
+
+        shadowRetinaUrl: {
+          type: String,
+          value: ''
+        },
+
+        shadowSize: {
+          type: Array,
+          value: []
+        },
+
+        shadowAnchor: {
+          type: Array,
+          value: []
         }
+      },
+
+      observers: [
+        '_updatePosition(latitude, longitude)',
+        '_iconChanged(color, size, symbol)'
+      ],
+
+      behaviors: [
+        MapBox.MapBoxPopoutContent
+      ],
+
+      _updatePosition:function(){
+        var canUpdate = ( this.map &&
+          this.feature &&
+          this.latitude &&
+          this.longitude );
+        if( canUpdate ){
+          this.feature.setLatLng( [ parseFloat(this.latitude), parseFloat(this.longitude) ] );
+        }else if( !this.feature ){
+          this._mapReady();
+        }
+      },
 
 
-      });
+      _mapChanged: function() {
+        console.log("Marker Called!");
+        // Marker will be rebuilt, so disconnect existing one from old map and listeners.
+        if (this.feature) {
+          return;
+        }
+        if (this.map) {
+          this._mapReady();
+        }
+      },
+
+      _mapReady: function () {
+        var canUpdate = ( this.map &&
+          this.latitude &&
+          this.longitude );
+
+        if( canUpdate ) {
+          if( this.feature ) {
+            this.map.removeLayer(this.feature);
+          }
+          var newCenter = new L.latLng(this.latitude, this.longitude);
+
+          this.feature = L.marker(newCenter, {
+            draggable: !!this.draggable,
+            alt: this.label,
+            icon: this._createIcon()
+          });
+
+          this.feature.addTo(this.map);
+          this._titleChanged();
+          this._getPositionChanged();
+          this._watchPositionChanged();
+
+
+          /**
+          * Fired when user clicks (or tabs) the marker.
+          *
+          * @event click-marker
+
+          *//**
+          * Fired when user dobleclicks (or doble-tabs) the marker
+          *
+          * @event dblclick-marker
+
+          */
+
+          /**
+          * Fired when the marker is moved via latitude/longitude.
+          *
+          * @event move-marker
+
+          */
+
+          /**
+          * Fired when user starts dragging the marker.
+          *
+          * @event dragstart-marker
+
+          */
+
+          /**
+          * Fired reapetedly while the user drags the marker.
+          *
+          * @event drag-marker
+
+          */
+
+          /**
+          * Fired when user stops dragging the marker.
+          *
+          * @event dragend-marker
+
+          */
+
+          /**
+          * Fired when the marker is added from the map.
+          *
+          * @event add-marker
+
+          */
+
+          /**
+          * Fired when the marker is removed from the map.
+          *
+          * @event remove-marker
+
+          */
+
+          /**
+          * Fired when popup bound to the marker is open.
+          *
+          * @event popupopen-marker
+
+          */
+
+          /**
+          * Fired when popup bound to the marker is close.
+          *
+          * @event popupclose-marker
+
+          */
+          this.feature.on( 'click dblclick move dragstart drag dragend add remove popupopen popupclose', function(e){
+            this.fire(e.type, e);
+          }, this);
+        }
+      },
+
+      _iconChanged: function (color, size, symbol) {
+        if( this.map && !!this.feature ) {
+          this.feature.setIcon(this._createIcon());}
+      },
+
+      _createIcon:function  () {
+        return L.mapbox.marker.icon( {
+          'marker-size': this.size,
+          'marker-symbol': this.symbol,
+          'marker-color': this.color
+        } );
+      },
+
+      _titleChanged: function(){
+        if(this.feature && this.map){
+          this.feature.bindLabel(this.label);
+        }
+      },
+
+      _getPositionChanged: function(){
+        if(this.getPosition && ('geolocation' in navigator)){
+          navigator.geolocation.getCurrentPosition(setPos.bind(this));
+        }
+      },
+
+      _watchPositionChanged: function(){
+        if(!this.getPosition && this.watchPosition && ('geolocation' in navigator)){
+          navigator.geolocation.watchPosition(setPos.bind(this));
+        }
+      },
+
+      /**
+       * Description
+       * @method removeLayer
+       * @return
+       */
+      removeLayer: function() {
+        this.map.removeLayer(this.feature);
+        this.remove();
+      },
+
+      /**
+       * Description
+       * @method detached
+       * @return
+       */
+      detached: function(){
+        this.removeLayer();
+      }
+
+
+    });
   </script>
 </dom-module>

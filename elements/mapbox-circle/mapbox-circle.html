@@ -9,108 +9,106 @@
   <template>
   </template>
   <script>
-    // HTMLImports.whenReady(function() {
-			Polymer({
-        is: "mapbox-circle",
-        behaviors: [MapBox.MapBoxPath],
+		Polymer({
+      is: "mapbox-circle",
+      behaviors: [MapBox.MapBoxPath],
 
-        properties: {
-          map: {
-            type: Object,
-            observer: '_mapChanged'
-          },
-
-          /**
-          * The circle's longitude coordinate.
-          */
-          longitude: {
-            type: Number,
-            value: null,
-            reflectToAttribute: true
-          },
-
-
-
-          /**
-          * The circle's latitude coordinate.
-          */
-          latitude: {
-            type: Number,
-            value: null,
-            reflectToAttribute: true
-          },
-
-          /**
-          * The circle's radius.
-          */
-
-          radius: {
-            type: Number,
-            value: null,
-            reflectToAttribute: true,
-            observer: '_radiusChanged'
-          }
-        },
-
-        observers: [
-          '_updatePosition(latitude, longitude)'
-        ],
-
-        _mapChanged: function(){
-          console.log("Circle called!!");
-          if(this.map && this.radius && this.latitude && this.longitude)
-            this._renderCircle();
-        },
-
-        _renderCircle: function(){
-          this.feature = L.circle([Number(this.latitude),
-                                  Number(this.longitude)],
-                                  Number(this.radius),
-                                  this.pathOpts)
-                                  .addTo(this.map);
-
-          this.feature.on('click dblclick mousedown mouseover mouseout contextmenu add remove popupopen popupclose', function(e) {
-            this.fire(e.type, e);
-          }, this);
-        },
-
-        _updatePosition: function (latitude, longitude){
-          var canUpdate = this.map &&
-              this.latitude &&
-              this.longitude &&
-              this.feature;
-          if (canUpdate) {
-            this.feature.setLatLng(L.latLng( this.latitude, this.longitude) );
-          }
-        },
-
-        _radiusChanged: function(){
-          if (this.feature && !!this.radius) {
-            this.feature.setRadius(this.radius);
-          }
+      properties: {
+        map: {
+          type: Object,
+          observer: '_mapChanged'
         },
 
         /**
-         * Description
-         * @method removeLayer
-         * @param {} keep
-         * @return
-         */
-        removeLayer: function(keep){
-          this.map.removeLayer(this.feature);
-          this.remove();
+        * The circle's longitude coordinate.
+        */
+        longitude: {
+          type: Number,
+          value: null,
+          reflectToAttribute: true
+        },
+
+
+
+        /**
+        * The circle's latitude coordinate.
+        */
+        latitude: {
+          type: Number,
+          value: null,
+          reflectToAttribute: true
         },
 
         /**
-         * Description
-         * @method detached
-         * @return
-         */
-        detached: function(){
-          this.removeLayer();
+        * The circle's radius.
+        */
+
+        radius: {
+          type: Number,
+          value: null,
+          reflectToAttribute: true,
+          observer: '_radiusChanged'
         }
+      },
 
-			});
-    // });
+      observers: [
+        '_updatePosition(latitude, longitude)'
+      ],
+
+      _mapChanged: function(){
+        console.log("Circle called!!");
+        if(this.map && this.radius && this.latitude && this.longitude)
+          this._renderCircle();
+      },
+
+      _renderCircle: function(){
+        this.feature = L.circle([Number(this.latitude),
+                                Number(this.longitude)],
+                                Number(this.radius),
+                                this.pathOpts)
+                                .addTo(this.map);
+
+        this.feature.on('click dblclick mousedown mouseover mouseout contextmenu add remove popupopen popupclose', function(e) {
+          this.fire(e.type, e);
+        }, this);
+      },
+
+      _updatePosition: function (latitude, longitude){
+        var canUpdate = this.map &&
+            this.latitude &&
+            this.longitude &&
+            this.feature;
+        if (canUpdate) {
+          this.feature.setLatLng(L.latLng( this.latitude, this.longitude) );
+        }
+      },
+
+      _radiusChanged: function(){
+        if (this.feature && !!this.radius) {
+          this.feature.setRadius(this.radius);
+        }
+      },
+
+      /**
+       * Description
+       * @method removeLayer
+       * @param {} keep
+       * @return
+       */
+      removeLayer: function(keep){
+        this.map.removeLayer(this.feature);
+        this.remove();
+      },
+
+      /**
+       * Description
+       * @method detached
+       * @return
+       */
+      detached: function(){
+        this.removeLayer();
+      }
+
+		});
   </script>
 </dom-module>

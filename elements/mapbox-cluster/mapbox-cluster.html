@@ -11,55 +11,53 @@
     <content id="markers" select="mapbox-marker"></content>
   </template>
   <script>
-    // HTMLImports.whenReady(function() {
-			Polymer({
-			  is: "mapbox-cluster",
-        properties: {
-          markers: Object,
-          map: {
-            type: Object,
-            observer: '_mapChanged'
-          },
-          radius: {
-            type: Number,
-            value: 80
-          }
+		Polymer({
+		  is: "mapbox-cluster",
+      properties: {
+        markers: Object,
+        map: {
+          type: Object,
+          observer: '_mapChanged'
         },
-
-        _mapChanged: function(){
-          console.log("Cluster called!")
-          if(this.map){
-            this.markers = new L.MarkerClusterGroup();
-            this._updatedMarkers();
-          }
-          this.markers.on('click clusterclick', function (e) {
-            this.fire(e.type, e);
-          }, this);
-
-        },
-        _observeMarkers: function(){
-          if (this._observer) {
-            return;
-          }
-          this._observer = new MutationObserver( this._updatedMarkers.bind(this));
-          this._observer.observe(this, {
-            childList: true
-          });
-        },
-        _updatedMarkers: function(){
-          var newMarkers = Array.prototype.slice.call(
-           Polymer.dom(this.$.markers).getDistributedNodes());
-
-          this._observeMarkers();
-          if (newMarkers.length && this.markers) {
-            for (var i = 0, m; m = newMarkers[i]; ++i) {
-              m.map = this.markers;
-            }
-            this.map.addLayer(this.markers);
-          }
+        radius: {
+          type: Number,
+          value: 80
         }
+      },
 
-			});
-    // });
+      _mapChanged: function(){
+        console.log("Cluster called!")
+        if(this.map){
+          this.markers = new L.MarkerClusterGroup();
+          this._updatedMarkers();
+        }
+        this.markers.on('click clusterclick', function (e) {
+          this.fire(e.type, e);
+        }, this);
+
+      },
+      _observeMarkers: function(){
+        if (this._observer) {
+          return;
+        }
+        this._observer = new MutationObserver( this._updatedMarkers.bind(this));
+        this._observer.observe(this, {
+          childList: true
+        });
+      },
+      _updatedMarkers: function(){
+        var newMarkers = Array.prototype.slice.call(
+         Polymer.dom(this.$.markers).getDistributedNodes());
+
+        this._observeMarkers();
+        if (newMarkers.length && this.markers) {
+          for (var i = 0, m; m = newMarkers[i]; ++i) {
+            m.map = this.markers;
+          }
+          this.map.addLayer(this.markers);
+        }
+      }
+
+		});
   </script>
 </dom-module>

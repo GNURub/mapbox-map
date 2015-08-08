@@ -16,12 +16,14 @@
     }
   </style>
   <link rel="stylesheet" href="../../bower_components/mapbox.js/mapbox.css">
+  <link rel="stylesheet" href="../../bower_components/leaflet.fullscreen/Control.FullScreen.css" title="no title" charset="utf-8">
+  <link rel="stylesheet" href="../../bower_components/leaflet.locatecontrol/dist/L.Control.Locate.mapbox.min.css">
   <template>
     <div id="mapbox"></div>
     <content id="features" select="*"></content>
   </template>
   <script>
-    // HTMLImports.whenReady(function() {
+    HTMLImports.whenReady(function() {
       Polymer({
         is: "mapbox-map",
         properties: {
@@ -464,7 +466,7 @@
           this._updateLayers();
 
 
-          map.on('click dblclick mousedown mouseup mouseover mouseout mousemove contextmenu focus blur preclick load unload viewreset movestart move dragstart drag dragend zoomstart zoomlevelschange resize autopanstart layeradd layerremove baselayerchange overlayadd overlayremove locationfound locationerror popupopen popupclose', function(e) {
+          map.on('click dblclick mousedown mouseup mouseover mouseout mousemove contextmenu focus blur preclick load unload viewreset movestart move dragstart drag dragend zoomstart zoomlevelschange zoomend resize autopanstart layeradd layerremove baselayerchange overlayadd overlayremove locationfound locationerror popupopen popupclose', function(e) {
             this.fire(e.type, e);
           }, this);
 
@@ -476,9 +478,13 @@
             this.fire(e.type, e);
           }, this);
           map.on('zoomend', function(e) {
-            // this.zoom = map.getZoom();
+            this.zoom = map.getZoom();
             this.fire(e.type, e);
           }, this);
+
+          this._toggleGeocoder();
+          this._toggleGeolocator();
+          this._toggleFullscreen();
 
           this.fire( 'open-map-ready' );
 
@@ -540,7 +546,6 @@
 
         _zoomChanged: function() {
          if( this.map ){
-          console.log(this.zoom)
           this.map.setZoom( Number( this.zoom ) );
           this.fire( 'mapbox-e-zoomened', { data: this.zoom } );
          }
@@ -558,31 +563,38 @@
         },
 
         _toggleGeolocator: function () {
-          if( this.geolocationUi ){
-            this.locate = L.control.locate().addTo( this.map );
+          if( this.geolocationUi && this.map){
+            // this.async(function(){
+              this.locate = L.control.locate().addTo( this.map );
+            // }.bind(this), 20);
           }else if( this.locate ){
             this.locate.removeFrom( this.map );
           }
         },
 
         _toggleFullscreen: function () {
-          if( this.fullscreenUi ){
-            this.fullscreen = L.control.fullscreen().addTo( this.map );
+          if( this.fullscreenUi && this.map ){
+            // this.async(function(){
+              this.fullscreen = L.control.fullscreen().addTo( this.map );
+            // }.bind(this), 20);
           }else if( this.fullscreen ){
             this.fullscreen.removeFrom( this.map );
           }
         },
 
         _toggleGeocoder: function () {
-            if( this.geocoderUi ){
-              this.geocoder = L.mapbox.geocoderControl('mapbox.places', {
-                keepOpen: false,
-                autocomplete: this.autocompleteGeocoder,
-                accessToken: this.accessToken
-              });
-              this.geocoder.on('found error select autoselect', function(e){
-                this.fire(e.type, e);
-              }, this);
+            if( this.geocoderUi && this.map ){
+              // this.async(function() {
+                this.geocoder = L.mapbox.geocoderControl('mapbox.places', {
+                  keepOpen: false,
+                  autocomplete: this.autocompleteGeocoder,
+                  accessToken: this.accessToken
+                });
+                this.geocoder.on('found error select autoselect', function(e){
+                  this.fire(e.type, e);
+                }, this);
+                this.geocoder.addTo(this.map);
+              // }.bind(this), 20);
 
             }else if( this.geocoder ){
               this.geocoder.removeFrom( this.map );
@@ -722,6 +734,6 @@
           return geoJSON;
         }
       });
-    // });
+    });
   </script>
 </dom-module>

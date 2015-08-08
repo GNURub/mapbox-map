@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../mapbox-behaviors/mapbox-behaviors.html">
 <dom-module id="mapbox-marker">
   <style>
     :host {
@@ -10,7 +11,6 @@
     <content select="*"></content>
   </template>
   <script>
-    // HTMLImports.whenReady(function() {
       function setPos(pos){
         this.latitude  = pos.coords.latitude;
         this.longitude = pos.coords.longitude;
@@ -19,12 +19,11 @@
       Polymer({
         is: "mapbox-marker",
         properties:{
-          marker: Object,
+          feature: Object,
 
           label: {
             type: String,
             value: null,
-            notify: true,
             reflectToAttribute: true,
             observer: '_titleChanged'
           },
@@ -136,14 +135,18 @@
           '_iconChanged(color, size, symbol)'
         ],
 
+        behaviors: [
+          MapBox.MapBoxPopoutContent
+        ],
+
         _updatePosition:function(){
           var canUpdate = ( this.map &&
-            this.marker &&
+            this.feature &&
             this.latitude &&
             this.longitude );
           if( canUpdate ){
-            this.marker.setLatLng( [ parseFloat(this.latitude), parseFloat(this.longitude) ] );
-          }else if( !this.marker ){
+            this.feature.setLatLng( [ parseFloat(this.latitude), parseFloat(this.longitude) ] );
+          }else if( !this.feature ){
             this._mapReady();
           }
         },
@@ -152,34 +155,32 @@
         _mapChanged: function() {
           console.log("Marker Called!");
           // Marker will be rebuilt, so disconnect existing one from old map and listeners.
-          if (this.marker) {
+          if (this.feature) {
             return;
           }
           if (this.map) {
             this._mapReady();
           }
         },
+
         _mapReady: function () {
           var canUpdate = ( this.map &&
             this.latitude &&
             this.longitude );
 
           if( canUpdate ) {
-            if( this.marker ) {
-              this.map.removeLayer(this.marker);
+            if( this.feature ) {
+              this.map.removeLayer(this.feature);
             }
             var newCenter = new L.latLng(this.latitude, this.longitude);
 
-            this.marker = L.marker(newCenter, {
+            this.feature = L.marker(newCenter, {
               draggable: !!this.draggable,
               alt: this.label,
               icon: this._createIcon()
             });
-            var content = Polymer.dom(this).innerHTML.trim();
-            if(!!content){
-              this.marker.bindPopup(content)}
 
-            this.marker.addTo(this.map);
+            this.feature.addTo(this.map);
             this._titleChanged();
             this._getPositionChanged();
             this._watchPositionChanged();
@@ -190,16 +191,12 @@
             *
             * @event click-marker
 
-            */
-            this.marker.on( 'click', this._sendEvent.bind( this ))
-
-            /**
+            *//**
             * Fired when user dobleclicks (or doble-tabs) the marker
             *
             * @event dblclick-marker
 
             */
-            .on( 'dblclick', this._sendEvent.bind( this ))
 
             /**
             * Fired when the marker is moved via latitude/longitude.
@@ -207,7 +204,6 @@
             * @event move-marker
 
             */
-            .on( 'move', this._sendEvent.bind( this ))
 
             /**
             * Fired when user starts dragging the marker.
@@ -215,7 +211,6 @@
             * @event dragstart-marker
 
             */
-            .on( 'dragstart', this._sendEvent.bind( this ))
 
             /**
             * Fired reapetedly while the user drags the marker.
@@ -223,7 +218,6 @@
             * @event drag-marker
 
             */
-            .on( 'drag', this._sendEvent.bind( this ))
 
             /**
             * Fired when user stops dragging the marker.
@@ -231,7 +225,6 @@
             * @event dragend-marker
 
             */
-            .on( 'dragend', this._sendEvent.bind( this ))
 
             /**
             * Fired when the marker is added from the map.
@@ -239,7 +232,6 @@
             * @event add-marker
 
             */
-            .on( 'add', this._sendEvent.bind( this ))
 
             /**
             * Fired when the marker is removed from the map.
@@ -247,7 +239,6 @@
             * @event remove-marker
 
             */
-            .on( 'remove', this._sendEvent.bind( this ))
 
             /**
             * Fired when popup bound to the marker is open.
@@ -255,7 +246,6 @@
             * @event popupopen-marker
 
             */
-            .on( 'popupopen', this._sendEvent.bind( this ))
 
             /**
             * Fired when popup bound to the marker is close.
@@ -263,18 +253,15 @@
             * @event popupclose-marker
 
             */
-            .on( 'popupclose', this._sendEvent.bind( this ));
-
+            this.feature.on( 'click dblclick move dragstart drag dragend add remove popupopen popupclose', function(e){
+              this.fire(e.type, e);
+            }, this);
           }
         },
 
-        _sendEvent: function (e){
-          this.fire(e.type + '-marker', { data: e } );
-        },
-
         _iconChanged: function (color, size, symbol) {
-          if( this.map && !!this.marker ) {
-            this.marker.setIcon(this._createIcon());}
+          if( this.map && !!this.feature ) {
+            this.feature.setIcon(this._createIcon());}
         },
 
         _createIcon:function  () {
@@ -286,8 +273,8 @@
         },
 
         _titleChanged: function(){
-          if(!!this.label && this.marker){
-            this.marker.bindLabel(this.label);
+          if(this.feature && this.map){
+            this.feature.bindLabel(this.label);
           }
         },
 
@@ -309,7 +296,7 @@
          * @return
          */
         removeLayer: function() {
-          this.map.removeLayer(this.marker);
+          this.map.removeLayer(this.feature);
           this.remove();
         },
 
@@ -324,6 +311,5 @@
 
 
       });
-    // });
   </script>
 </dom-module>

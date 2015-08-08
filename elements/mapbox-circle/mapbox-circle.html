@@ -63,13 +63,13 @@
         },
 
         _renderCircle: function(){
-          this.circle = L.circle([Number(this.latitude),
+          this.feature = L.circle([Number(this.latitude),
                                   Number(this.longitude)],
                                   Number(this.radius),
                                   this.pathOpts)
                                   .addTo(this.map);
 
-          this.circle.on('click dblclick mousedown mouseover mouseout contextmenu add remove popupopen popupclose', function(e) {
+          this.feature.on('click dblclick mousedown mouseover mouseout contextmenu add remove popupopen popupclose', function(e) {
             this.fire(e.type, e);
           }, this);
         },
@@ -78,15 +78,15 @@
           var canUpdate = this.map &&
               this.latitude &&
               this.longitude &&
-              this.circle;
+              this.feature;
           if (canUpdate) {
-            this.circle.setLatLng(L.latLng( this.latitude, this.longitude) );
+            this.feature.setLatLng(L.latLng( this.latitude, this.longitude) );
           }
         },
 
         _radiusChanged: function(){
-          if (this.circle && !!this.radius) {
-            this.circle.setRadius(this.radius);
+          if (this.feature && !!this.radius) {
+            this.feature.setRadius(this.radius);
           }
         },
 
@@ -97,7 +97,7 @@
          * @return
          */
         removeLayer: function(keep){
-          this.map.removeLayer(this.circle);
+          this.map.removeLayer(this.feature);
           this.remove();
         },
 

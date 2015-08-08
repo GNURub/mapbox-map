@@ -32,9 +32,9 @@
             this.markers = new L.MarkerClusterGroup();
             this._updatedMarkers();
           }
-          // this.markers.on('click clusterclick', function (e) {
-          //   this.fire(e.type, e);
-          // }, this);
+          this.markers.on('click clusterclick', function (e) {
+            this.fire(e.type, e);
+          }, this);
 
         },
         _observeMarkers: function(){

@@ -418,7 +418,7 @@
 
           */
 
-          this.feature.on( 'click dblclick move dragstart drag dragend add remove popupopen popupclose', function(e){
+          this.feature.on( 'click dblclick moveend move dragstart drag dragend add remove popupopen popupclose', function(e){
             this.fire(e.type, e);
           }, this);
 
@@ -426,7 +426,6 @@
             this.disableUpPos = true;
             this.latitude  = e.target.getLatLng().lat;
             this.longitude = e.target.getLatLng().lng;
-            console.log(e.target.getLatLng())
           }, this);
           this.feature.on('dragend', function(e){
             this.disableUpPos = false;

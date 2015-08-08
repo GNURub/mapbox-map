@@ -53,6 +53,8 @@
             observer: '_loadFeatureChanged'
           },
 
+          
+
           /**
            * A latitude to center the map on.
            */
@@ -470,6 +472,7 @@
           this.map = map;
           this._updateCenter();
           this._updateLayers();
+          this._loadFeatureChanged();
 
 
           map.on('click dblclick mousedown mouseup mouseover mouseout mousemove contextmenu focus blur preclick load unload viewreset movestart move dragstart drag dragend zoomstart zoomlevelschange zoomend resize autopanstart layeradd layerremove baselayerchange overlayadd overlayremove locationfound locationerror popupopen popupclose', function(e) {
@@ -724,16 +727,10 @@
         },
 
         _loadFeatureChanged: function(){
-          var featureLayer = L.mapbox.featureLayer();
-          var loadFeature  = this.loadFeature;
-          var regexUrl = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
-          var regexId = /^(\w)+\.{1}(\w)+$/;
-          if(loadFeature && regexId.test(loadFeature)){
-            featureLayer.loadID(loadFeature);
-            featureLayer.addTo(this.map);
-          }else if(loadFeature && regexUrl.test(loadFeature)){
-            featureLayer.loadID(loadFeature);
-            featureLayer.addTo(this.map);
+          if(this.map && this.loadFeature){
+            var featureLayer = L.mapbox.featureLayer(this.loadFeature);
+              featureLayer.addTo(this.map);
+            console.log(featureLayer);
           }
         },
 

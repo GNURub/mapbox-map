@@ -1,11 +1,58 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../mapbox-behaviors/mapbox-behaviors.html">
 <dom-module id="mapbox-polyline">
- <style>
- :host {
-   display: none;
-  }
- </style>
- <template>
-   <content id="points" select="mapbox-point"></content>
- </template>
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <template>
+    <content id="points" select="mapbox-point"></content>
+  </template>
+  <script>
+    HTMLImports.whenReady(function() {
+			Polymer({
+			  is: "mapbox-polyline",
+        behaviors: [MapBox.MapBoxContentPoint,
+                MapBox.MapBoxPath],
+        properties: {
+          feature: Object,
+          map: {
+            type: Object,
+            observer: '_mapChanged'
+          },
+          _mapChanged: function(){
+            if ( this.map ) {
+              this.feature = L.polyline( [],   this.pathOpts );
+              this.feature.addTo( this.map );
+              this.updateMapBoxPoint();
+
+              this.feature.on('click dblclick mousedown mouseover mouseout contextmenu add remove popupopen popupclose', function(e) {
+      					this.fire(e.type, e);
+      				}, this);
+            }
+          }
+        },
+
+        /**
+         * Description
+         * @method removeLayer
+         * @return
+         */
+        removeLayer: function() {
+          this.map.removeLayer(this.feature);
+          this.remove();
+        },
+
+        /**
+         * Description
+         * @method detached
+         * @return
+         */
+        detached: function(){
+          this.removeLayer();
+        }
+			});
+    });
+  </script>
 </dom-module>
-<script src="mapbox-polyline.js"></script>

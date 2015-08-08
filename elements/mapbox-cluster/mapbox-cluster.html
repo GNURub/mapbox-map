@@ -1,11 +1,68 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
 <dom-module id="mapbox-cluster">
- <style>
- :host {
-   display: none;
-  }
- </style>
- <template>
-   <content id="markers" select="mapbox-marker"></content>
- </template>
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <link rel="stylesheet" href="../../bower_components/leaflet.markercluster/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="../../bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css">
+  <template>
+    <content id="markers" select="mapbox-marker"></content>
+  </template>
+  <script>
+    // HTMLImports.whenReady(function() {
+			Polymer({
+			  is: "mapbox-cluster",
+        properties: {
+          markers: Object,
+          map: {
+            type: Object,
+            observer: '_mapChanged'
+          },
+          radius: {
+            type: Number,
+            value: 80
+          }
+        },
+
+        _mapChanged: function(){
+          console.log("Hola")
+          this.markers = new L.MarkerClusterGroup();
+          if(this.map){
+            this._updatedMarkers();
+          }
+          this.markers.on('click clusterclick', function (e) {
+            this.fire(e.type, e);
+          }, this);
+
+        },
+        _observeMarkers: function(){
+          if (this._observer) {
+            return;
+          }
+          this._observer = new MutationObserver( this._updatedMarkers.bind(this));
+          this._observer.observe(this, {
+            childList: true
+          });
+        },
+        _updatedMarkers: function(){
+          console.log("holaa")
+          var newMarkers = Array.prototype.slice.call(
+           Polymer.dom(this.$.markers).getDistributedNodes());
+
+          this._observeMarkers();
+
+          if (newMarkers.length && this.markers) {
+            for (var i = 0, m; m = newMarkers[i]; ++i) {
+              m.map = this.map;
+              this.markers.addLayer(m.marker);
+            }
+            this.map.addLayer(this.markers);
+          }
+        }
+
+			});
+    // });
+  </script>
 </dom-module>
-<script src="mapbox-cluster.js"></script>

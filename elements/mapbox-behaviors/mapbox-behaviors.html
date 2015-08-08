@@ -142,7 +142,7 @@
   }
   window.MapBox.MapBoxContentPoint = {
     attached: function(){
-      if('MutationObserver' in window && !this.observer){
+      if('MutationObserver' in window && !this._observer){
         this._observer = new MutationObserver(this.updateMapBoxPoint.bind(this));
         this._observer.observe(this, {
           childList: true,
@@ -153,26 +153,26 @@
     },
     updateMapBoxPoint: function(){
       if (!this.feature) {
-				return;
-			}
-			var temp = [];
-			var i;
-			var nodes = this.children;
-			for (i = 0, node; node = nodes[i]; ++i) {
-				if (node.localName == 'mapbox-point') {
-					temp.push(L.latLng(
-						node.getAttribute('latitude'),
-						node.getAttribute('longitude')
-					));
-				}
-			}
-			this.feature.setLatLngs(temp);
+        return;
+      }
+      var temp = [];
+      var i;
+      var nodes = this.children;
+      for (i = 0, node; node = nodes[i]; ++i) {
+        if (node.localName == 'mapbox-point') {
+          temp.push(L.latLng(
+            node.getAttribute('latitude'),
+            node.getAttribute('longitude')
+          ));
+        }
+      }
+      this.feature.setLatLngs(temp);
     },
     detached: function() {
-			if (this._observer) {
-				this._observer.disconnect();
-			}
-		}
+      if (this._observer) {
+        this._observer.disconnect();
+      }
+    }
 
   }
 </script>

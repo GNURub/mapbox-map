@@ -151,8 +151,7 @@
         _mapChanged: function() {
           // Marker will be rebuilt, so disconnect existing one from old map and listeners.
           if (this.marker) {
-            //  this.marker.addTo();
-            // google.maps.event.clearInstanceListeners(this.marker);
+            return;
           }
           if (this.map) {
             this._mapReady();

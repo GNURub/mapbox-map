@@ -673,9 +673,9 @@
          */
         setFilter: function(cb){
           if(typeof cb === "function"){
-            this.map.featureLayer.setFilter(function(f){
+            this.map.featureLayer.setFilter(function(f) {
               return cb(f);
-            }.bind(this));
+            });
           }else{
             throw new TypeError('It has to be a function', "mapbox-map.js", 595);
           }

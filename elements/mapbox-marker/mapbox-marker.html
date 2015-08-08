@@ -209,9 +209,9 @@
   </template>
   <script>
     function setPos(pos){
-      this.latitude  = pos.coords.latitude;
-      this.longitude = pos.coords.longitude;
-      this._updatePosition();
+      var lat  = pos.coords.latitude;
+      var lng = pos.coords.longitude;
+      this._updatePosition(lat, lng);
     }
     Polymer({
       is: "mapbox-marker",
@@ -291,14 +291,16 @@
         MapBox.MapBoxPopoutContent
       ],
 
-      _updatePosition:function(){
+      _updatePosition:function(lat, lng){
         var canUpdate = ( this.map &&
           this.feature &&
-          this.latitude &&
-          this.longitude );
+          !isNaN(parseFloat(lat)) &&
+          !isNaN(parseFloat(lng)) &&
+          !this.disableUpPos
+          );
+
         if( canUpdate ){
-          console.log("upda")
-          this.feature.setLatLng( [ parseFloat(this.latitude), parseFloat(this.longitude) ] );
+          this.feature.setLatLng( L.latLng(lat, lng) );
         }else if( !this.feature ){
           this._mapReady();
         }
@@ -415,13 +417,19 @@
           * @event popupclose-marker
 
           */
+
+          this.feature.on( 'click dblclick move dragstart drag dragend add remove popupopen popupclose', function(e){
+            this.fire(e.type, e);
+          }, this);
+
           this.feature.on('drag', function(e){
+            this.disableUpPos = true;
             this.latitude  = e.target.getLatLng().lat;
             this.longitude = e.target.getLatLng().lng;
             console.log(e.target.getLatLng())
           }, this);
-          this.feature.on( 'click dblclick move dragstart drag dragend add remove popupopen popupclose', function(e){
-            this.fire(e.type, e);
+          this.feature.on('dragend', function(e){
+            this.disableUpPos = false;
           }, this);
         }
       },

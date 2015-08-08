@@ -40,6 +40,11 @@
             notify: true
           },
 
+          noWrap:{
+            type: Boolean,
+            value: false
+          },
+
           /**
            * A latitude to center the map on.
            */
@@ -441,7 +446,7 @@
                 // This map option disables world wrapping. by default, it is false.
                 continuousWorld: false,
                 // This option disables loading tiles outside of the world bounds.
-                noWrap: false
+                noWrap: this.noWrap
             },
             worldCopyJump: this.worldCopyJump,
             inertiaMaxSpeed: this.inertiaMaxSpeed,

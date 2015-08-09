@@ -50,20 +50,20 @@ $ bower install
       latitude="38.908847"
       longitude="1.433900">
       <mapbox-marker
-      label="School Bus"
-      latitude="38.909847"
-      longitude="1.435900"
-      symbol="bus"
-      watch-position
-      color="#ff0000"
-      draggable>
+        label="School Bus"
+        latitude="38.909847"
+        longitude="1.435900"
+        symbol="bus"
+        watch-position
+        color="#ff0000"
+        draggable>
       </mapbox-marker>
       <mapbox-marker
-      id="me"
-      label="Me"
-      symbol="pitch"
-      color="#000000"
-      >
+        id="me"
+        label="Me"
+        symbol="pitch"
+        color="#000000"
+        >
       </mapbox-marker>
     </mapbox-map>
   </body>

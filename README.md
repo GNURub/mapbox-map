@@ -54,7 +54,6 @@ $ bower install
         latitude="38.909847"
         longitude="1.435900"
         symbol="bus"
-        watch-position
         color="#ff0000"
         draggable>
       </mapbox-marker>
@@ -63,6 +62,7 @@ $ bower install
         label="Me"
         symbol="pitch"
         color="#000000"
+        watch-position
         >
       </mapbox-marker>
     </mapbox-map>

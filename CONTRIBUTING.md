@@ -11,12 +11,12 @@ This document will guide you through the contribution process.
 
 ### Step 1: Fork
 
-Fork the project [on GitHub](https://github.com/ruben96/mapbox-map) then check out your copy locally.
+Fork the project [on GitHub](https://github.com/GNURub/mapbox-map) then check out your copy locally.
 
 ```text
 $ git clone git@github.com:username/mapbox-map.git
 $ cd mapbox-map
-$ git remote add upstream git://github.com/ruben96/mapbox-map.git
+$ git remote add upstream git://github.com/GNURub/mapbox-map.git
 ```
 
 #### Which branch?

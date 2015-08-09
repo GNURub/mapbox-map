@@ -14,11 +14,17 @@ Tech
 
 Use guide
 --------------
-##### Install mapbox-map component using [bower].
+<!-- ##### Install mapbox-map component using [bower].
 
 ```bash
 $ bower install mapbox-map
 
+``` -->
+
+```bash
+$ git git@github.com:GNURub/mapbox-map.git
+$ cd mapbox-map
+$ bower install
 ```
 
 ##### Configure Polymer and the new component.

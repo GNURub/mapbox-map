@@ -22,7 +22,7 @@ $ bower install mapbox-map
 ``` -->
 
 ```bash
-$ git git@github.com:GNURub/mapbox-map.git
+$ git clone git@github.com:GNURub/mapbox-map.git
 $ cd mapbox-map
 $ bower install
 ```

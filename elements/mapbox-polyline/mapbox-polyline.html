@@ -1,5 +1,30 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../mapbox-behaviors/mapbox-behaviors.html">
+<!--
+The `mapbox-polyline` element represents a marker on the map and is used as
+a child element of the `mapbox-map` element.
+##### Example: Add marker
+    <style>
+      mapbox-map {
+        display: block;
+        height: 100vh;
+      }
+    </style>
+    <mapbox-map latitude = "38.867847"
+              longitude  = "1.310977"
+              zoom       = "15"
+              layer      = "examples.map-i875kd35">
+        <mapbox-marker
+          symbol = "bus"
+          latitude="0"
+          longitude="0">
+        </mapbox-marker>
+    </mapbox-map>
+@element mapbox-polyline
+@blurb Element for putting a marker on the map
+@status alpha
+@homepage https://ruben96.github.io/mapbox-map/elements/mapbox-map/
+-->
 <dom-module id="mapbox-polyline">
   <style>
     :host {
@@ -17,11 +42,19 @@
         MapBox.MapBoxPath
       ],
       properties: {
+       /**
+        * A Feature API object.
+        */
         feature: Object,
+
+       /**
+        * A Maps API object.
+        */
         map: {
           type: Object,
           observer: '_mapChanged'
         },
+
         _mapChanged: function(){
           console.log("Polyline called!!");
           if ( this.map ) {
@@ -37,20 +70,16 @@
       },
 
       /**
-       * Description
+       * Remove this layer
        * @method removeLayer
-       * @return
+       * @return this Object
        */
       removeLayer: function() {
         this.map.removeLayer(this.feature);
         this.remove();
+        return this;
       },
 
-      /**
-       * Description
-       * @method detached
-       * @return
-       */
       detached: function(){
         this.removeLayer();
       }

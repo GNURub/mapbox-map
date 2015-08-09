@@ -1,5 +1,30 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../mapbox-behaviors/mapbox-behaviors.html">
+<!--
+The `mapbox-circle` element represents a circle on the map and is used as
+a child element of the `marker-map` element.
+##### Example: Add marker
+    <style>
+      mapbox-map {
+        display: block;
+        height: 100vh;
+      }
+    </style>
+    <mapbox-map latitude = "38.867847"
+              longitude  = "1.310977"
+              zoom       = "15"
+              layer      = "examples.map-i875kd35">
+        <mapbox-circle
+          radius = "200"
+          latitude="0"
+          longitude="0">
+        </mapbox-circle>
+    </mapbox-map>
+@element mapbox-circle
+@blurb Element for putting a marker on the map
+@status alpha
+@homepage https://ruben96.github.io/mapbox-map/elements/mapbox-map/
+-->
 <dom-module id="mapbox-circle">
   <style>
     :host {
@@ -14,25 +39,27 @@
       behaviors: [MapBox.MapBoxPath],
 
       properties: {
+
+        /**
+         *  A Map API object.
+         */
         map: {
           type: Object,
           observer: '_mapChanged'
         },
 
         /**
-        * The circle's longitude coordinate.
-        */
+         * The circle's longitude coordinate.
+         */
         longitude: {
           type: Number,
           value: null,
           reflectToAttribute: true
         },
 
-
-
         /**
-        * The circle's latitude coordinate.
-        */
+         * The circle's latitude coordinate.
+         */
         latitude: {
           type: Number,
           value: null,
@@ -40,9 +67,8 @@
         },
 
         /**
-        * The circle's radius.
-        */
-
+         * The circle's radius.
+         */
         radius: {
           type: Number,
           value: null,

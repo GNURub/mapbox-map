@@ -1,5 +1,30 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../mapbox-behaviors/mapbox-behaviors.html">
+<!--
+The `mapbox-marker` element represents a marker on the map and is used as
+a child element of the `open-map` element.
+##### Example: Add marker
+    <style>
+      mapbox-map {
+        display: block;
+        height: 100vh;
+      }
+    </style>
+    <mapbox-map latitude = "38.867847"
+              longitude  = "1.310977"
+              zoom       = "15"
+              layer      = "examples.map-i875kd35">
+        <mapbox-marker
+          symbol = "bus"
+          latitude="0"
+          longitude="0">
+        </mapbox-marker>
+    </mapbox-map>
+@element mapbox-marker
+@blurb Element for putting a marker on the map
+@status alpha
+@homepage https://ruben96.github.io/mapbox-map/elements/mapbox-map/
+-->
 <dom-module id="mapbox-icon">
   <style>
     :host {
@@ -12,7 +37,7 @@
     Polymer({
       is: "mapbox-icon",
       properties: {
-          /**
+        /**
   			 * The `icon-url` attribute sets the URL to the icon image (absolute or relative to your script path).
   			 *
   			 * @attribute icon-url
@@ -31,6 +56,7 @@
   			iconRetinaUrl: {
   				type: String
   			},
+
   			/**
   			 * The `icon-width` attribute sets the size of the icon image in pixels.
   			 *
@@ -40,6 +66,7 @@
   			iconWidth: {
   				type: Number
   			},
+
   			/**
   			 * The `icon-height` attribute sets the size of the icon image in pixels.
   			 *
@@ -49,6 +76,7 @@
   			iconHeight: {
   				type: Number
   			},
+
   			/**
   			 * The `icon-anchor-x` attribute sets the coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that this point is at the marker's geographical location. Centered by default if size is specified, also can be set in CSS with negative margins.
   			 *
@@ -58,6 +86,7 @@
   			iconAnchorX: {
   				type: Number
   			},
+
   			/**
   			 * The `icon-anchor-y` attribute sets the coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that this point is at the marker's geographical location. Centered by default if size is specified, also can be set in CSS with negative margins.
   			 *
@@ -67,6 +96,7 @@
   			iconAnchorY: {
   				type: Number
   			},
+
   			/**
   			 * The `shadow-url` attribute sets the URL to the icon shadow image. If not specified, no shadow image will be created.
   			 *
@@ -76,6 +106,7 @@
   			shadowUrl: {
   				type: String
   			},
+
   			/**
   			 * The `shadow-retina-url` attribute sets the URL to the retina sized version of the icon shadow image. If not specified, no shadow image will be created. Used for Retina screen devices.
   			 *
@@ -85,6 +116,7 @@
   			shadowRetinaUrl: {
   				type: String
   			},
+
   			/**
   			 * The `shadow-width` attribute sets the size of the shadow image in pixels.
   			 *
@@ -94,6 +126,7 @@
   			shadowWidth: {
   				type: Number
   			},
+
   			/**
   			 * The `shadow-height` attribute sets the size of the shadow image in pixels.
   			 *
@@ -103,6 +136,7 @@
   			shadowHeight: {
   				type: Number
   			},
+
   			/**
   			 * The `shadow-anchor-x` attribute sets the coordinates of the "tip" of the shadow (relative to its top left corner) (the same as iconAnchor if not specified).
   			 *
@@ -112,6 +146,7 @@
   			shadowAnchorX: {
   				type: Number
   			},
+
   			/**
   			 * The `shadow-anchor-y` attribute sets the coordinates of the "tip" of the shadow (relative to its top left corner) (the same as iconAnchor if not specified).
   			 *
@@ -121,6 +156,7 @@
   			shadowAnchorY: {
   				type: Number
   			},
+
   			/**
   			 * The `popup-anchor-x` attribute sets the coordinates of the point from which popups will "open", relative to the icon anchor.
   			 *
@@ -130,6 +166,7 @@
   			popupAnchorX: {
   				type: Number
   			},
+
   			/**
   			 * The `popupanchory` attribute sets the coordinates of the point from which popups will "open", relative to the icon anchor.
   			 *
@@ -139,6 +176,7 @@
   			popupAnchorY: {
   				type: Number
   			},
+
   			/**
   			 * The `class-name` attribute sets a custom class name to assign to both icon and shadow images. Empty by default.
   			 *
@@ -149,6 +187,7 @@
   				type: String,
   				value: ''
   			},
+
         icon: Object
   		},
 
@@ -158,6 +197,12 @@
         'iconAnchorY, shadowWidth, shadowHeight, shadowAnchorX, popupAnchorY'+
         'popupAnchorY)'
       ],
+
+      /**
+       * Get the Icon Object API
+       * @method getIcon
+       * @return Icon Object
+       */
   		getIcon: function() {
   			if (this.icon) {
   				return this.icon;
@@ -216,8 +261,17 @@
     Polymer({
       is: "mapbox-marker",
       properties:{
+
+       /**
+        * A Feature API object.
+        */
         feature: Object,
 
+        /**
+         * Remove this layer
+         * @method removeLayer
+         * @return this Object
+         */
         label: {
           type: String,
           value: null,
@@ -225,30 +279,42 @@
           observer: '_titleChanged'
         },
 
+       /**
+        * A Map API object.
+        */
         map: {
           type: Object,
           observer: '_mapChanged'
         },
 
+       /**
+        * If is set enables the drag for the marker
+        */
         draggable: {
           type: Boolean,
           value: false,
           notify: true
         },
 
+       /**
+        *
+        */
         getPosition: {
           type: Boolean,
           value: false,
           observer: '_getPositionChanged'
         },
 
+       /**
+        *
+        */
         watchPosition: {
           type: Boolean,
           value: false,
           observer: '_watchPositionChanged'
         },
 
-        /**
+       /**
         * The marker's longitude coordinate.
         */
         longitude: {
@@ -257,7 +323,7 @@
           reflectToAttribute: true
         },
 
-        /**
+       /**
         * The marker's latitude coordinate.
         */
         latitude: {
@@ -266,16 +332,25 @@
           reflectToAttribute: true
         },
 
+       /**
+        * Color for the marker
+        */
         color: {
           type: String,
           value: ''
         },
 
+       /**
+        * Size for the marker
+        */
         size: {
           type: String,
           value: ''
         },
 
+       /**
+        * Icon for the marker
+        */
         symbol: {
           type: String,
           value: ''
@@ -465,25 +540,18 @@
       },
 
       /**
-       * Description
+       * Remove this layer
        * @method removeLayer
-       * @return
+       * @return this Object
        */
       removeLayer: function() {
         this.map.removeLayer(this.feature);
         this.remove();
       },
 
-      /**
-       * Description
-       * @method detached
-       * @return
-       */
       detached: function(){
         this.removeLayer();
       }
-
-
     });
   </script>
 </dom-module>

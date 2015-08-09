@@ -1,5 +1,42 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
+<!--
+The `mapbox-map` element renders a MapBox Map.
+<b>Example</b>:
+    <style>
+      mapbox-map {
+        display: block;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <mapbox-map latitude="37.77493" longitude="-122.41942"></mapbox-map>
+<b>Example</b> - add markers to the map and ensure they're in view:
+    <mapbox-map latitude="37.77493" longitude="-122.41942" >
+      <mapbox-marker latitude="37.779" symbol="police" longitude="-122.3892"
+          draggable label="Go Giants!"></mapbox-marker>
+      <mapbox-marker latitude="37.777" longitude="-122.38911"></mapbox-marker>
+    </mapbox-mapp>
+<b>Example</b>:
+    <mapbox-map disable-default-ui zoom="15"></mapbox-map>
+    <script>
+      var map = document.querySelector('mapbox-map');
+      map.latitude = 37.77493;
+      map.longitude = -122.41942;
+      map.addEventListener('mapbox-map-ready', function(e) {
+        alert('Map loaded!');
+      });
+    </script>
+<b>Example</b> - with Leaflet-Cluster plugin
+    <mapbox-map latitude="37.77493" longitude="-122.41942" >
+      <mapbox-cluster>
+        <mapbox-marker latitude="37.779" symbol="police" longitude="-122.3892"
+            draggable label="Go Giants!"></mapbox-marker>
+        <mapbox-marker latitude="37.777" longitude="-122.38911"></mapbox-marker>
+    </mapbox-cluster>
+    </mapbox-mapp>
+@demo
+-->
 <dom-module id="mapbox-map">
   <style>
     :host{
@@ -27,13 +64,15 @@
       Polymer({
         is: "mapbox-map",
         properties: {
-
+          /**
+           * A Maps API object.
+           */
           map: Object,
 
          /**
-           * A Maps API for Business Client ID. To obtain a Maps API f`or
-           * Business Client ID, see developers.google.com/maps/documentation/business/.
-           * If set, a Client ID will take precedence over an API Key.
+           * A Maps API for Business Client ID.
+           * @attribute access-token
+           * @type String
            */
           accessToken: {
             type: String,
@@ -42,21 +81,32 @@
             notify: true
           },
 
+          /**
+           * This option disables loading tiles outside of the world bounds.
+           *
+           * @attribute no-wrap
+           * @type Boolean
+           */
           noWrap:{
             type: Boolean,
             value: false
           },
 
+          /**
+           * Load GeoJSON data for this layer from the URL or ID given by url or id.
+           * @attribute load-feature
+           * @type String
+           */
           loadFeature:{
             type: String,
             value: '',
             observer: '_loadFeatureChanged'
           },
 
-          
-
           /**
            * A latitude to center the map on.
+           * @attribute latitude
+           * @type Number
            */
           latitude: {
             type: Number,
@@ -67,6 +117,8 @@
 
           /**
            * A longitude to center the map on.
+           * @attribute longitude
+           * @type Number
            */
           longitude: {
            type: Number,
@@ -77,8 +129,9 @@
 
           /**
            * A zoom level to set the map to.
+           * @attribute zoom
+           * @type Number
            */
-
           zoom: {
             type: Number,
             value: 10,
@@ -86,23 +139,33 @@
             observer: '_zoomChanged'
           },
 
+        /**
+          * A min zoom level to set the map to.
+          * @attribute min-zoom
+          * @type Number
+          * @default 3
+          */
           minZoom: {
             type: Number,
-            value: 3,
-            readOnly: true
+            value: 3
           },
 
+          /**
+           * A min zoom level to set the map to.
+           * @attribute max-zoom
+           * @type Number
+           * @default 18
+           */
           maxZoom: {
             type: Number,
-            value: 18,
-            readOnly: true
+            value: 18
           },
 
           /**
            * The `dragging` attribute sets whether  when he tries to pan outside the view.
            *
            * @attribute dragging
-           * @type bool
+           * @type Boolean
            */
           dragging: {
                type: Boolean,
@@ -114,7 +177,7 @@
            * The `touch-zoom` attribute sets whether the map can be zoomed by touch-dragging with two fingers.
            *
            * @attribute touch-zoom
-           * @type bool
+           * @type Boolean
            */
           touchZoom: {
                type: Boolean,
@@ -126,7 +189,7 @@
            * The `scrollWheelZoom` attribute sets the whether the map can be zoomed by using the mouse wheel. If passed 'center', it will zoom to the center of the view regardless of where the mouse was.
            *
            * @attribute scroll-wheel-zoom
-           * @type bool
+           * @type Boolean
            */
           scrollWheelZoom: {
                type: Boolean,
@@ -138,7 +201,7 @@
            * The `double-click-zoom` attribute sets the whether the map can be zoomed in by double clicking on it and zoomed out by double clicking while holding shift. If passed 'center', double-click zoom will zoom to the center of the view regardless of where the mouse was.
            *
            * @attribute double-click-zoom
-           * @type bool
+           * @type Boolean
            */
           doubleClickZoom: {
                type: Boolean,
@@ -147,11 +210,11 @@
           },
 
 
-                /**
+          /**
            * The `tap` attribute enables mobile hacks for supporting instant taps (fixing 200ms click delay on iOS/Android) and touch holds (fired as contextmenu events).
            *
            * @attribute tap
-           * @type bool
+           * @type Boolean
            */
           tap: {
                type: Boolean,
@@ -174,7 +237,7 @@
            * The `track-resize` attribute sets whether the map automatically handles browser window resize to update itself.
            *
            * @attribute track-resize
-           * @type bool
+           * @type Boolean
            */
           trackResize: {
                type: Boolean,
@@ -185,7 +248,7 @@
            * The `world-copy-jump` attribute sets whether the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.
            *
            * @attribute world-copy-jump
-           * @type bool
+           * @type Boolean
            */
           worldCopyJump: {
                type: Boolean,
@@ -196,7 +259,7 @@
            * The `close-popup-on-click` attribute sets whether popups are closed when user clicks the map.
            *
            * @attribute close-popup-on-click
-           * @type bool
+           * @type Boolean
            */
           closePopupOnClick: {
                type: Boolean,
@@ -207,7 +270,7 @@
            * The `bounce-at-zoom-limits` attribute sets whether the map to zoom beyond min/max zoom and then bounce back when pinch-zooming.
            *
            * @attribute bounce-at-zoom-limits
-           * @type bool
+           * @type Boolean
            */
           bounceAtZoomLimits: {
                type: Boolean,
@@ -218,7 +281,7 @@
            * The `keyboard` attribute sets whether the map is focusable and allows users to navigate the map with keyboard arrows and +/- keys.
            *
            * @attribute keyboard
-           * @type bool
+           * @type Boolean
            */
           keyboard: {
                type: Boolean,
@@ -282,7 +345,7 @@
            * The `box-zoom` attribute sets the whether the map can be zoomed to a rectangular area specified by dragging the mouse while pressing shift.
            *
            * @attribute box-zoom
-           * @type bool
+           * @type Boolean
            */
           boxZoom: {
                type: Boolean,
@@ -293,7 +356,7 @@
            * The `attribution-control` attribute sets whether the attribution control is added to the map by default.
            *
            * @attribute attribution-control
-           * @type bool
+           * @type Boolean
            */
           attributionControl: {
                type: Boolean,
@@ -315,7 +378,7 @@
             * If set, the map is zoomed such that all elements in it are visible
             *
             * @attribute fit-to-markers
-            * @type boolean
+            * @type Boolean
             * @default false
             */
           fitToMarkers: {
@@ -323,6 +386,13 @@
             value: false
           },
 
+          /**
+            * The `mapID`, it is the identifier of the map in mapbox, you can create
+            * your own map in [Mapbox](http://mapbox.com/editor) or use the default.
+            * @attribute layer
+            * @type String
+            * @default null
+            */
           layer: {
             type: String,
             value: 'mapbox.streets',
@@ -330,52 +400,108 @@
             observer: '_layerChanged'
           },
 
+          /**
+          * If set, removes the map's default UI zoom
+          *
+          * @attribute disable-zoom-ui
+          * @type Boolean
+          * @default false
+          */
           disableZoomUi: {
             type: Boolean,
             value: false,
             observer: '_toggleZoomChanged'
           },
 
+          /**
+          *  If false, prevent the user from zooming the map interactively.
+          *
+          * @attribute disable-zoom-ui
+          * @type Boolean
+          * @default false
+          */
           zoomable: {
             type: Boolean,
             value: false,
             notify: true
           },
 
+          /**
+           * If set, enable a button for geolocation.
+           *
+           * @attribute geolocation-ui
+           * @type Boolean
+           * @default false
+           */
           geolocationUi: {
             type: Boolean,
             value: false,
             observer: '_toggleGeolocator'
           },
 
+          /**
+           * If set, enable a button for fullsceeen of the map.
+           *
+           * @attribute fullscreen-ui
+           * @type boolean
+           * @default false
+           */
           fullscreenUi: {
             type: Boolean,
             value: false,
             observer: '_toggleFullscreen'
           },
 
+          /**
+           * If set, enable a button for geolocation of the map.
+           *
+           * @attribute geocoder-ui
+           * @type boolean
+           * @default false
+           */
           geocoderUi: {
             type: Boolean,
             value: false,
             observer: '_toggleGeocoder'
           },
 
+          /**
+          * Label for geocoder
+          * @attribute label-geocoder
+          * @type String
+          * @default 'mapbox.places'
+          */
           labelGeocoder: {
             type: String,
             value: "mapbox.places"
           },
 
+          /**
+          * Autocomplete sites for geocoder-ui
+          * @attribute autocomplete-geocoder
+          * @type boolean
+          * @default false
+          */
           autocompleteGeocoder: {
             type: Boolean,
             value: false
           },
 
+          /**
+          * maxBounds to restrict moving the map
+          * @attribute max-bounds
+          * @type Array
+          * @default []
+          */
           maxBounds: {
             type: Array,
             value: [],
             observer: '_maxBoundsChanged'
           },
 
+          /**
+          *
+          */
           center: {
             type: Array,
             value: []
@@ -396,29 +522,14 @@
 
         // Methods
 
-        /**
-         * Description
-         * @method created
-         * @return
-         */
         created: function() {
           this.layers = [];
         },
 
-        /**
-         * Description
-         * @method attached
-         * @return
-         */
         attached: function() {
           this._initMapbox();
         },
 
-        /**
-         * Description
-         * @method detached
-         * @return
-         */
         detached: function() {
          if (this._mutationObserver) {
           this._mutationObserver.disconnect();
@@ -495,7 +606,7 @@
           this._toggleGeolocator();
           this._toggleFullscreen();
 
-          this.fire( 'open-map-ready' );
+          this.fire( 'mapbox-map-ready' );
 
         },
 
@@ -526,19 +637,19 @@
         /**
          * Delete the layers.
          * @method clear
-         * @return
+         * @return this map
          */
         clear: function() {
           for( var i = 0, m; m = this.layers[i]; i++ ) {
             m.removeLayer();
             m.map = null;
           }
+          return this;
         },
 
         /**
-         * Description
+         * Update the center when the window's size change
          * @method resize
-         * @return
          */
         resize: function () {
           if(this.map)
@@ -675,10 +786,9 @@
         },
 
         /**
-         * Description
+         * Set a filter for the features
          * @method setFilter
-         * @param {} cb
-         * @return
+         * @param function(feature)
          */
         setFilter: function(cb){
           if(typeof cb === "function"){
@@ -695,30 +805,20 @@
          * @method canvasTiles
          * @param Function cb
          * canvasTiles(function(canvas){
-         * var ctx = canvas.getContext('2d');
-         * ctx.fillText(tilePoint.toString(), 50, 50);
-         * ctx.globalAlpha = 0.2;
-         * ctx.fillStyle = '#000';
-         * ctx.fillRect(10, 10, 246, 246);
+         *  var ctx = canvas.getContext('2d');
+         *  ctx.fillText(tilePoint.toString(), 50, 50);
+         *  ctx.globalAlpha = 0.2;
+         *  ctx.fillStyle = '#000';
+         *  ctx.fillRect(10, 10, 246, 246);
          * })
          */
         canvasTiles: function(cb){
 
           if(typeof cb === "function"){
             var canvasTiles = L.tileLayer.canvas();
-
-            /**
-             * Description
-             * @method drawTile
-             * @param {} canvas
-             * @param {} tilePoint
-             * @param {} zoom
-             * @return
-             */
             canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
             	cb(canvas, titlePoint, zoom)
             };
-
             canvasTiles.addTo(this.map);
           }else{
             throw new TypeError('It has to be a function', "mapbox-map.js", 607);

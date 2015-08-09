@@ -319,7 +319,7 @@ a child element of the `open-map` element.
         */
         longitude: {
           type: Number,
-          value: null,
+          value: 0,
           reflectToAttribute: true
         },
 
@@ -328,7 +328,7 @@ a child element of the `open-map` element.
         */
         latitude: {
           type: Number,
-          value: null,
+          value: 0,
           reflectToAttribute: true
         },
 
@@ -395,8 +395,8 @@ a child element of the `open-map` element.
 
       _mapReady: function () {
         var canUpdate = ( this.map &&
-          this.latitude &&
-          this.longitude );
+          !isNaN( parseFloat( this.latitude ) ) &&
+          !isNaN( parseFloat( this.longitude ) ) );
 
         if( canUpdate ) {
           if( this.feature ) {

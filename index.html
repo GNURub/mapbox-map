@@ -23,7 +23,28 @@
 	</style>
 </head>
 <body>
-	<mapbox-map load-feature="mapbox.dc-markers" layer="mapbox.light" zoom="15" zoomable latitude  = "38.908847" longitude = "1.433900">
+	<mapbox-map id="map"
+		zoom="15"
+		layer="roadtrippers.ijjip7cb"
+		latitude="38.908847"
+		zoomable
+		longitude="1.433900">
+		<mapbox-marker
+			label="School Bus"
+			latitude="38.909847"
+			longitude="1.435900"
+			symbol="bus"
+			color="#ff0000"
+			draggable>
+		</mapbox-marker>
+		<mapbox-marker
+				id="me"
+				label="Me"
+				symbol="pitch"
+				color="#000000"
+				watch-position
+				>
+		</mapbox-marker>
 	</mapbox-map>
 </body>
 </html>

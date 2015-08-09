@@ -30,43 +30,43 @@ $ bower install
 ##### Configure Polymer and the new component.
 
 ```html
-<head>
-<script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-<link rel="import" href="bower_components/map-box/map-box.html">
-<style>
-html, body {
-	margin: 0;
-	height: 100%;
-}
-mapbox-map {
-	height: 100%;
-}
-</style>
-</head>
-<body unresolved>
-<mapbox-map id="map"
-zoom="15"
-layer="roadtrippers.ijjip7cb"
-latitude="38.908847"
-longitude="1.433900">
-<mapbox-marker
-label="School Bus"
-latitude="38.909847"
-longitude="1.435900"
-symbol="bus"
-watch-position
-color="#ff0000"
-draggable>
-</mapbox-marker>
-<mapbox-marker
-id="me"
-label="Me"
-symbol="pitch"
-color="#000000"
->
-</mapbox-marker>
-</mapbox-map>
-</body>
+  <head>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+	  <link rel="import" href="bower_components/map-box/map-box.html">
+	  <style>
+    	html, body {
+    		margin: 0;
+    		height: 100%;
+    	}
+    	mapbox-map {
+    		height: 100%;
+    	}
+	  </style>
+  </head>
+  <body unresolved>
+    <mapbox-map id="map"
+      zoom="15"
+      layer="roadtrippers.ijjip7cb"
+      latitude="38.908847"
+      longitude="1.433900">
+      <mapbox-marker
+      label="School Bus"
+      latitude="38.909847"
+      longitude="1.435900"
+      symbol="bus"
+      watch-position
+      color="#ff0000"
+      draggable>
+      </mapbox-marker>
+      <mapbox-marker
+      id="me"
+      label="Me"
+      symbol="pitch"
+      color="#000000"
+      >
+      </mapbox-marker>
+    </mapbox-map>
+  </body>
 ```
 
 ![Preview][1]

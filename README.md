@@ -301,8 +301,8 @@ License
 MIT
 
 
-[&lt;mapbox-demo&gt;&lt;/mapbox-demo&gt;]:https://ruben96.github.io/mapbox-map/components/mapbox-map/demo.html
-[&lt;mapbox-doc&gt;&lt;/mapbox-doc&gt;]:https://ruben96.github.io/mapbox-map
+[&lt;mapbox-demo&gt;&lt;/mapbox-demo&gt;]:https://GNURub.github.io/mapbox-map/components/mapbox-map/demo.html
+[&lt;mapbox-doc&gt;&lt;/mapbox-doc&gt;]:https://GNURub.github.io/mapbox-map
 [Polymer]:http://www.polymer-project.org/
 [MapBoxEditor]:https://www.mapbox.com/editor
 [MapBoxStudio]:https://www.mapbox.com/mapbox-studio/

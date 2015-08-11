@@ -103,6 +103,11 @@ The `mapbox-map` element renders a MapBox Map.
             observer: '_loadFeatureChanged'
           },
 
+          featureToElements: {
+            type: Boolean,
+            value: false
+          },
+
           /**
            * A latitude to center the map on.
            * @attribute latitude
@@ -828,9 +833,11 @@ The `mapbox-map` element renders a MapBox Map.
 
         _loadFeatureChanged: function(){
           if(this.map && this.loadFeature){
-            var featureLayer = L.mapbox.featureLayer(this.loadFeature);
-              featureLayer.addTo(this.map);
-            console.log(featureLayer);
+            if(this.featureLayer) this.featureLayer.removeFrom( this.map );
+            this.featureLayer = L.mapbox.featureLayer(this.loadFeature);
+            if(!this.featureToElements){
+              this.featureLayer.addTo(this.map);}
+            console.log(this.featureLayer);
           }
         },
 

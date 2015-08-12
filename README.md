@@ -23,11 +23,12 @@ $ bower install
 ##### Install mapbox-map component using [bower].
 Coming soon...
 
-<!--
+
 ```bash
+
 $ bower install mapbox-map
 
-``` -->
+```
 
 ##### Configure Polymer and the new component.
 

@@ -10,18 +10,25 @@ a child element of the `mapbox-map` element.
         height: 100vh;
       }
     </style>
-    <mapbox-map latitude = "38.867847"
-              longitude  = "1.310977"
+    <mapbox-map latitude = "38.893028615148424"
+              longitude  = "-77.03731298446655"
               zoom       = "15"
               layer      = "examples.map-i875kd35">
-        <mapbox-marker
-          symbol = "bus"
-          latitude="0"
-          longitude="0">
-        </mapbox-marker>
+      <mapbox-polyline>
+        <mapbox-point latitude="38.893596444352134" longitude="-77.0381498336792"></mapbox-point>
+        <mapbox-point latitude="38.89337933372204"  longitude="-77.03792452812195"></mapbox-point>
+        <mapbox-point latitude="38.89316222242831"  longitude="-77.03761339187622"></mapbox-point>
+        <mapbox-point latitude="38.893028615148424" longitude="-77.03731298446655"></mapbox-point>
+        <mapbox-point latitude="38.892920059048464" longitude="-77.03691601753235"></mapbox-point>
+        <mapbox-point latitude="38.892903358095296" longitude="-77.03637957572937"></mapbox-point>
+        <mapbox-point latitude="38.89301191422077"  longitude="-77.03592896461487"></mapbox-point>
+        <mapbox-point latitude="38.89316222242831"  longitude="-77.03549981117249"></mapbox-point>
+        <mapbox-point latitude="38.89340438498248"  longitude="-77.03514575958252"></mapbox-point>
+        <mapbox-point latitude="38.893596444352134" longitude="-77.0349633693695"></mapbox-point>
+      </mapbox-polyline>
     </mapbox-map>
 @element mapbox-polyline
-@blurb Element for putting a marker on the map
+@blurb Element for drawing polyline overlays on a map.
 @status alpha
 @homepage https://ruben96.github.io/mapbox-map/elements/mapbox-map/
 -->
@@ -37,10 +44,6 @@ a child element of the `mapbox-map` element.
   <script>
 		Polymer({
 		  is: "mapbox-polyline",
-      behaviors: [
-        MapBox.MapBoxContentPoint,
-        MapBox.MapBoxPath
-      ],
       properties: {
        /**
         * A Feature API object.
@@ -54,18 +57,23 @@ a child element of the `mapbox-map` element.
           type: Object,
           observer: '_mapChanged'
         },
+      },
 
-        _mapChanged: function(){
-          console.log("Polyline called!!");
-          if ( this.map ) {
-            this.feature = L.polyline( [],   this.pathOpts );
-            this.feature.addTo( this.map );
-            this.updateMapBoxPoint();
+      behaviors: [
+        MapBox.MapBoxContentPoint,
+        MapBox.MapBoxPath
+      ],
 
-            this.feature.on('click dblclick mousedown mouseover mouseout contextmenu add remove popupopen popupclose', function(e) {
-    					this.fire(e.type, e);
-    				}, this);
-          }
+      _mapChanged: function(){
+        if ( this.map ) {
+        console.log("Polyline called!!");
+          this.feature = L.polyline( [],   this.pathOpts );
+          this.feature.addTo( this.map );
+          this.updateMapBoxPoint();
+
+          this.feature.on('click dblclick mousedown mouseover mouseout contextmenu add remove popupopen popupclose', function(e) {
+            this.fire(e.type, e);
+          }, this);
         }
       },
 

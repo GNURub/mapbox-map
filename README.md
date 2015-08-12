@@ -22,6 +22,7 @@ $ bower install
 
 ##### Install mapbox-map component using [bower].
 Coming soon...
+
 <!--
 ```bash
 $ bower install mapbox-map
@@ -255,11 +256,6 @@ Cluster wraps the marker elements.
 ![Preview][3]
 
 <!--
-
-
-
-
-
 # &lt;mapbox-polyline&gt;&lt;/mapbox-polyline&gt;
 
 # &lt;mapbox-polygon&gt;&lt;/mapbox-polygon&gt;

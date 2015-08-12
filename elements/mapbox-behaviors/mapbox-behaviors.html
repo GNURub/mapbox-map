@@ -158,7 +158,7 @@
       var temp = [];
       var i;
       var nodes = this.children;
-      for (i = 0, node; node = nodes[i]; ++i) {
+      for (var i = 0, node; node = nodes[i]; ++i) {
         if (node.localName == 'mapbox-point') {
           temp.push(L.latLng(
             node.getAttribute('latitude'),

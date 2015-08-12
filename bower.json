@@ -1,11 +1,16 @@
 {
   "name": "map-box",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "private": false,
   "authors": [
-    "Ruben Cid <rubencidlara@gmail.com>"
+    "Ruben Cid Lara <rubencidlara@gmail.com> (https://github.com/GNURub)"
+  ],
+  "main": [
+    "elements/mapbox-map.html"
   ],
   "keywords": [
     "map-box",
+    "mapbox",
     "customelement",
     "webcomponent",
     "webcomponents",
@@ -16,6 +21,8 @@
   "license": "MIT",
   "ignore": [
     "**/.*",
+    "*.ms",
+    "*.geojson",
     "node_modules",
     "bower_components",
     "test",
@@ -23,12 +30,16 @@
   ],
 
   "dependencies": {
-    "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#~1.0.2",
+    "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#^1.0.2",
     "mapbox.js": "^2.2.1",
     "polymer": "Polymer/polymer#master",
     "Leaflet.label": "^0.2.1",
     "leaflet.fullscreen": "^1.1.4",
     "leaflet.locatecontrol": "^0.44.0",
     "leaflet.markercluster": "^0.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/GNURub/mapbox-map.git"
   }
 }

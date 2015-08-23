@@ -253,11 +253,6 @@ a child element of the `open-map` element.
     <content></content>
   </template>
   <script>
-    function setPos(pos){
-      var lat  = pos.coords.latitude;
-      var lng = pos.coords.longitude;
-      this._updatePosition(lat, lng);
-    }
     Polymer({
       is: "mapbox-marker",
       properties:{
@@ -294,24 +289,6 @@ a child element of the `open-map` element.
           type: Boolean,
           value: false,
           notify: true
-        },
-
-       /**
-        *
-        */
-        getPosition: {
-          type: Boolean,
-          value: false,
-          observer: '_getPositionChanged'
-        },
-
-       /**
-        *
-        */
-        watchPosition: {
-          type: Boolean,
-          value: false,
-          observer: '_watchPositionChanged'
         },
 
        /**
@@ -420,8 +397,6 @@ a child element of the `open-map` element.
 
           this.feature.addTo(this.map);
           this._titleChanged();
-          this._getPositionChanged();
-          this._watchPositionChanged();
           this.updatePopupContent();
 
 
@@ -524,18 +499,6 @@ a child element of the `open-map` element.
       _titleChanged: function(){
         if(this.feature && this.map){
           this.feature.bindLabel(this.label);
-        }
-      },
-
-      _getPositionChanged: function(){
-        if(this.getPosition && ('geolocation' in navigator)){
-          navigator.geolocation.getCurrentPosition(setPos.bind(this));
-        }
-      },
-
-      _watchPositionChanged: function(){
-        if(!this.getPosition && this.watchPosition && ('geolocation' in navigator)){
-          navigator.geolocation.watchPosition(setPos.bind(this));
         }
       },
 

@@ -32,7 +32,7 @@
   "dependencies": {
     "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#^1.0.2",
     "mapbox.js": "^2.2.1",
-    "polymer": "Polymer/polymer#master",
+    "polymer": "Polymer/polymer#^1.1.0",
     "Leaflet.label": "^0.2.1",
     "leaflet.fullscreen": "^1.1.4",
     "leaflet.locatecontrol": "^0.44.0",

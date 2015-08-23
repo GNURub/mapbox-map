@@ -6,7 +6,8 @@
 	<meta name="description" content="" />
 	<script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
 
-	<link rel="import" href="elements/map-box.html">
+	<link rel="import" href="map-box.html">
+	<link rel="import" href="../geo-location/geo-location.html">
 	<style>
 		html, body{
 			height: 100%;
@@ -23,17 +24,19 @@
 	</style>
 </head>
 <body>
-	<mapbox-map id="map"
-		zoom="15"
-		layer="roadtrippers.ijjip7cb"
-		zoomable
-		load-feature="https://raw.githubusercontent.com/elil/places/master/places.geojson"
-		latitude="38.893596444352134"
-		longitude="-77.0381498336792">
-		<mapbox-marker latitude="38.893596444352134"
-		longitude="-77.0381498336792">
-
-    </mapbox-marker>
-	</mapbox-map>
+	<template id="t" is="dom-bind">
+		<geo-location watch-pos latitude="{{latitude}}" longitude="{{longitude}}"></geo-location>
+		<mapbox-map id="map"
+			zoom="15"
+			layer="roadtrippers.ijjip7cb"
+			zoomable
+			load-feature="https://raw.githubusercontent.com/elil/places/master/places.geojson"
+			latitude="{{latitude}}"
+			longitude="{{longitude}}">
+			<mapbox-marker latitude="{{latitude}}"
+			longitude="{{longitude}}">
+	    </mapbox-marker>
+		</mapbox-map>
+	</template>
 </body>
 </html>

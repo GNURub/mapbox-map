@@ -1,6 +1,6 @@
 {
   "name": "map-box",
-  "version": "0.1.1",
+  "version": "0.1.6",
   "private": false,
   "authors": [
     "Ruben Cid Lara <rubencidlara@gmail.com> (https://github.com/GNURub)"
@@ -14,6 +14,7 @@
     "customelement",
     "webcomponent",
     "webcomponents",
+    "web-components",
     "polymer",
     "maps",
     "openstreetmap"

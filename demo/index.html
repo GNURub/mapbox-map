@@ -7,6 +7,7 @@
 	<script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
 
 	<link rel="import" href="../map-box.html">
+	<link rel="import" href="../../geo-location/geo-location.html">
 	<style>
 		html, body{
 			height: 100%;
@@ -24,7 +25,7 @@
 </head>
 <body unresolved>
 	<template is="dom-bind">
-		<geo-location watch-pos latitude="{{latitude}}" longitude="{{longitude}}"></geo-location>
+		<geo-location watch-pos latitude="{{latitude}}" longitude="{{longitude}}" ></geo-location>
 		<mapbox-map id="map"
 			zoom="15"
 			layer="roadtrippers.ijjip7cb"

@@ -4,3 +4,5 @@ smartcommets.json
 defauts.js
 styles.ms
 *.geojson
+.bowerrc
+.publish

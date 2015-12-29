@@ -1,0 +1,511 @@
+<link rel="import" href="../../../polymer/polymer.html">
+<link rel="import" href="../mapbox-behaviors/mapbox-behaviors.html">
+<!--
+The `mapbox-marker` element represents a marker on the map and is used as
+a child element of the `open-map` element.
+##### Example: Add marker
+    <style>
+      mapbox-map {
+        display: block;
+        height: 100vh;
+      }
+    </style>
+    <mapbox-map latitude = "38.867847"
+              longitude  = "1.310977"
+              zoom       = "15"
+              layer      = "examples.map-i875kd35">
+        <mapbox-marker
+          symbol = "bus"
+          latitude="0"
+          longitude="0">
+        </mapbox-marker>
+    </mapbox-map>
+@element mapbox-marker
+@blurb Element for putting a marker on the map
+@status alpha
+@homepage https://ruben96.github.io/mapbox-map/elements/mapbox-map/
+-->
+<dom-module id="mapbox-icon">
+  <style>
+    :host {
+      display: none;
+    }
+  </style>
+  <template>
+  </template>
+  <script>
+    Polymer({
+      is: "mapbox-icon",
+      properties: {
+        /**
+  			 * The `icon-url` attribute sets the URL to the icon image (absolute or relative to your script path).
+  			 *
+  			 * @attribute icon-url
+  			 * @type string
+  			 */
+  			iconUrl: {
+  				type: String
+  			},
+
+  			/**
+  			 * The `icon-retina-url` attribute sets the URL to a retina sized version of the icon image (absolute or relative to your script path). Used for Retina screen devices.
+  			 *
+  			 * @attribute icon-retina-url
+  			 * @type string
+  			 */
+  			iconRetinaUrl: {
+  				type: String
+  			},
+
+  			/**
+  			 * The `icon-width` attribute sets the size of the icon image in pixels.
+  			 *
+  			 * @attribute icon-width
+  			 * @type number
+  			 */
+  			iconWidth: {
+  				type: Number
+  			},
+
+  			/**
+  			 * The `icon-height` attribute sets the size of the icon image in pixels.
+  			 *
+  			 * @attribute icon-height
+  			 * @type number
+  			 */
+  			iconHeight: {
+  				type: Number
+  			},
+
+  			/**
+  			 * The `icon-anchor-x` attribute sets the coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that this point is at the marker's geographical location. Centered by default if size is specified, also can be set in CSS with negative margins.
+  			 *
+  			 * @attribute icon-anchor-x
+  			 * @type number
+  			 */
+  			iconAnchorX: {
+  				type: Number
+  			},
+
+  			/**
+  			 * The `icon-anchor-y` attribute sets the coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that this point is at the marker's geographical location. Centered by default if size is specified, also can be set in CSS with negative margins.
+  			 *
+  			 * @attribute icon-anchor-y
+  			 * @type number
+  			 */
+  			iconAnchorY: {
+  				type: Number
+  			},
+
+  			/**
+  			 * The `shadow-url` attribute sets the URL to the icon shadow image. If not specified, no shadow image will be created.
+  			 *
+  			 * @attribute shadow-url
+  			 * @type string
+  			 */
+  			shadowUrl: {
+  				type: String
+  			},
+
+  			/**
+  			 * The `shadow-retina-url` attribute sets the URL to the retina sized version of the icon shadow image. If not specified, no shadow image will be created. Used for Retina screen devices.
+  			 *
+  			 * @attribute shadow-retina-url
+  			 * @type string
+  			 */
+  			shadowRetinaUrl: {
+  				type: String
+  			},
+
+  			/**
+  			 * The `shadow-width` attribute sets the size of the shadow image in pixels.
+  			 *
+  			 * @attribute shadow-width
+  			 * @type number
+  			 */
+  			shadowWidth: {
+  				type: Number
+  			},
+
+  			/**
+  			 * The `shadow-height` attribute sets the size of the shadow image in pixels.
+  			 *
+  			 * @attribute shadow-height
+  			 * @type number
+  			 */
+  			shadowHeight: {
+  				type: Number
+  			},
+
+  			/**
+  			 * The `shadow-anchor-x` attribute sets the coordinates of the "tip" of the shadow (relative to its top left corner) (the same as iconAnchor if not specified).
+  			 *
+  			 * @attribute shadow-anchor-x
+  			 * @type number
+  			 */
+  			shadowAnchorX: {
+  				type: Number
+  			},
+
+  			/**
+  			 * The `shadow-anchor-y` attribute sets the coordinates of the "tip" of the shadow (relative to its top left corner) (the same as iconAnchor if not specified).
+  			 *
+  			 * @attribute shadow-anchor-y
+  			 * @type number
+  			 */
+  			shadowAnchorY: {
+  				type: Number
+  			},
+
+  			/**
+  			 * The `popup-anchor-x` attribute sets the coordinates of the point from which popups will "open", relative to the icon anchor.
+  			 *
+  			 * @attribute popup-anchor-x
+  			 * @type number
+  			 */
+  			popupAnchorX: {
+  				type: Number
+  			},
+
+  			/**
+  			 * The `popupanchory` attribute sets the coordinates of the point from which popups will "open", relative to the icon anchor.
+  			 *
+  			 * @attribute popup-anchor-y
+  			 * @type number
+  			 */
+  			popupAnchorY: {
+  				type: Number
+  			},
+
+  			/**
+  			 * The `class-name` attribute sets a custom class name to assign to both icon and shadow images. Empty by default.
+  			 *
+  			 * @attribute class-name
+  			 * @type string
+  			 */
+  			className: {
+  				type: String,
+  				value: ''
+  			},
+
+        icon: Object
+  		},
+
+      observers: [
+        '_iconChanged(iconUrl, iconRetinaUrl, shadowUrl, shadowRetinaUrl,'+
+        'shadowRetinaUrl, className, iconWidth, iconHeight, iconAnchorX,'+
+        'iconAnchorY, shadowWidth, shadowHeight, shadowAnchorX, popupAnchorY'+
+        'popupAnchorY)'
+      ],
+
+      /**
+       * Get the Icon Object API
+       * @method getIcon
+       * @return Icon Object
+       */
+  		getIcon: function() {
+  			if (this.icon) {
+  				return this.icon;
+  			}
+  			var icon = {
+  				iconUrl:         this.iconUrl,
+  				iconRetinaUrl:   this.iconRetinaUrl,
+  				shadowUrl:       this.shadowUrl,
+  				shadowRetinaUrl: this.shadowRetinaUrl,
+  				className:       this.className
+  			};
+  			if (this.iconWidth && this.iconHeight) {
+  				icon.iconSize = L.point(this.iconWidth, this.iconHeight);
+  			}
+  			if (this.iconAnchorX && this.iconAnchorY) {
+  				icon.iconAnchor = L.point(this.iconAnchorX, this.iconAnchorY);
+  			}
+  			if (this.shadowWidth && this.shadowHeight) {
+  				icon.shadowSize = L.point(this.shadowWidth, this.shadowHeight);
+  			}
+  			if (this.shadowAnchorX && this.shadowAnchorY) {
+  				icon.shadowAnchor = L.point(this.shadowAnchorX, this.shadowAnchorY);
+  			}
+  			if (this.popupAnchorX && this.popupAnchorY) {
+  				icon.popupAnchor = L.point(this.popupAnchorX, this.popupAnchorY);
+  			}
+
+  			this.icon = L.icon(icon);
+  			return this.icon;
+  		},
+
+  		_iconChanged: function() {
+  			this.icon = null;
+  		}
+    });
+  </script>
+</dom-module>
+
+<dom-module id="mapbox-marker">
+  <style>
+    :host {
+      display: none;
+    }
+  </style>
+  <link rel="stylesheet" href="../../../Leaflet.label/dist/leaflet.label.css">
+  <template>
+    <content id="icon" select="mapbox-icon"></content>
+    <content></content>
+  </template>
+  <script>
+    Polymer({
+      is: "mapbox-marker",
+      properties:{
+
+       /**
+        * A Feature API object.
+        */
+        feature: Object,
+
+        /**
+         * Remove this layer
+         * @method removeLayer
+         * @return this Object
+         */
+        label: {
+          type: String,
+          value: null,
+          reflectToAttribute: true,
+          observer: '_titleChanged'
+        },
+
+       /**
+        * A Map API object.
+        */
+        map: {
+          type: Object,
+          observer: '_mapChanged'
+        },
+
+       /**
+        * If is set enables the drag for the marker
+        */
+        draggable: {
+          type: Boolean,
+          value: false,
+          notify: true
+        },
+
+       /**
+        * The marker's longitude coordinate.
+        */
+        longitude: {
+          type: Number,
+          value: 0,
+          reflectToAttribute: true
+        },
+
+       /**
+        * The marker's latitude coordinate.
+        */
+        latitude: {
+          type: Number,
+          value: 0,
+          reflectToAttribute: true
+        },
+
+       /**
+        * Color for the marker
+        */
+        color: {
+          type: String,
+          value: ''
+        },
+
+       /**
+        * Size for the marker
+        */
+        size: {
+          type: String,
+          value: ''
+        },
+
+       /**
+        * Icon for the marker
+        */
+        symbol: {
+          type: String,
+          value: ''
+        },
+      },
+
+      observers: [
+        '_updatePosition(latitude, longitude)',
+        '_iconChanged(color, size, symbol)'
+      ],
+
+      behaviors: [
+        MapBox.MapBoxPopoutContent,
+        MapBox.RemoveFeature
+      ],
+
+      _updatePosition:function(lat, lng){
+        var canUpdate = ( this.map &&
+          this.feature &&
+          !isNaN(parseFloat(lat)) &&
+          !isNaN(parseFloat(lng)) &&
+          !this.disableUpPos
+          );
+
+        if( canUpdate ){
+          this.feature.setLatLng( L.latLng(lat, lng) );
+        }else if( !this.feature ){
+          this._mapReady();
+        }
+      },
+
+
+      _mapChanged: function() {
+        console.log("Marker Called!");
+        // Marker will be rebuilt, so disconnect existing one from old map and listeners.
+        if (this.feature) {
+          return;
+        }
+        if (this.map) {
+          this._mapReady();
+        }
+      },
+
+      _mapReady: function () {
+        var canUpdate = ( this.map &&
+          !isNaN( parseFloat( this.latitude ) ) &&
+          !isNaN( parseFloat( this.longitude ) ) );
+
+        if( canUpdate ) {
+          if( this.feature ) {
+            this.map.removeLayer(this.feature);
+          }
+
+          var icon;
+          var newCenter = L.latLng(this.latitude, this.longitude);
+          var iconNode = Array.prototype.slice.call(
+            Polymer.dom(this.$.icon).getDistributedNodes())[0];
+          if(!this.color  && !this.symbol && !this.size && iconNode){
+            icon = iconNode.getIcon();
+          }else{
+            icon = this._createIcon();
+          }
+          this.feature = L.marker(newCenter, {
+            draggable: !!this.draggable,
+            alt: this.label,
+            icon: icon
+          });
+
+          this.feature.addTo(this.map);
+          this._titleChanged();
+          this.updatePopupContent();
+
+
+          /**
+          * Fired when user clicks (or tabs) the marker.
+          *
+          * @event click-marker
+
+          *//**
+          * Fired when user dobleclicks (or doble-tabs) the marker
+          *
+          * @event dblclick-marker
+
+          */
+
+          /**
+          * Fired when the marker is moved via latitude/longitude.
+          *
+          * @event move-marker
+
+          */
+
+          /**
+          * Fired when user starts dragging the marker.
+          *
+          * @event dragstart-marker
+
+          */
+
+          /**
+          * Fired reapetedly while the user drags the marker.
+          *
+          * @event drag-marker
+
+          */
+
+          /**
+          * Fired when user stops dragging the marker.
+          *
+          * @event dragend-marker
+
+          */
+
+          /**
+          * Fired when the marker is added from the map.
+          *
+          * @event add-marker
+
+          */
+
+          /**
+          * Fired when the marker is removed from the map.
+          *
+          * @event remove-marker
+
+          */
+
+          /**
+          * Fired when popup bound to the marker is open.
+          *
+          * @event popupopen-marker
+
+          */
+
+          /**
+          * Fired when popup bound to the marker is close.
+          *
+          * @event popupclose-marker
+
+          */
+
+          this.feature.on( 'click dblclick moveend move dragstart drag dragend add remove popupopen popupclose', function(e){
+            this.fire(e.type, e);
+          }, this);
+
+          this.feature.on('drag', function(e){
+            this.disableUpPos = true;
+            this.latitude  = e.target.getLatLng().lat;
+            this.longitude = e.target.getLatLng().lng;
+          }, this);
+          this.feature.on('dragend', function(e){
+            this.disableUpPos = false;
+          }, this);
+        }
+      },
+
+      _iconChanged: function (color, size, symbol) {
+        if( this.map && !!this.feature ) {
+          this.feature.setIcon(this._createIcon());}
+      },
+
+      _createIcon:function  () {
+        return L.mapbox.marker.icon( {
+          'marker-size': this.size,
+          'marker-symbol': this.symbol,
+          'marker-color': this.color
+        } );
+      },
+
+      _titleChanged: function(){
+        if(this.feature && this.map && this.label){
+          this.feature.bindLabel(this.label);
+        }
+      },
+
+      detached: function(){
+        this.removeLayer();
+      }
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,282 @@
+<script>
+  window.MapBox || (window.MapBox = {});
+
+  window.MapBox.RemoveFeature = {
+    hide: function(){
+      this.map.removeLayer(this.feature);
+    },
+
+    show: function(){
+      this.feature.addTo(this.map);
+    },
+
+    toggle: function(){
+      if(this.feature && this.feature._map === null){
+        this.show();
+      }else{
+        this.hide();
+      }
+    },
+    /**
+     * Remove this layer
+     * @method removeLayer
+     * @return this Object
+     */
+    removeLayer: function() { // pasar a todos los elementos feature n funciona :$
+      this.map.removeLayer(this.feature);
+      this.remove();
+    }
+  };
+
+  window.MapBox.MapBoxPath = {
+    properties: {
+      /**
+       * The attribute `stroke` sets whether to draw stroke along the path. Set it to false to disable borders on polygons or circles.
+       *
+       * @attribute stroke
+       * @type boolean
+       */
+      noStroke: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * The attribute `color` sets the stroke color.
+       *
+       * @attribute color
+       * @type string
+       */
+      color: {
+        type: String,
+        value: '#03f'
+      },
+      /**
+       * The attribute `weight` sets the stroke width in pixels.
+       *
+       * @attribute weight
+       * @type number
+       */
+      weight: {
+        type: Number,
+        value: 5
+      },
+      /**
+       * The attribute `opacity` sets the stroke opacity.
+       *
+       * @attribute opacity
+       * @type number
+       */
+      opacity: {
+        type: Number,
+        value: 0.5
+      },
+      /**
+       * The attribute `fill` sets the whether to fill the path with color. Set it to false to disable filling on polygons or circles.
+       *
+       * @attribute fill
+       * @type boolean
+       */
+      fill: {
+        type: Boolean,
+        value: null
+      },
+      /**
+       * The attribute `fill-color` sets the fill color.
+       *
+       * @attribute fill-color
+       * @type string
+       */
+      fillColor: {
+        type: String,
+        value: null
+      },
+      /**
+       * The attribute `fill-opacity` sets the fill opacity.
+       *
+       * @attribute fill-opacity
+       * @type number
+       */
+      fillOpacity: {
+        type: Number,
+        value: 0.2
+      },
+      /**
+       * The attribute `dash-array` sets a string that defines the stroke dash pattern. Doesn't work on canvas-powered layers (e.g. Android 2).
+       *
+       * @attribute dash-array
+       * @type string
+       */
+      dashArray: {
+        type: String,
+        value: null
+      },
+      /**
+       * The attribute `line-cap` defines the shape to be used at the end of the stroke.
+       *
+       * @attribute line-cap
+       * @type string
+       */
+      lineCap: {
+        type: String,
+        value: null
+      },
+      /**
+       * The attribute `line-join` sets the string that defines shape to be used at the corners of the stroke.
+       *
+       * @attribute line-join
+       * @type string
+       */
+      lineJoin: {
+        type: String,
+        value: null
+      },
+      /**
+       * The attribute `clickable` sets whether the vector will emit mouse events or will act as a part of the underlying map.
+       *
+       * @attribute clickable
+       * @type boolean
+       */
+      noClickable: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * The attribute `pointer-events` sets the pointer-events attribute on the path if SVG backend is used.
+       *
+       * @attribute pointer-events
+       * @type string
+       */
+      pointerEvents: {
+        type: String,
+        value: null
+      },
+      /**
+       * The attribute `class-name` sets the custom class name set on an element.
+       *
+       * @attribute class-name
+       * @type string
+       */
+      className: {
+        type: String,
+        value: ''
+      }
+    },
+    get pathOpts(){
+      return L.extend(this,
+            {stroke: !this.noStroke,
+            clickable: !this.noClickable});
+    }
+  };
+  window.MapBox.MapBoxContentPoint = {
+    attached: function(){
+      if('MutationObserver' in window && !this._observer){
+        this._observer = new MutationObserver(this.updateMapBoxPoint.bind(this));
+        this._observer.observe(this, {
+          childList: true,
+          characterData: true,
+          attributes: true,
+          subtree: true});
+      }
+    },
+    updateMapBoxPoint: function(){
+      if (!this.feature) {
+        return;
+      }
+      var temp = [];
+      var i;
+      var nodes = this.children;
+      for (var i = 0, node; node = nodes[i]; ++i) {
+        if (node.localName == 'mapbox-point') {
+          temp.push(L.latLng(
+            node.getAttribute('latitude'),
+            node.getAttribute('longitude')
+          ));
+        }
+      }
+      this.feature.setLatLngs(temp);
+    },
+    detached: function() {
+      if (this._observer) {
+        this._observer.disconnect();
+      }
+    }
+
+  };
+
+  window.MapBox.MapBoxPopoutContent = {
+    properties: {
+      maxWidth: {
+        type: Number,
+        value: 300,
+      },
+      minWidth: {
+        type: Number,
+        value: 50,
+      },
+      maxHeight: {
+        type: Number,
+        value: 500,
+      },
+      autopan: {
+        type: Boolean,
+        value: true,
+      },
+      keepInView: {
+        type: Boolean,
+        value: false,
+      },
+      closeBotton: {
+        type: Boolean,
+        value: false,
+      },
+      zoomAnimation: {
+        type: Boolean,
+        value: true,
+      },
+      closeOnClick: {
+        type: Boolean,
+        value: null,
+      },
+      className: {
+        type: String,
+        value: '',
+      },
+    },
+    attached: function() {
+  		if ('MutationObserver' in window && !this._observer) {
+  			this._observer = new MutationObserver(this.updatePopupContent.bind(this));
+  			this._observer.observe(this, {childList: true, characterData: true, attributes: true, subtree: true});
+  		}
+  	},
+  	updatePopupContent: function() {
+  		if (!this.feature) {
+  			return;
+  		}
+  		this.feature.unbindPopup();
+      var exp = /<\/?mapbox-point[^>]*>|<\/?mapbox-icon[^>]*>/g;
+  		var content = Polymer.dom(this)
+                    .innerHTML
+                    .replace(exp, "")
+                    .trim();
+  		if (content) {
+  			this.feature.bindPopup(content,{
+          keepInView:    this.keepInView,
+          autoPan:       this.autoPan,
+          closeButton:   this.closeButton,
+          maxWidth:      this.maxWidth,
+          minWidth:      this.minWidth,
+          maxHeight:     this.maxHeight,
+          zoomAnimation: this.zoomAnimation,
+          closeOnClick:  this.closeOnClick,
+          className:     this.className
+        });
+  		}
+  	},
+
+  	detached: function() {
+  		if (this._observer) {
+  			this._observer.disconnect();
+  		}
+  	}
+  };
+</script>

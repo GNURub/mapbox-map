@@ -1,0 +1,107 @@
+<link rel="import" href="../../../polymer/polymer.html">
+<!--
+The `mapbox-cluster` element represents a cluster of the markers on the map and is used as
+a child element of the `mapbox-map` element.
+##### Example: Add cluster of the markers
+    <style>
+      mapbox-map {
+        display: block;
+        height: 100vh;
+      }
+    </style>
+    <mapbox-map latitude = "0"
+              longitude  = "0"
+              zoom       = "15"
+              layer      = "examples.map-i875kd35">
+        <mapbox-cluster>
+          <mapbox-marker
+            symbol = "bus"
+            latitude="0"
+            longitude="0">
+          </mapbox-marker>
+          <mapbox-marker
+            symbol    = "bus"
+            latitude  = "0.005"
+            longitude = "0.005">
+          </mapbox-marker>
+      </mapbox-cluster>
+    </mapbox-map>
+@element mapbox-cluster
+@blurb Using the Leaflet Markercluster plugin
+@status alpha
+@homepage https://ruben96.github.io/mapbox-map/elements/mapbox-map/
+-->
+<dom-module id="mapbox-cluster">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <link rel="stylesheet" href="../../../leaflet.markercluster/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="../../../leaflet.markercluster/dist/MarkerCluster.Default.css">
+  <template>
+    <content id="markers" select="mapbox-marker"></content>
+  </template>
+  <script>
+		Polymer({
+		  is: "mapbox-cluster",
+      properties: {
+        /**
+         *
+         */
+        markers: Object,
+
+        /**
+         *  A Map API object.
+         */
+        map: {
+          type: Object,
+          observer: '_mapChanged'
+        },
+
+        /**
+         * Redius for show the cluster
+         * @type Number
+         */
+        radius: {
+          type: Number,
+          value: 80
+        }
+      },
+
+      _mapChanged: function(){
+        console.log("Cluster called!")
+        if(this.map){
+          this.markers = new L.MarkerClusterGroup();
+          this._updatedMarkers();
+        }
+        this.markers.on('click clusterclick', function (e) {
+          this.fire(e.type, e);
+        }, this);
+
+      },
+      _observeMarkers: function(){
+        if (this._observer) {
+          return;
+        }
+        this._observer = new MutationObserver( this._updatedMarkers.bind(this));
+        this._observer.observe(this, {
+          childList: true
+        });
+      },
+      _updatedMarkers: function(){
+        var newMarkers = Array.prototype.slice.call(
+         Polymer.dom(this.$.markers).getDistributedNodes());
+
+        this._observeMarkers();
+        if (newMarkers.length && this.markers) {
+          for (var i = 0, m; m = newMarkers[i]; ++i) {
+            m.map = this.markers;
+          }
+          this.map.addLayer(this.markers);
+        }
+      }
+
+		});
+  </script>
+</dom-module>

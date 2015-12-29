@@ -1,0 +1,87 @@
+<link rel="import" href="../../../polymer/polymer.html">
+<link rel="import" href="../mapbox-behaviors/mapbox-behaviors.html">
+<!--
+The `mapbox-polyline` element represents a marker on the map and is used as
+a child element of the `mapbox-map` element.
+##### Example: Add marker
+    <style>
+      mapbox-map {
+        display: block;
+        height: 100vh;
+      }
+    </style>
+    <mapbox-map latitude = "38.893028615148424"
+              longitude  = "-77.03731298446655"
+              zoom       = "15"
+              layer      = "examples.map-i875kd35">
+      <mapbox-polyline>
+        <mapbox-point latitude="38.893596444352134" longitude="-77.0381498336792"></mapbox-point>
+        <mapbox-point latitude="38.89337933372204"  longitude="-77.03792452812195"></mapbox-point>
+        <mapbox-point latitude="38.89316222242831"  longitude="-77.03761339187622"></mapbox-point>
+        <mapbox-point latitude="38.893028615148424" longitude="-77.03731298446655"></mapbox-point>
+        <mapbox-point latitude="38.892920059048464" longitude="-77.03691601753235"></mapbox-point>
+        <mapbox-point latitude="38.892903358095296" longitude="-77.03637957572937"></mapbox-point>
+        <mapbox-point latitude="38.89301191422077"  longitude="-77.03592896461487"></mapbox-point>
+        <mapbox-point latitude="38.89316222242831"  longitude="-77.03549981117249"></mapbox-point>
+        <mapbox-point latitude="38.89340438498248"  longitude="-77.03514575958252"></mapbox-point>
+        <mapbox-point latitude="38.893596444352134" longitude="-77.0349633693695"></mapbox-point>
+      </mapbox-polyline>
+    </mapbox-map>
+@element mapbox-polyline
+@blurb Element for drawing polyline overlays on a map.
+@status alpha
+@homepage https://ruben96.github.io/mapbox-map/elements/mapbox-map/
+-->
+<dom-module id="mapbox-polyline">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <template>
+    <content id="points" select="mapbox-point"></content>
+  </template>
+  <script>
+		Polymer({
+		  is: "mapbox-polyline",
+      properties: {
+       /**
+        * A Feature API object.
+        */
+        feature: Object,
+
+       /**
+        * A Maps API object.
+        */
+        map: {
+          type: Object,
+          observer: '_mapChanged'
+        },
+      },
+
+      behaviors: [
+        MapBox.MapBoxContentPoint,
+        MapBox.MapBoxPath,
+        MapBox.RemoveFeature
+      ],
+
+      _mapChanged: function(){
+        if ( this.map ) {
+        console.log("Polyline called!!");
+          this.feature = L.polyline( [],   this.pathOpts );
+          this.feature.addTo( this.map );
+          this.updateMapBoxPoint();
+
+          this.feature.on('click dblclick mousedown mouseover mouseout contextmenu add remove popupopen popupclose', function(e) {
+            this.fire(e.type, e);
+          }, this);
+        }
+      },
+
+      detached: function(){
+        this.removeLayer();
+      }
+		});
+
+  </script>
+</dom-module>

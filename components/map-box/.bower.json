@@ -1,0 +1,58 @@
+{
+  "name": "map-box",
+  "private": false,
+  "authors": [
+    "Ruben Cid Lara <rubencidlara@gmail.com> (https://github.com/GNURub)"
+  ],
+  "main": [
+    "elements/mapbox-map.html"
+  ],
+  "keywords": [
+    "map-box",
+    "mapbox",
+    "customelement",
+    "webcomponent",
+    "webcomponents",
+    "polymer",
+    "maps",
+    "openstreetmap"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "*.ms",
+    "*.geojson",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Leaflet.label": "^0.2.1",
+    "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#^1.0.2",
+    "leaflet.fullscreen": "^1.1.4",
+    "leaflet.locatecontrol": "^0.44.0",
+    "leaflet.markercluster": "^0.4.0",
+    "mapbox.js": "^2.2.1",
+    "polymer": "Polymer/polymer#^1.1.5"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.5",
+    "geo-location": "~1.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/GNURub/mapbox-map.git"
+  },
+  "homepage": "https://github.com/GNURub/mapbox-map",
+  "_release": "2829bf5135",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "2829bf5135bdadbb10c275973a0dd84a8c002b46"
+  },
+  "_source": "git://github.com/GNURub/mapbox-map.git",
+  "_target": "master",
+  "_originalSource": "GNURub/mapbox-map",
+  "_direct": true
+}

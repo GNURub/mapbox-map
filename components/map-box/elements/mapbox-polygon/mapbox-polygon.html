@@ -1,0 +1,81 @@
+<link rel="import" href="../../../polymer/polymer.html">
+<link rel="import" href="../mapbox-behaviors/mapbox-behaviors.html">
+<!--
+The `mapbox-polygon` element represents a marker on the map and is used as
+a child element of the `mapbox-map` element.
+##### Example: Add marker
+    <style>
+      mapbox-map {
+        display: block;
+        height: 100vh;
+      }
+    </style>
+    <mapbox-map latitude = "38.867847"
+              longitude  = "1.310977"
+              zoom       = "15"
+              layer      = "examples.map-i875kd35">
+        <mapbox-marker
+          symbol = "bus"
+          latitude="0"
+          longitude="0">
+        </mapbox-marker>
+    </mapbox-map>
+@element mapbox-polygon
+@blurb Element for putting a marker on the map
+@status alpha
+@homepage https://ruben96.github.io/mapbox-map/elements/mapbox-map/
+-->
+<dom-module id="mapbox-polygon">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <template>
+    <content id="points" select="mapbox-point"></content>
+  </template>
+  <script>
+
+		Polymer({
+		  is: "mapbox-polygon",
+
+      properties: {
+       /**
+        * A Feature API object.
+        */
+        feature: Object,
+
+       /**
+        * A Map API object.
+        */
+        map: {
+          type: Object,
+          observer: '_mapChanged'
+        },
+      },
+
+      behaviors: [
+          MapBox.MapBoxContentPoint,
+          MapBox.MapBoxPath,
+          MapBox.RemoveFeature
+      ],
+
+      _mapChanged: function(){
+        console.log("polygon called!!");
+        if ( this.map ) {
+          this.feature = L.polygon( [],   this.pathOpts );
+          this.feature.addTo( this.map );
+          this.updateMapBoxPoint();
+
+          this.feature.on('click dblclick mousedown mouseover mouseout contextmenu add remove popupopen popupclose', function(e) {
+  					this.fire(e.type, e);
+  				}, this);
+        }
+      }
+
+      detached: function(){
+        this.removeLayer();
+      }
+		});
+  </script>
+</dom-module>

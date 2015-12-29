@@ -35,7 +35,11 @@
     "leaflet.locatecontrol": "^0.44.0",
     "leaflet.markercluster": "^0.4.0",
     "mapbox.js": "^2.2.1",
-    "polymer": "Polymer/polymer#^1.1.0"
+    "polymer": "Polymer/polymer#^1.1.5"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.5",
+    "geo-location": "~1.0.1"
   },
   "repository": {
     "type": "git",

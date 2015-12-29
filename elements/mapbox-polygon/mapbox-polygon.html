@@ -56,7 +56,8 @@ a child element of the `mapbox-map` element.
 
       behaviors: [
           MapBox.MapBoxContentPoint,
-          MapBox.MapBoxPath
+          MapBox.MapBoxPath,
+          MapBox.RemoveFeature
       ],
 
       _mapChanged: function(){
@@ -70,20 +71,7 @@ a child element of the `mapbox-map` element.
   					this.fire(e.type, e);
   				}, this);
         }
-      },
-      log: function () {
-        console.log(this.feature)
-      },
-
-      /**
-       * Remove this layer
-       * @method removeLayer
-       * @return this Object
-       */
-      removeLayer: function() {
-        this.map.removeLayer(this.feature);
-        this.remove();
-      },
+      }
 
       detached: function(){
         this.removeLayer();

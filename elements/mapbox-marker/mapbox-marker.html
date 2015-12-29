@@ -340,7 +340,8 @@ a child element of the `open-map` element.
       ],
 
       behaviors: [
-        MapBox.MapBoxPopoutContent
+        MapBox.MapBoxPopoutContent,
+        MapBox.RemoveFeature
       ],
 
       _updatePosition:function(lat, lng){
@@ -497,19 +498,9 @@ a child element of the `open-map` element.
       },
 
       _titleChanged: function(){
-        if(this.feature && this.map){
+        if(this.feature && this.map && this.label){
           this.feature.bindLabel(this.label);
         }
-      },
-
-      /**
-       * Remove this layer
-       * @method removeLayer
-       * @return this Object
-       */
-      removeLayer: function() {
-        this.map.removeLayer(this.feature);
-        this.remove();
       },
 
       detached: function(){

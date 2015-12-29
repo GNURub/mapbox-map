@@ -1,6 +1,33 @@
 <script>
   window.MapBox || (window.MapBox = {});
 
+  window.MapBox.RemoveFeature = {
+    hide: function(){
+      this.map.removeLayer(this.feature);
+    },
+
+    show: function(){
+      this.feature.addTo(this.map);
+    },
+
+    toggle: function(){
+      if(this.feature && this.feature._map === null){
+        this.show();
+      }else{
+        this.hide();
+      }
+    },
+    /**
+     * Remove this layer
+     * @method removeLayer
+     * @return this Object
+     */
+    removeLayer: function() { // pasar a todos los elementos feature n funciona :$
+      this.map.removeLayer(this.feature);
+      this.remove();
+    }
+  };
+
   window.MapBox.MapBoxPath = {
     properties: {
       /**

@@ -1,26 +1,33 @@
 <link rel="import" href="../../../polymer/polymer.html">
 <!--
-The `mapbox-cluster` element represents a marker on the map and is used as
+The `mapbox-cluster` element represents a cluster of the markers on the map and is used as
 a child element of the `mapbox-map` element.
-##### Example: Add marker
+##### Example: Add cluster of the markers
     <style>
       mapbox-map {
         display: block;
         height: 100vh;
       }
     </style>
-    <mapbox-map latitude = "38.867847"
-              longitude  = "1.310977"
+    <mapbox-map latitude = "0"
+              longitude  = "0"
               zoom       = "15"
               layer      = "examples.map-i875kd35">
-        <mapbox-marker
-          symbol = "bus"
-          latitude="0"
-          longitude="0">
-        </mapbox-marker>
+        <mapbox-cluster>
+          <mapbox-marker
+            symbol = "bus"
+            latitude="0"
+            longitude="0">
+          </mapbox-marker>
+          <mapbox-marker
+            symbol    = "bus"
+            latitude  = "0.005"
+            longitude = "0.005">
+          </mapbox-marker>
+      </mapbox-cluster>
     </mapbox-map>
 @element mapbox-cluster
-@blurb Element for putting a marker on the map
+@blurb Using the Leaflet Markercluster plugin
 @status alpha
 @homepage https://ruben96.github.io/mapbox-map/elements/mapbox-map/
 -->
@@ -54,6 +61,7 @@ a child element of the `mapbox-map` element.
 
         /**
          * Redius for show the cluster
+         * @type Number
          */
         radius: {
           type: Number,

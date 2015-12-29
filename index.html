@@ -6,37 +6,10 @@
 	<meta name="description" content="" />
 	<script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
 
-	<link rel="import" href="map-box.html">
-	<link rel="import" href="../geo-location/geo-location.html">
-	<style>
-		html, body{
-			height: 100%;
-			width: 100%;
-		}
-		body{
-			margin: 0;
-		}
-		mapbox-map {
-			display: block;
-			height: 100%;
-			width: 100%;
-	}
-	</style>
+	<link rel="import" href="../iron-component-page/iron-component-page.html">
+
 </head>
-<body>
-	<template id="t" is="dom-bind">
-		<geo-location watch-pos latitude="{{latitude}}" longitude="{{longitude}}"></geo-location>
-		<mapbox-map id="map"
-			zoom="15"
-			layer="roadtrippers.ijjip7cb"
-			zoomable
-			load-feature="https://raw.githubusercontent.com/elil/places/master/places.geojson"
-			latitude="{{latitude}}"
-			longitude="{{longitude}}">
-			<mapbox-marker latitude="{{latitude}}"
-			longitude="{{longitude}}">
-	    </mapbox-marker>
-		</mapbox-map>
-	</template>
+<body unresolved>
+	<iron-component-page></iron-component-page>
 </body>
 </html>

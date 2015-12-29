@@ -1,8 +1,8 @@
 <link rel="import" href="../../../polymer/polymer.html">
 <!--
-The `mapbox-layer` element represents a marker on the map and is used as
+The `mapbox-layer` add a few tile layers to a map and is used as
 a child element of the `mapbox-map` element.
-##### Example: Add marker
+##### Example: Add layers
     <style>
       mapbox-map {
         display: block;
@@ -13,11 +13,10 @@ a child element of the `mapbox-map` element.
               longitude  = "1.310977"
               zoom       = "15"
               layer      = "examples.map-i875kd35">
-        <mapbox-marker
-          symbol = "bus"
-          latitude="0"
-          longitude="0">
-        </mapbox-marker>
+        <mapbox-layers>
+          <mapbox-layer name="map.id1"></mapbox-layer>
+          <mapbox-layer name="map.id2"></mapbox-layer>
+        </mapbox-layers>
     </mapbox-map>
 @element mapbox-layer
 @blurb Element for putting a marker on the map
@@ -59,6 +58,10 @@ a child element of the `mapbox-map` element.
         },
       },
 
+      behaviors: [
+        MapBox.RemoveFeature
+      ],
+
       _mapChanged: function(){
         console.log("Layer called!");
         this.feature = L.control.layers();
@@ -74,7 +77,7 @@ a child element of the `mapbox-map` element.
         if (this._observer) {
           return;
         }
-        this._observer = new MutationObserver( this._updateLayers.bind(this));
+        this._observer = new MutationObserver( this._updateLayers.bind(this) );
         this._observer.observe(this, {
           childList: true
         });

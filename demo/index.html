@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title></title>
+	<meta name="description" content="" />
+	<script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+
+	<link rel="import" href="../map-box.html">
+	<style>
+		html, body{
+			height: 100%;
+			width: 100%;
+		}
+		body{
+			margin: 0;
+		}
+		mapbox-map {
+			display: block;
+			height: 100%;
+			width: 100%;
+	}
+	</style>
+</head>
+<body unresolved>
+	<template is="dom-bind">
+		<geo-location watch-pos latitude="{{latitude}}" longitude="{{longitude}}"></geo-location>
+		<mapbox-map id="map"
+			zoom="15"
+			layer="roadtrippers.ijjip7cb"
+			zoomable
+			load-feature="https://raw.githubusercontent.com/elil/places/master/places.geojson"
+			latitude="[[latitude]]"
+			longitude="[[longitude]]">
+			<mapbox-marker latitude="[[latitude]]"
+			longitude="[[longitude]]">
+	    </mapbox-marker>
+		</mapbox-map>
+	</template>
+</body>
+</html>

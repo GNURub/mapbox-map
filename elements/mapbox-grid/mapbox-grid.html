@@ -1,7 +1,6 @@
 <link rel="import" href="../../../polymer/polymer.html">
 <!--
-The `mapbox-grid` element represents a marker on the map and is used as
-a child element of the `mapbox-map` element.
+The `mapbox-grid` loads UTFGrid tiles of interactivity into your map.
 ##### Example: Add marker
     <style>
       mapbox-map {
@@ -13,14 +12,10 @@ a child element of the `mapbox-map` element.
               longitude  = "1.310977"
               zoom       = "15"
               layer      = "examples.map-i875kd35">
-        <mapbox-marker
-          symbol = "bus"
-          latitude="0"
-          longitude="0">
-        </mapbox-marker>
+        <mapbox-grid control layer="mapbox.light"></mapbox-grid>
     </mapbox-map>
 @element mapbox-grid
-@blurb Element for putting a marker on the map
+@blurb Loads UTFGrid tiles of interactivity into your map
 @status alpha
 @homepage https://ruben96.github.io/mapbox-map/elements/mapbox-map/
 -->
@@ -52,7 +47,7 @@ a child element of the `mapbox-map` element.
         },
 
         /**
-         *
+         * The event name.
          */
         layer: {
           type:String
@@ -69,6 +64,11 @@ a child element of the `mapbox-map` element.
         }
 
       },
+
+      behaviors: [
+        MapBox.RemoveFeature
+      ],
+
       _mapChanged: function(){
         console.log("Grid called!!")
         var canUpdate = this.map && this.layer;
@@ -86,16 +86,6 @@ a child element of the `mapbox-map` element.
         if(canUpdate){
           this.featureCtrl = L.mapbox.gridControl(this.feature).addTo(this.map);
         }
-      },
-
-      /**
-       * Remove this layer from the map
-       * @method removeLayer
-       * @return this Object
-       */
-      removeLayer: function() {
-        this.map.removeLayer(this.feature);
-        this.remove();
       },
 
       detached: function(){

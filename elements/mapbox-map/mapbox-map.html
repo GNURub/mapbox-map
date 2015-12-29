@@ -796,13 +796,12 @@ The `mapbox-map` element renders a MapBox Map.
          * @param function(feature)
          */
         setFilter: function(cb){
-          if(typeof cb === "function"){
-            this.map.featureLayer.setFilter(function(f) {
-              return cb(f);
-            });
+          if(typeof cb == "function"){
+            return this.map.featureLayer.setFilter(function(f){cb(f)});
           }else{
             throw new TypeError('It has to be a function', "mapbox-map.js", 595);
           }
+
         },
 
         /**
@@ -837,7 +836,6 @@ The `mapbox-map` element renders a MapBox Map.
             this.featureLayer = L.mapbox.featureLayer(this.loadFeature);
             if(!this.featureToElements){
               this.featureLayer.addTo(this.map);}
-            console.log(this.featureLayer);
           }
         },
 

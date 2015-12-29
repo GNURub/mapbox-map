@@ -42,6 +42,7 @@ a child element of the `marker-map` element.
 
         /**
          *  A Map API object.
+         *  @type Object
          */
         map: {
           type: Object,
@@ -50,6 +51,7 @@ a child element of the `marker-map` element.
 
         /**
          * The circle's longitude coordinate.
+         * @type Number
          */
         longitude: {
           type: Number,
@@ -59,6 +61,7 @@ a child element of the `marker-map` element.
 
         /**
          * The circle's latitude coordinate.
+         * @type Number
          */
         latitude: {
           type: Number,
@@ -68,6 +71,7 @@ a child element of the `marker-map` element.
 
         /**
          * The circle's radius.
+         * @type Number
          */
         radius: {
           type: Number,
@@ -76,6 +80,10 @@ a child element of the `marker-map` element.
           observer: '_radiusChanged'
         }
       },
+
+      behaviors: [
+        MapBox.RemoveFeature
+      ],
 
       observers: [
         '_updatePosition(latitude, longitude)'
@@ -113,17 +121,6 @@ a child element of the `marker-map` element.
         if (this.feature && !!this.radius) {
           this.feature.setRadius(this.radius);
         }
-      },
-
-      /**
-       * Description
-       * @method removeLayer
-       * @param {} keep
-       * @return
-       */
-      removeLayer: function(keep){
-        this.map.removeLayer(this.feature);
-        this.remove();
       },
 
       /**

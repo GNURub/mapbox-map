@@ -6,3 +6,4 @@ styles.ms
 *.geojson
 .bowerrc
 .publish
+gulpFile.js
